@@ -8,7 +8,11 @@ call vundle#begin()
 
 " let Vundle manage Vundle, required
 Plugin 'gmarik/Vundle.vim'
+
+" Colour schemes
 Plugin 'Lokaltog/vim-distinguished'
+Plugin 'chriskempson/vim-tomorrow-theme'
+Plugin 'tomasr/molokai'
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
@@ -40,4 +44,4 @@ set number
 
 " Set colorscheme 
 set t_Co=256
-colorscheme distinguished
+colorscheme molokai
