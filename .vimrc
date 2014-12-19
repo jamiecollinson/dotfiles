@@ -1,5 +1,19 @@
-" Use Vim settings. This must be first. It changes other options.
-set nocompatible
+set nocompatible 		" be iMproved, required
+filetype off			" required
+
+" ------ Vundle ------
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+" let Vundle manage Vundle, required
+Plugin 'gmarik/Vundle.vim'
+Plugin 'Lokaltog/vim-distinguished'
+
+" All of your Plugins must be added before the following line
+call vundle#end()            " required
+filetype plugin indent on    " required
+" ------ /Vundle ------
 
 " Turn on syntax highlighting
 syntax on
@@ -25,4 +39,5 @@ augroup END " }
 set number
 
 " Set colorscheme 
+set t_Co=256
 colorscheme distinguished
