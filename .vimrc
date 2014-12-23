@@ -3,8 +3,14 @@ filetype off                            " required
 
 " ------ Vundle ------
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if has('gui_win32')
+    set rtp+=~/vimfiles/bundle/Vundle.vim/
+    let path='~/vimfiles/bundle'
+    call vundle#begin(path)
+else
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+endif
 
 Plugin 'gmarik/Vundle.vim'              " Let vundle manage vundle
 Plugin 'tpope/vim-sensible'             " Sensible defaults
