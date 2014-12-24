@@ -25,6 +25,7 @@ Plugin 'thanthese/Tortoise-Typing'      " Touch typing tutor
 Plugin 'junegunn/limelight.vim'         " Highlight current paragraph
 Plugin 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plugin 'tpope/vim-surround'             " Easily manipulate surroundings
+Plugin 'davidhalter/jedi-vim'           " Python autocompletion with jedi
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
