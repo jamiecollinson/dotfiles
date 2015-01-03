@@ -19,6 +19,8 @@ Plugin 'thanthese/Tortoise-Typing'      " Touch typing tutor
 Plugin 'junegunn/limelight.vim'         " Highlight current paragraph
 Plugin 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plugin 'tpope/vim-surround'             " Easily manipulate surroundings
+Plugin 'amdt/vim-niji'                  " Rainbow parentheses
+Plugin 'kovisoft/slimv'                 " SLIME for VIM
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
