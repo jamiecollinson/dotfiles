@@ -3,8 +3,14 @@ filetype off                            " required
 
 " ------ Vundle ------
 " set the runtime path to include Vundle and initialize
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+if has('gui_win32')
+    set rtp+=~/vimfiles/bundle/Vundle.vim/
+    let path='~/vimfiles/bundle'
+    call vundle#begin(path)
+else
+    set rtp+=~/.vim/bundle/Vundle.vim
+    call vundle#begin()
+endif
 
 Plugin 'gmarik/Vundle.vim'              " Let vundle manage vundle
 Plugin 'tpope/vim-sensible'             " Sensible defaults
@@ -21,6 +27,7 @@ Plugin 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plugin 'tpope/vim-surround'             " Easily manipulate surroundings
 Plugin 'amdt/vim-niji'                  " Rainbow parentheses
 Plugin 'kovisoft/slimv'                 " SLIME for VIM
+Plugin 'davidhalter/jedi-vim'           " Python autocompletion with jedi
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
