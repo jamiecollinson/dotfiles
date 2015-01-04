@@ -28,6 +28,7 @@ Plugin 'tpope/vim-surround'             " Easily manipulate surroundings
 Plugin 'amdt/vim-niji'                  " Rainbow parentheses
 Plugin 'kovisoft/slimv'                 " SLIME for VIM
 Plugin 'davidhalter/jedi-vim'           " Python autocompletion with jedi
+Plugin 'junegunn/goyo.vim'              " Distraction free writing
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
