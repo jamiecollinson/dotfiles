@@ -14,9 +14,7 @@ endif
 
 Plugin 'gmarik/Vundle.vim'              " Let vundle manage vundle
 Plugin 'tpope/vim-sensible'             " Sensible defaults
-Plugin 'Lokaltog/vim-distinguished'     " Color schemes
-Plugin 'chriskempson/vim-tomorrow-theme'
-Plugin 'tomasr/molokai'
+Plugin 'tomasr/molokai'                 " One true colour scheme
 Plugin 'kien/ctrlp.vim'                 " Fuzzy finder
 Plugin 'bling/vim-airline'              " Status bar
 Plugin 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
@@ -25,10 +23,19 @@ Plugin 'thanthese/Tortoise-Typing'      " Touch typing tutor
 Plugin 'junegunn/limelight.vim'         " Highlight current paragraph
 Plugin 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plugin 'tpope/vim-surround'             " Easily manipulate surroundings
-Plugin 'amdt/vim-niji'                  " Rainbow parentheses
-Plugin 'kovisoft/slimv'                 " SLIME for VIM
-Plugin 'davidhalter/jedi-vim'           " Python autocompletion with jedi
 Plugin 'junegunn/goyo.vim'              " Distraction free writing
+
+" Python plugins
+Plugin 'davidhalter/jedi-vim'           " Python autocompletion with jedi
+Plugin 'klen/python-mode'               " Python mode for vim
+let g:pymode_rope = 0                   " turn off rope as we're using jedi
+
+" Clojure plugins
+Plugin 'guns/vim-clojure-static'        " Clojure syntax
+Plugin 'tpope/vim-fireplace'            " Clojure REPL
+Plugin 'tpope/vim-leiningen'            " Static vim support for Leiningen
+Plugin 'tpope/vim-dispatch'             " Async build and test dispatcher
+Plugin 'amdt/vim-niji'                  " Rainbow parentheses
 
 " All of your Plugins must be added before the following line
 call vundle#end()            " required
