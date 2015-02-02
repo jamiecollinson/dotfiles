@@ -1,46 +1,33 @@
-set nocompatible                        " be iMproved, required
-filetype off                            " required
+" load plugins
+call plug#begin('~/.vim/plugged')
 
-" ------ Vundle ------
-" set the runtime path to include Vundle and initialize
-if has('gui_win32')
-    set rtp+=~/vimfiles/bundle/Vundle.vim/
-    let path='~/vimfiles/bundle'
-    call vundle#begin(path)
-else
-    set rtp+=~/.vim/bundle/Vundle.vim
-    call vundle#begin()
-endif
+runtime! modules/*.vim
 
-Plugin 'gmarik/Vundle.vim'              " Let vundle manage vundle
-Plugin 'tpope/vim-sensible'             " Sensible defaults
-Plugin 'tomasr/molokai'                 " One true colour scheme
-Plugin 'kien/ctrlp.vim'                 " Fuzzy finder
-Plugin 'bling/vim-airline'              " Status bar
-Plugin 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
-Plugin 'ap/vim-css-color'               " Adds color to CSS color codes
-Plugin 'thanthese/Tortoise-Typing'      " Touch typing tutor
-Plugin 'junegunn/limelight.vim'         " Highlight current paragraph
-Plugin 'Lokaltog/vim-easymotion'        " Vim motions on speed
-Plugin 'tpope/vim-surround'             " Easily manipulate surroundings
-Plugin 'junegunn/goyo.vim'              " Distraction free writing
+Plug 'tpope/vim-sensible'
+Plug 'tomasr/molokai'                 " One true colour scheme
+Plug 'kien/ctrlp.vim'                 " Fuzzy finder
+Plug 'bling/vim-airline'              " Status bar
+Plug 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
+Plug 'ap/vim-css-color'               " Adds color to CSS color codes
+Plug 'thanthese/Tortoise-Typing'      " Touch typing tutor
+Plug 'junegunn/limelight.vim'         " Highlight current paragraph
+Plug 'Lokaltog/vim-easymotion'        " Vim motions on speed
+Plug 'tpope/vim-surround'             " Easily manipulate surroundings
+Plug 'junegunn/goyo.vim'              " Distraction free writing
 
 " Python plugins
-Plugin 'davidhalter/jedi-vim'           " Python autocompletion with jedi
-Plugin 'klen/python-mode'               " Python mode for vim
-let g:pymode_rope = 0                   " turn off rope as we're using jedi
+Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
+Plug 'klen/python-mode'               " Python mode for vim
+let g:pymode_rope = 0                 " turn off rope as we're using jedi
 
 " Clojure plugins
-Plugin 'guns/vim-clojure-static'        " Clojure syntax
-Plugin 'tpope/vim-fireplace'            " Clojure REPL
-Plugin 'tpope/vim-leiningen'            " Static vim support for Leiningen
-Plugin 'tpope/vim-dispatch'             " Async build and test dispatcher
-Plugin 'amdt/vim-niji'                  " Rainbow parentheses
+Plug 'guns/vim-clojure-static'        " Clojure syntax
+Plug 'tpope/vim-fireplace'            " Clojure REPL
+Plug 'tpope/vim-leiningen'            " Static vim support for Leiningen
+Plug 'tpope/vim-dispatch'             " Async build and test dispatcher
+Plug 'amdt/vim-niji'                  " Rainbow parentheses
 
-" All of your Plugins must be added before the following line
-call vundle#end()            " required
-filetype plugin indent on    " required
-" ------ /Vundle ------
+call plug#end()
 
 " Turn on syntax highlighting
 syntax on
@@ -79,3 +66,12 @@ set number
 " Set colorscheme 
 set t_Co=256
 colorscheme molokai
+
+" Easier split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-L> <C-W><C-L>
+
+set splitbelow
+set splitright
