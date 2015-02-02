@@ -14,11 +14,10 @@ Plug 'junegunn/limelight.vim'         " Highlight current paragraph
 Plug 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plug 'tpope/vim-surround'             " Easily manipulate surroundings
 Plug 'junegunn/goyo.vim'              " Distraction free writing
+Plug 'scrooloose/syntastic'
 
 " Python plugins
 Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
-Plug 'klen/python-mode'               " Python mode for vim
-let g:pymode_rope = 0                 " turn off rope as we're using jedi
 
 " Clojure plugins
 Plug 'guns/vim-clojure-static'        " Clojure syntax
