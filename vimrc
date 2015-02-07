@@ -16,20 +16,31 @@ Plug 'tpope/vim-surround'             " Easily manipulate surroundings
 Plug 'junegunn/goyo.vim'              " Distraction free writing
 Plug 'scrooloose/syntastic'
 
-" Python plugins
+" Python
 Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
 
-" Clojure plugins
+" Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
 Plug 'tpope/vim-fireplace'            " Clojure REPL
 Plug 'tpope/vim-leiningen'            " Static vim support for Leiningen
 Plug 'tpope/vim-dispatch'             " Async build and test dispatcher
 Plug 'amdt/vim-niji'                  " Rainbow parentheses
 
+" Javascript
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Raimondi/delimitMate'
+
 call plug#end()
 
 " Turn on syntax highlighting
 syntax on
+
+" Set colorscheme 
+set t_Co=256
+set background=dark
+colorscheme molokai
 
 " Set tabs
 set tabstop=4
@@ -62,10 +73,6 @@ augroup END " }
 " Turn line numbers on
 set number
 
-" Set colorscheme 
-set t_Co=256
-colorscheme molokai
-
 " Easier split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -74,3 +81,6 @@ nnoremap <C-L> <C-W><C-L>
 
 set splitbelow
 set splitright
+
+" Easier escaping
+:imap jk <Esc>
