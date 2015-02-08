@@ -15,6 +15,8 @@ Plug 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plug 'tpope/vim-surround'             " Easily manipulate surroundings
 Plug 'junegunn/goyo.vim'              " Distraction free writing
 Plug 'scrooloose/syntastic'
+let g:syntastic_check_on_open=1
+Plug 'Shougo/neocomplete.vim'
 
 " Python
 Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
@@ -31,13 +33,14 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
+Plug 'marijnh/tern_for_vim'
 
 call plug#end()
 
 " Turn on syntax highlighting
 syntax on
 
-" Set colorscheme 
+" Set colorscheme
 set t_Co=256
 set background=dark
 colorscheme molokai
@@ -78,8 +81,6 @@ nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
 nnoremap <C-H> <C-W><C-H>
 nnoremap <C-L> <C-W><C-L>
-
-set splitbelow
 set splitright
 
 " Easier escaping
