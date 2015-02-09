@@ -1,3 +1,5 @@
+set runtimepath^=~/.vim
+
 " load plugins
 call plug#begin('~/.vim/plugged')
 
