@@ -46,6 +46,17 @@ Plug 'marijnh/tern_for_vim'
 
 call plug#end()
 
+" Allow multiple buffers to be open
+set hidden
+" Turn off line wrapping
+set nowrap
+" Make backspace be sensible
+set backspace=indent,eol,start
+" Automatically indent
+set autoindent
+" Copy indentation if auto is confused
+set copyindent
+
 " Turn on syntax highlighting
 syntax on
 
@@ -58,6 +69,18 @@ colorscheme molokai
 set tabstop=4
 set shiftwidth=4
 set expandtab
+
+" Highlight matching braces/tags
+set showmatch
+
+" Vim can set title of window
+set title
+
+" Use a visual indicator rather than a beep
+set visualbell
+
+" Toggle past mode with F2
+set pastetoggle=<F2>
 
 " Set search options
 set hlsearch                            " Highlight search
@@ -97,3 +120,6 @@ set splitright
 
 " Easier escaping
 :imap jk <Esc>
+
+" Ignore certain dirs
+set wildignore+=*/node_modules/*
