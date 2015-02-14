@@ -19,6 +19,13 @@ Plug 'junegunn/goyo.vim'              " Distraction free writing
 Plug 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
 Plug 'Shougo/neocomplete.vim'
+let g:neocomplete#enable_at_startup = 1
+let g:neocomplete#auto_completion_start_length = 1
+let g:neocomplete#enable_smart_case = 1
+if !exists('g:neocomplete#force_omni_input_patterns')
+    let g:neocomplete#force_omni_input_patterns = {}
+endif
+let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
 
 " Python
 Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
@@ -68,6 +75,9 @@ if has('gui_running')
     set guifont=DejaVu\ Sans\ Mono\ 10
   endif
 endif
+
+" Filetype specific things
+autocmd FileType javascript setlocal omnifunc=tern#Complete
 
 " Automatically reload on changes to .vimrc
 augroup reload_vimrc " {
