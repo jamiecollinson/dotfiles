@@ -43,6 +43,7 @@ Plug 'pangloss/vim-javascript'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
 Plug 'marijnh/tern_for_vim'
+Plug 'mxw/vim-jsx'
 
 call plug#end()
 
