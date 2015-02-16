@@ -18,6 +18,8 @@ Plug 'tpope/vim-surround'             " Easily manipulate surroundings
 Plug 'junegunn/goyo.vim'              " Distraction free writing
 Plug 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
+let g:syntastic_javascript_checkers = ['jsxhint']
+let g:syntastic_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
 Plug 'Shougo/neocomplete.vim'
 let g:neocomplete#enable_at_startup = 1
 let g:neocomplete#auto_completion_start_length = 1
@@ -44,6 +46,7 @@ Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
 Plug 'marijnh/tern_for_vim'
 Plug 'mxw/vim-jsx'
+let g:jsx_ext_required = 0
 
 call plug#end()
 
