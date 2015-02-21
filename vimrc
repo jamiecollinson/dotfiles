@@ -102,9 +102,6 @@ if has('gui_running')
   endif
 endif
 
-" Filetype specific things
-autocmd FileType javascript setlocal omnifunc=tern#Complete
-
 " Automatically reload on changes to .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
 augroup reload_vimrc " {
