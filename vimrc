@@ -8,6 +8,8 @@ runtime! modules/*.vim
 Plug 'tpope/vim-sensible'             " Sensible defaults
 Plug 'tomasr/molokai'                 " One true colour scheme
 Plug 'sjl/badwolf'                    " Good for JS
+Plug 'Lokaltog/vim-distinguished'     " Distinguished colour scheme
+Plug 'goatslacker/mango.vim'          " Awesome colour scheme for js
 Plug 'kien/ctrlp.vim'                 " Fuzzy finder
 Plug 'bling/vim-airline'              " Status bar
 Plug 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
@@ -19,10 +21,11 @@ Plug 'tpope/vim-surround'             " Easily manipulate surroundings
 Plug 'junegunn/goyo.vim'              " Distraction free writing
 Plug 'scrooloose/nerdtree'            " File browser
 Plug 'scrooloose/syntastic'           " Syntax highlighting
-    let g:syntastic_check_on_open=1
-
-" Python
-Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
+  let g:syntastic_check_on_open=1
+Plug 'Valloric/YouCompleteMe'         " Autocompletion
+  let g:ycm_add_preview_to_completeopt=0
+  let g:ycm_confirm_extra_conf=0
+  set completeopt-=preview
 
 " Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
@@ -37,8 +40,6 @@ Plug 'pangloss/vim-javascript'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
 Plug 'marijnh/tern_for_vim'
-Plug 'mxw/vim-jsx'
-let g:jsx_ext_required = 0
 
 call plug#end()
 
@@ -128,3 +129,15 @@ set splitright
 
 set wildmenu                        " visual autocomplete for command menu
 set wildignore+=*/node_modules/*    " Ignore certain dirs
+
+" Remap <Enter> to split the line and insert a new line in between if BreakLine return True
+fun BreakLine()
+  if (mode() == 'i')
+    return ((getline(".")[col(".")-2] == '{' && getline(".")[col(".")-1] == '}') ||
+          \(getline(".")[col(".")-2] == '(' && getline(".")[col(".")-1] == ')'))
+  else
+    return 0
+  endif
+endfun
+
+inoremap <expr> <CR> BreakLine() ? "<CR><ESC>O" : "<CR>"
