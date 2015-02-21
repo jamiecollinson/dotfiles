@@ -28,6 +28,7 @@ if !exists('g:neocomplete#force_omni_input_patterns')
     let g:neocomplete#force_omni_input_patterns = {}
 endif
 let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
+Plug 'scrooloose/nerdtree'            "File browser
 
 " Python
 Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
