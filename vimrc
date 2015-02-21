@@ -5,8 +5,9 @@ call plug#begin('~/.vim/plugged')
 
 runtime! modules/*.vim
 
-Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'             " Sensible defaults
 Plug 'tomasr/molokai'                 " One true colour scheme
+Plug 'sjl/badwolf'                    " Good for JS
 Plug 'kien/ctrlp.vim'                 " Fuzzy finder
 Plug 'bling/vim-airline'              " Status bar
 Plug 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
@@ -16,19 +17,9 @@ Plug 'junegunn/limelight.vim'         " Highlight current paragraph
 Plug 'Lokaltog/vim-easymotion'        " Vim motions on speed
 Plug 'tpope/vim-surround'             " Easily manipulate surroundings
 Plug 'junegunn/goyo.vim'              " Distraction free writing
-Plug 'scrooloose/syntastic'
-let g:syntastic_check_on_open=1
-let g:syntastic_javascript_checkers = ['jsxhint']
-let g:syntastic_javascript_jsxhint_exec = 'jsx-jshint-wrapper'
-Plug 'Shougo/neocomplete.vim'
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#auto_completion_start_length = 1
-let g:neocomplete#enable_smart_case = 1
-if !exists('g:neocomplete#force_omni_input_patterns')
-    let g:neocomplete#force_omni_input_patterns = {}
-endif
-let g:neocomplete#force_omni_input_patterns.javascript = '[^. \t]\.\w*'
-Plug 'scrooloose/nerdtree'            "File browser
+Plug 'scrooloose/nerdtree'            " File browser
+Plug 'scrooloose/syntastic'           " Syntax highlighting
+    let g:syntastic_check_on_open=1
 
 " Python
 Plug 'davidhalter/jedi-vim'           " Python autocompletion with jedi
@@ -71,9 +62,10 @@ set background=dark
 colorscheme molokai
 
 " Set tabs
-set tabstop=4
-set shiftwidth=4
+set tabstop=2
+set shiftwidth=2
 set expandtab
+autocmd Filetype python setlocal ts=4 sw=4 expandtab
 
 " Highlight matching braces/tags
 set showmatch
@@ -84,14 +76,19 @@ set title
 " Use a visual indicator rather than a beep
 set visualbell
 
-" Toggle past mode with F2
-set pastetoggle=<F2>
-
 " Set search options
 set hlsearch                            " Highlight search
 set incsearch                           " Immediately highlight
 set ignorecase                          " Ignore case
 set smartcase                           " Case sensitive if caps used
+nnoremap <leader><space> :nohlsearch<CR>
+
+" Folding
+set foldenable                          " enable folding
+set foldlevelstart=10                 " open most folds by default
+set foldnestmax=10                    " 10 nested fold max
+set foldmethod=indent                 " fold based on indent
+nnoremap <space> za
 
 " Options for gvim
 if has('gui_running')
@@ -108,6 +105,7 @@ endif
 autocmd FileType javascript setlocal omnifunc=tern#Complete
 
 " Automatically reload on changes to .vimrc
+nnoremap <leader>ev :e $MYVIMRC<CR>
 augroup reload_vimrc " {
   autocmd!
   autocmd BufWritePost $MYVIMRC source $MYVIMRC
@@ -115,6 +113,8 @@ augroup END " }
 
 " Turn line numbers on
 set number
+
+set cursorline                      " highlight current line
 
 " Easier split navigation
 nnoremap <C-J> <C-W><C-J>
@@ -126,5 +126,5 @@ set splitright
 " Easier escaping
 :imap jk <Esc>
 
-" Ignore certain dirs
-set wildignore+=*/node_modules/*
+set wildmenu                        " visual autocomplete for command menu
+set wildignore+=*/node_modules/*    " Ignore certain dirs
