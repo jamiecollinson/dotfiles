@@ -11,8 +11,6 @@ endif
 " load plugins
 call plug#begin('~/.vim/plugged')
 
-runtime! modules/*.vim
-
 Plug 'tpope/vim-sensible'             " Sensible defaults
 Plug 'tomasr/molokai'                 " One true colour scheme
 Plug 'sjl/badwolf'                    " Good for JS
