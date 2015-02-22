@@ -34,6 +34,13 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
   set completeopt-=preview
 Plug 'tpope/vim-fugitive'             " git integration for vim
 Plug 'airblade/vim-gitgutter'         " show git diff in gutter
+Plug 'mattn/emmet-vim'                " zen coding
+Plug 'SirVer/ultisnips'               " ultimate snippets
+  let g:UltiSnipsExpandTrigger="<c-j>"
+  let g:UltiSnipsJumpForwardTrigger="<c-j>"
+  let g:UltiSnipsJumpBackwardTrigger="<c-k>"
+Plug 'honza/vim-snippets'             " ultimate collection of snippets
+Plug 'tpope/vim-commentary'           " comment stuff with gc
 
 " Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
