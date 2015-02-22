@@ -32,6 +32,8 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
   let g:ycm_add_preview_to_completeopt=0
   let g:ycm_confirm_extra_conf=0
   set completeopt-=preview
+Plug 'tpope/vim-fugitive'             " git integration for vim
+Plug 'airblade/vim-gitgutter'         " show git diff in gutter
 
 " Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
