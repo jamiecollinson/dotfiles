@@ -41,6 +41,7 @@ Plug 'SirVer/ultisnips'               " ultimate snippets
   let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 Plug 'honza/vim-snippets'             " ultimate collection of snippets
 Plug 'tpope/vim-commentary'           " comment stuff with gc
+Plug 'severin-lemaignan/vim-minimap'  " sublime text style minimap
 
 " Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
