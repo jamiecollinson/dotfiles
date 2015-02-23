@@ -42,6 +42,7 @@ Plug 'SirVer/ultisnips'               " ultimate snippets
 Plug 'honza/vim-snippets'             " ultimate collection of snippets
 Plug 'tpope/vim-commentary'           " comment stuff with gc
 Plug 'severin-lemaignan/vim-minimap'  " sublime text style minimap
+Plug 'mhinz/vim-startify'             " cool start screen
 
 " Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
@@ -144,7 +145,7 @@ set wildmenu                        " visual autocomplete for command menu
 set wildignore+=*/node_modules/*    " Ignore certain dirs
 
 " Remap <Enter> to split the line and insert a new line in between if BreakLine return True
-fun BreakLine()
+fun! BreakLine()
   if (mode() == 'i')
     return ((getline(".")[col(".")-2] == '{' && getline(".")[col(".")-1] == '}') ||
           \(getline(".")[col(".")-2] == '(' && getline(".")[col(".")-1] == ')'))
