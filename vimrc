@@ -16,7 +16,6 @@ Plug 'tomasr/molokai'                 " One true colour scheme
 Plug 'sjl/badwolf'                    " Good for JS
 Plug 'Lokaltog/vim-distinguished'     " Distinguished colour scheme
 Plug 'goatslacker/mango.vim'          " Awesome colour scheme for js
-Plug 'whatyouhide/vim-gotham'         " It's the colourscheme we set that defines us
 Plug 'kien/ctrlp.vim'                 " Fuzzy finder
 Plug 'bling/vim-airline'              " Status bar
 Plug 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
