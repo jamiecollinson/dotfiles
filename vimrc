@@ -44,6 +44,7 @@ Plug 'honza/vim-snippets'             " ultimate collection of snippets
 Plug 'tpope/vim-commentary'           " comment stuff with gc
 Plug 'severin-lemaignan/vim-minimap'  " sublime text style minimap
 Plug 'mhinz/vim-startify'             " cool start screen
+Plug 'christoomey/vim-tmux-navigator' " seamless navigation between tmux and vim
 
 " Clojure
 Plug 'guns/vim-clojure-static'        " Clojure syntax
@@ -58,6 +59,10 @@ Plug 'pangloss/vim-javascript'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+
+" Coffeescript
+Plug 'kchmck/vim-coffee-script'
+Plug 'mtscout6/vim-cjsx'
 
 call plug#end()
 
@@ -119,6 +124,11 @@ if has('gui_running')
     set guifont=DejaVu\ Sans\ Mono\ 10
   endif
 endif
+
+" swap and backup
+set nobackup
+set nowritebackup
+set noswapfile
 
 " Automatically reload on changes to .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
