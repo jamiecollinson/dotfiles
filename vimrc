@@ -29,18 +29,9 @@ Plug 'junegunn/goyo.vim'              " Distraction free writing
 Plug 'scrooloose/nerdtree'            " File browser
 Plug 'scrooloose/syntastic'           " Syntax highlighting
   let g:syntastic_check_on_open=1
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
-  let g:ycm_add_preview_to_completeopt=0
-  let g:ycm_confirm_extra_conf=0
-  set completeopt-=preview
 Plug 'tpope/vim-fugitive'             " git integration for vim
 Plug 'airblade/vim-gitgutter'         " show git diff in gutter
 Plug 'mattn/emmet-vim'                " zen coding
-Plug 'SirVer/ultisnips'               " ultimate snippets
-  let g:UltiSnipsExpandTrigger="<c-j>"
-  let g:UltiSnipsJumpForwardTrigger="<c-j>"
-  let g:UltiSnipsJumpBackwardTrigger="<c-k>"
-Plug 'honza/vim-snippets'             " ultimate collection of snippets
 Plug 'tpope/vim-commentary'           " comment stuff with gc
 Plug 'severin-lemaignan/vim-minimap'  " sublime text style minimap
 Plug 'mhinz/vim-startify'             " cool start screen
