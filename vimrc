@@ -55,6 +55,11 @@ Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
 Plug 'kchmck/vim-coffee-script'
 Plug 'mtscout6/vim-cjsx'
 
+" Python
+Plug 'klen/python-mode'               " Linting, code completion, refactoring etc
+  let g:pymode_rope = 0
+Plug 'davidhalter/jedi-vim'           " Better code completion
+
 call plug#end()
 
 " Allow multiple buffers to be open
