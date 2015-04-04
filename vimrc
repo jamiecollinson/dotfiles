@@ -1,58 +1,28 @@
-" vim: set fdm=marker :
+" vim: set fdm=marker:
 
-" #Bundles {{{
+" #Plugins {{{
 
-" NeoBundle setup {{{
-" Note: Skip initialisation for vim-tiny or vim-small
-if !1 | finish | endif
-
-if has('vim_starting')
-  set nocompatible               " Be iMproved
-  set runtimepath+=~/.vim/bundle/neobundle.vim/
-endif
-
-call neobundle#begin(expand('~/.vim/bundle/'))
-
-NeoBundleFetch 'Shougo/neobundle.vim'
-
-call neobundle#end()
-" }}}
-
-" Run and manage child processes, dependency of many other plugins "{{{
-NeoBundle 'Shougo/vimproc', {
-  \     'build' : {
-  \       'windows' : 'make -f make_mingw32.mak',
-  \       'cygwin' : 'make -f make_cygwin.mak',
-  \       'mac' : 'make -f make_mac.mak',
-  \       'unix' : 'make -f make_unix.mak',
-  \     },
-  \   }
-"}}}
+call plug#begin('~/.vim/plugged')
 
 " Sensible defaults {{{
-NeoBundle 'tpope/vim-sensible'
+Plug 'tpope/vim-sensible'
 " }}}
 
 " #Colour schemes {{{
-NeoBundle 'tomasr/molokai'                 
-NeoBundle 'sjl/badwolf'                    
-NeoBundle 'Lokaltog/vim-distinguished'     
-NeoBundle 'goatslacker/mango.vim'          
-NeoBundle 'whatyouhide/vim-gotham'         
-
-" Set colorscheme
-set t_Co=256
-set background=dark
-colorscheme molokai
+Plug 'tomasr/molokai'                 
+Plug 'sjl/badwolf'                    
+Plug 'Lokaltog/vim-distinguished'     
+Plug 'goatslacker/mango.vim'          
+Plug 'whatyouhide/vim-gotham'         
 " }}}
 
 " #Visual improvements {{{
 
 " Status bar
-NeoBundle 'bling/vim-airline'
+Plug 'bling/vim-airline'
 
 " Highlight current paragraph
-NeoBundle 'junegunn/limelight.vim'
+Plug 'junegunn/limelight.vim'
 
 " }}}
 
@@ -60,42 +30,42 @@ NeoBundle 'junegunn/limelight.vim'
 
 " #Coffeescript {{{
 " General syntax
-NeoBundle 'kchmck/vim-coffee-script'
+Plug 'kchmck/vim-coffee-script'
 " Coffeescript with JSX (CJSX)
-NeoBundle 'mtscout6/vim-cjsx'
+Plug 'mtscout6/vim-cjsx'
 " }}}
 
 " #Javascript {{{
-NeoBundle 'jelera/vim-javascript-syntax'
-NeoBundle 'pangloss/vim-javascript'
-NeoBundle 'mxw/vim-jsx'
+Plug 'jelera/vim-javascript-syntax'
+Plug 'pangloss/vim-javascript'
+Plug 'mxw/vim-jsx'
   let g:jsx_ext_required=0
-NeoBundle 'wookiehangover/jshint.vim'
-NeoBundle 'nathanaelkane/vim-indent-guides'
-NeoBundle 'Raimondi/delimitMate'
-NeoBundle 'marijnh/tern_for_vim', { 'build': { 'others': 'npm install' } }
+Plug 'wookiehangover/jshint.vim'
+Plug 'nathanaelkane/vim-indent-guides'
+Plug 'Raimondi/delimitMate'
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
   let g:tern_map_keys=1
   let g:tern_show_argument_hints='on_hold'
 " }}}
 
 " #Clojure {{{
-NeoBundle 'guns/vim-clojure-static'
+Plug 'guns/vim-clojure-static'
 " }}}
 
 " #Python {{{
 " Linting, code completion, refactoring
-NeoBundle 'klen/python-mode'
+Plug 'klen/python-mode'
   let g:pymode_rope = 0
 " Better code completion - replaces rope in python-mode
-NeoBundle 'davidhalter/jedi-vim'
+Plug 'davidhalter/jedi-vim'
 "}}}
 
 " #HTML / CSS {{{
 
 " Zen coding for vim
-NeoBundle 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim'
 " Add colors to CSS color codes
-NeoBundle 'ap/vim-css-color'
+Plug 'ap/vim-css-color'
 
 " }}}
 
@@ -104,75 +74,85 @@ NeoBundle 'ap/vim-css-color'
 " #Git integration {{{
 
 " Git commands in vim
-NeoBundle 'tpope/vim-fugitive'
+Plug 'tpope/vim-fugitive'
 " Git diff icons in gutter
-NeoBundle 'airblade/vim-gitgutter'
+Plug 'airblade/vim-gitgutter'
 
 " }}}
 
 " Syntax highlighting {{{
-NeoBundle 'scrooloose/syntastic'
+Plug 'scrooloose/syntastic'
   let g:syntastic_check_on_open=1
 " }}}
 
 " Auto-completion {{{
-NeoBundle 'Shougo/neocomplete.vim'
-  " Disable AutoComplPop.
-  let g:acp_enableAtStartup = 0
-  " Use neocomplete.
-  let g:neocomplete#enable_at_startup = 1
-  " Use smartcase.
-  let g:neocomplete#enable_smart_case = 1
-  " Set minimum syntax keyword length.
-  let g:neocomplete#sources#syntax#min_keyword_length = 3
-  let g:neocomplete#min_keyword_length = 3
-  " Turn off scratch preview
-  set completeopt-=preview
+" Plug 'Shougo/neocomplete.vim'
+"   " Disable AutoComplPop.
+"   let g:acp_enableAtStartup = 0
+"   " Use neocomplete.
+"   let g:neocomplete#enable_at_startup = 1
+"   " Use smartcase.
+"   let g:neocomplete#enable_smart_case = 1
+"   " Set minimum syntax keyword length.
+"   let g:neocomplete#sources#syntax#min_keyword_length = 3
+"   let g:neocomplete#min_keyword_length = 3
+"   " Turn off scratch preview
+"   set completeopt-=preview
+Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
 " }}}
 
 " Seamless navigation between tmux and vim {{{
-NeoBundle 'christoomey/vim-tmux-navigator'
+Plug 'christoomey/vim-tmux-navigator'
 " }}}
 
 " Vim motions on speed {{{
-NeoBundle 'Lokaltog/vim-easymotion'
+Plug 'Lokaltog/vim-easymotion'
 " }}}
 
 " File browser {{{
-NeoBundle 'scrooloose/nerdtree'
+Plug 'scrooloose/nerdtree'
 " }}}
 
 " Toggle comments with gc {{{
-NeoBundle 'tpope/vim-commentary'
+Plug 'tpope/vim-commentary'
 " }}}
 
 " Easily manipulate surroundings {{{
-NeoBundle 'tpope/vim-surround'
+Plug 'tpope/vim-surround'
 " }}}
 
 " Start screen {{{
-NeoBundle 'mhinz/vim-startify'
+Plug 'mhinz/vim-startify'
 " }}}
 
 " #Random plugins {{{
 
 " Touch typing tutor
-NeoBundle 'thanthese/Tortoise-Typing'
+Plug 'thanthese/Tortoise-Typing'
 " Sublime text style minimap
-NeoBundle 'severin-lemaignan/vim-minimap'
+Plug 'severin-lemaignan/vim-minimap'
 " Distraction free writing
-NeoBundle 'junegunn/goyo.vim'
+Plug 'junegunn/goyo.vim'
 
 " }}}
 
-" Check for uninstalled bundles {{{
+" Check for uninstalled plugins {{{
 " and prompt to install if found 
-NeoBundleCheck
 " }}}
+
+call plug#end()
 
 " }}}
 
 " #Essentials {{{
+
+" Set colorscheme
+set t_Co=256
+set background=dark
+colorscheme molokai
+
+" Set modelines on
+set modeline
 
 " Shortcut to edit .vimrc
 nnoremap <leader>ev :e $MYVIMRC<CR>
