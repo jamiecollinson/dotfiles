@@ -113,6 +113,7 @@ NeoBundle 'airblade/vim-gitgutter'
 " Syntax highlighting {{{
 NeoBundle 'scrooloose/syntastic'
   let g:syntastic_check_on_open=1
+<<<<<<< HEAD
 " }}}
 
 " Auto-completion {{{
