@@ -1,61 +1,184 @@
-" explicitly set runtimepath so windows and linux behave the same
-set runtimepath^=~/.vim
+" vim: set fdm=marker :
 
-" install vim-plug if it doesn't exist
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall
+" #Bundles {{{
+
+" NeoBundle setup {{{
+" Note: Skip initialisation for vim-tiny or vim-small
+if !1 | finish | endif
+
+if has('vim_starting')
+  set nocompatible               " Be iMproved
+  set runtimepath+=~/.vim/bundle/neobundle.vim/
 endif
 
-" load plugins
-call plug#begin('~/.vim/plugged')
+call neobundle#begin(expand('~/.vim/bundle/'))
 
-Plug 'tpope/vim-sensible'             " Sensible defaults
-Plug 'tomasr/molokai'                 " One true colour scheme
-Plug 'sjl/badwolf'                    " Good for JS
-Plug 'Lokaltog/vim-distinguished'     " Distinguished colour scheme
-Plug 'goatslacker/mango.vim'          " Awesome colour scheme for js
-Plug 'whatyouhide/vim-gotham'         " It's the colour scheme that defines you
-Plug 'kien/ctrlp.vim'                 " Fuzzy finder
-Plug 'bling/vim-airline'              " Status bar
-Plug 'myusuf3/numbers.vim'            " Intelligently toggle line numbers
-Plug 'ap/vim-css-color'               " Adds color to CSS color codes
-Plug 'thanthese/Tortoise-Typing'      " Touch typing tutor
-Plug 'junegunn/limelight.vim'         " Highlight current paragraph
-Plug 'Lokaltog/vim-easymotion'        " Vim motions on speed
-Plug 'tpope/vim-surround'             " Easily manipulate surroundings
-Plug 'junegunn/goyo.vim'              " Distraction free writing
-Plug 'scrooloose/nerdtree'            " File browser
-Plug 'scrooloose/syntastic'           " Syntax highlighting
+NeoBundleFetch 'Shougo/neobundle.vim'
+
+call neobundle#end()
+" }}}
+
+" Run and manage child processes, dependency of many other plugins "{{{
+NeoBundle 'Shougo/vimproc', {
+  \     'build' : {
+  \       'windows' : 'make -f make_mingw32.mak',
+  \       'cygwin' : 'make -f make_cygwin.mak',
+  \       'mac' : 'make -f make_mac.mak',
+  \       'unix' : 'make -f make_unix.mak',
+  \     },
+  \   }
+"}}}
+
+" Sensible defaults {{{
+NeoBundle 'tpope/vim-sensible'
+" }}}
+
+" #Colour schemes {{{
+NeoBundle 'tomasr/molokai'                 
+NeoBundle 'sjl/badwolf'                    
+NeoBundle 'Lokaltog/vim-distinguished'     
+NeoBundle 'goatslacker/mango.vim'          
+NeoBundle 'whatyouhide/vim-gotham'         
+
+" Set colorscheme
+set t_Co=256
+set background=dark
+colorscheme molokai
+" }}}
+
+" #Visual improvements {{{
+
+" Status bar
+NeoBundle 'bling/vim-airline'
+
+" Highlight current paragraph
+NeoBundle 'junegunn/limelight.vim'
+
+" }}}
+
+" #Language specific - syntax and helpers {{{
+
+" #Coffeescript {{{
+" General syntax
+NeoBundle 'kchmck/vim-coffee-script'
+" Coffeescript with JSX (CJSX)
+NeoBundle 'mtscout6/vim-cjsx'
+" }}}
+
+" #Javascript {{{
+NeoBundle 'jelera/vim-javascript-syntax'
+NeoBundle 'pangloss/vim-javascript'
+NeoBundle 'mxw/vim-jsx'
+  let g:jsx_ext_required=0
+NeoBundle 'wookiehangover/jshint.vim'
+NeoBundle 'nathanaelkane/vim-indent-guides'
+NeoBundle 'Raimondi/delimitMate'
+NeoBundle 'marijnh/tern_for_vim', { 'build': { 'others': 'npm install' } }
+  let g:tern_map_keys=1
+  let g:tern_show_argument_hints='on_hold'
+" }}}
+
+" #Clojure {{{
+NeoBundle 'guns/vim-clojure-static'
+" }}}
+
+" #Python {{{
+" Linting, code completion, refactoring
+NeoBundle 'klen/python-mode'
+  let g:pymode_rope = 0
+" Better code completion - replaces rope in python-mode
+NeoBundle 'davidhalter/jedi-vim'
+"}}}
+
+" #HTML / CSS {{{
+
+" Zen coding for vim
+NeoBundle 'mattn/emmet-vim'
+" Add colors to CSS color codes
+NeoBundle 'ap/vim-css-color'
+
+" }}}
+
+" }}}
+
+" #Git integration {{{
+
+" Git commands in vim
+NeoBundle 'tpope/vim-fugitive'
+" Git diff icons in gutter
+NeoBundle 'airblade/vim-gitgutter'
+
+" }}}
+
+" Syntax highlighting {{{
+NeoBundle 'scrooloose/syntastic'
   let g:syntastic_check_on_open=1
-Plug 'tpope/vim-fugitive'             " git integration for vim
-Plug 'airblade/vim-gitgutter'         " show git diff in gutter
-Plug 'mattn/emmet-vim'                " zen coding
-Plug 'tpope/vim-commentary'           " comment stuff with gc
-Plug 'severin-lemaignan/vim-minimap'  " sublime text style minimap
-Plug 'mhinz/vim-startify'             " cool start screen
-Plug 'christoomey/vim-tmux-navigator' " seamless navigation between tmux and vim
+" }}}
 
-" Clojure
-Plug 'guns/vim-clojure-static'        " Clojure syntax
-Plug 'tpope/vim-fireplace'            " Clojure REPL
-Plug 'tpope/vim-leiningen'            " Static vim support for Leiningen
-Plug 'tpope/vim-dispatch'             " Async build and test dispatcher
-Plug 'amdt/vim-niji'                  " Rainbow parentheses
+" Auto-completion {{{
+NeoBundle 'Shougo/neocomplete.vim'
+  " Disable AutoComplPop.
+  let g:acp_enableAtStartup = 0
+  " Use neocomplete.
+  let g:neocomplete#enable_at_startup = 1
+  " Use smartcase.
+  let g:neocomplete#enable_smart_case = 1
+  " Set minimum syntax keyword length.
+  let g:neocomplete#sources#syntax#min_keyword_length = 3
+  let g:neocomplete#min_keyword_length = 3
+  " Turn off scratch preview
+  set completeopt-=preview
+" }}}
 
-" Javascript
-Plug 'jelera/vim-javascript-syntax'
-Plug 'pangloss/vim-javascript'
-Plug 'nathanaelkane/vim-indent-guides'
-Plug 'Raimondi/delimitMate'
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+" Seamless navigation between tmux and vim {{{
+NeoBundle 'christoomey/vim-tmux-navigator'
+" }}}
 
-" Coffeescript
-Plug 'kchmck/vim-coffee-script'
-Plug 'mtscout6/vim-cjsx'
+" Vim motions on speed {{{
+NeoBundle 'Lokaltog/vim-easymotion'
+" }}}
 
-call plug#end()
+" File browser {{{
+NeoBundle 'scrooloose/nerdtree'
+" }}}
+
+" Toggle comments with gc {{{
+NeoBundle 'tpope/vim-commentary'
+" }}}
+
+" Easily manipulate surroundings {{{
+NeoBundle 'tpope/vim-surround'
+" }}}
+
+" Start screen {{{
+NeoBundle 'mhinz/vim-startify'
+" }}}
+
+" #Random plugins {{{
+
+" Touch typing tutor
+NeoBundle 'thanthese/Tortoise-Typing'
+" Sublime text style minimap
+NeoBundle 'severin-lemaignan/vim-minimap'
+" Distraction free writing
+NeoBundle 'junegunn/goyo.vim'
+
+" }}}
+
+" Check for uninstalled bundles {{{
+" and prompt to install if found 
+NeoBundleCheck
+" }}}
+
+" }}}
+
+" #Essentials {{{
+
+" Shortcut to edit .vimrc
+nnoremap <leader>ev :e $MYVIMRC<CR>
+
+" Shortcut to reload .vimrc
+nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " Allow multiple buffers to be open
 set hidden
@@ -70,11 +193,6 @@ set copyindent
 
 " Turn on syntax highlighting
 syntax on
-
-" Set colorscheme
-set t_Co=256
-set background=dark
-colorscheme molokai
 
 " Set tabs
 set tabstop=2
@@ -100,33 +218,13 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " Folding
 set foldenable                          " enable folding
-set foldlevelstart=10                 " open most folds by default
-set foldnestmax=10                    " 10 nested fold max
-set foldmethod=indent                 " fold based on indent
-nnoremap <space> za
-
-" Options for gvim
-if has('gui_running')
-  set guioptions-=T
-  set columns=108 linespace=1
-  if has('gui_win32')
-    set guifont=DejaVu_Sans_Mono:h10:cANSI
-  else
-    set guifont=DejaVu\ Sans\ Mono\ 10
-  endif
-endif
+set foldmethod=indent                   " fold based on indent
+nnoremap <space> za                     " space opens fold
 
 " swap and backup
 set nobackup
 set nowritebackup
 set noswapfile
-
-" Automatically reload on changes to .vimrc
-nnoremap <leader>ev :e $MYVIMRC<CR>
-augroup reload_vimrc " {
-  autocmd!
-  autocmd BufWritePost $MYVIMRC source $MYVIMRC
-augroup END " }
 
 " Turn line numbers on
 set number
@@ -146,6 +244,10 @@ set splitright
 set wildmenu                        " visual autocomplete for command menu
 set wildignore+=*/node_modules/*    " Ignore certain dirs
 
+" }}}
+
+" #Extra Functions {{{
+
 " Remap <Enter> to split the line and insert a new line in between if BreakLine return True
 fun! BreakLine()
   if (mode() == 'i')
@@ -157,3 +259,5 @@ fun! BreakLine()
 endfun
 
 inoremap <expr> <CR> BreakLine() ? "<CR><ESC>O" : "<CR>"
+
+" }}}
