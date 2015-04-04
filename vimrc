@@ -82,7 +82,8 @@ Plug 'airblade/vim-gitgutter'
 
 " Syntax highlighting {{{
 Plug 'scrooloose/syntastic'
-  let g:syntastic_check_on_open=1
+  let g:syntastic_check_on_open = 1
+  let g:syntastic_javascript_checkers = ['eslint']
 " }}}
 
 " Auto-completion {{{
@@ -198,6 +199,8 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " Folding
 set foldenable                          " enable folding
+set foldlevelstart=1
+set foldnestmax=10
 set foldmethod=indent                   " fold based on indent
 nnoremap <space> za                     " space opens fold
 
