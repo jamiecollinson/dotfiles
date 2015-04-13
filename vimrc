@@ -224,6 +224,9 @@ set splitright
 " Easier escaping
 :imap jk <Esc>
 
+" Easier saving
+nnoremap w :w<cr>
+
 set wildmenu                        " visual autocomplete for command menu
 set wildignore+=*/node_modules/*    " Ignore certain dirs
 
