@@ -69,6 +69,10 @@ Plug 'ap/vim-css-color'
 
 " }}}
 
+" Markdown {{{
+Plug 'tpope/vim-markdown'
+" }}}
+
 " }}}
 
 " #Git integration {{{
