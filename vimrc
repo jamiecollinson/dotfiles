@@ -162,7 +162,12 @@ call plug#end()
 " #Essentials {{{
 
 " Set colorscheme
+set term=xterm
 set t_Co=256
+if s:is_windows " trick to support 256 colors in conemu for Windows
+	let &t_AF="\e[38;5;%dm"
+	let &t_AB="\e[48;5;%dm"
+endif
 set background=dark
 colorscheme molokai
 
