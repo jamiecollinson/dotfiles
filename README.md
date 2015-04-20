@@ -3,16 +3,17 @@ Installation instructions
 
 ```
 git clone https://github.com/jamiecollinson/dotfiles.git
-ln -s dotfiles/vimrc ~/.vimrc
-curl https://raw.githubusercontent.com/Shougo/neobundle.vim/master/bin/install.sh | sh
+```
+
+On linux symlink by running:
+```
+ln -s ~/dotfiles/vimrc ~/.vimrc
+ln -s ~/dotfiles/eshintrc ~/.eshintrc
+ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
 ```
 
 On windows your `_vimrc` should just contain:
 ```
-source $HOME\dotfiles\vimrc
-```
-
-On linux symlink instead by running:
-```
-ln -s ~/dotfiles/vimrc ~/.vimrc
+mklink %HOMEPATH%\.vimrc %HOMEPATH%\dotfiles\vimrc
+mklink %HOMEPATH%\.eshintrc %HOMEPATH%\dotfiles\eshintrc
 ```

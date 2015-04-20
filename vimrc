@@ -54,7 +54,6 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
   let g:jsx_ext_required=0
-Plug 'wookiehangover/jshint.vim'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
@@ -101,19 +100,8 @@ Plug 'scrooloose/syntastic'
 " }}}
 
 " Auto-completion {{{
-" Plug 'Shougo/neocomplete.vim'
-"   " Disable AutoComplPop.
-"   let g:acp_enableAtStartup = 0
-"   " Use neocomplete.
-"   let g:neocomplete#enable_at_startup = 1
-"   " Use smartcase.
-"   let g:neocomplete#enable_smart_case = 1
-"   " Set minimum syntax keyword length.
-"   let g:neocomplete#sources#syntax#min_keyword_length = 3
-"   let g:neocomplete#min_keyword_length = 3
-"   " Turn off scratch preview
-"   set completeopt-=preview
-Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+" Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+Plug 'ajh17/VimCompletesMe'
 " }}}
 
 " Seamless navigation between tmux and vim {{{
@@ -218,7 +206,7 @@ nnoremap <leader><space> :nohlsearch<CR>
 
 " Folding
 set foldenable                          " enable folding
-set foldlevelstart=1
+set foldlevelstart=10
 set foldnestmax=10
 set foldmethod=indent                   " fold based on indent
 nnoremap <space> za                     " space opens fold
