@@ -1,6 +1,8 @@
 Installation instructions
 ========
 
+Make sure node is installed (remember to use https://github.com/creationix/nvm on Ubuntu to prevent needing sudo to install globally)
+
 ```
 git clone https://github.com/jamiecollinson/dotfiles.git
 ```
@@ -16,4 +18,10 @@ On windows your `_vimrc` should just contain:
 ```
 mklink %HOMEPATH%\.vimrc %HOMEPATH%\dotfiles\vimrc
 mklink %HOMEPATH%\.eshintrc %HOMEPATH%\dotfiles\eshintrc
+```
+
+(Optional - for working on JS - maybe should be a post install task in vimrc?)
+Install eshint and plugins:
+```
+npm install -g eslint babel-eslint eslint-plugin-react
 ```
