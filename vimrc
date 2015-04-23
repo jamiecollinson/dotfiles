@@ -118,6 +118,7 @@ Plug 'Lokaltog/vim-easymotion'
 
 " File browser {{{
 Plug 'scrooloose/nerdtree'
+Plug 'kien/ctrlp.vim'
 " }}}
 
 " Toggle comments with gc {{{
@@ -152,6 +153,9 @@ call plug#end()
 " }}}
 
 " #Essentials {{{
+
+" Set leader
+let mapleader = " "
 
 " Set colorscheme
 set term=xterm
