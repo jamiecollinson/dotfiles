@@ -104,8 +104,11 @@ Plug 'scrooloose/syntastic'
 " }}}
 
 " Auto-completion {{{
-" Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
-Plug 'ajh17/VimCompletesMe'
+if s:is_windows
+  Plug 'ajh17/VimCompletesMe'
+else
+  Plug 'Valloric/YouCompleteMe', { 'do': './install.sh' }
+endif
 " }}}
 
 " Seamless navigation between tmux and vim {{{
