@@ -121,6 +121,7 @@ Plug 'Lokaltog/vim-easymotion'
 
 " File browser {{{
 Plug 'scrooloose/nerdtree'
+  let g:NERDTreeDirArrows=0
 Plug 'kien/ctrlp.vim'
 " }}}
 
