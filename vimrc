@@ -54,9 +54,10 @@ Plug 'jelera/vim-javascript-syntax'
 Plug 'pangloss/vim-javascript'
 Plug 'mxw/vim-jsx'
   let g:jsx_ext_required=0
+Plug 'slava/vim-spacebars'
 Plug 'nathanaelkane/vim-indent-guides'
 Plug 'Raimondi/delimitMate'
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install' }
+Plug 'marijnh/tern_for_vim', { 'do': 'npm install && curl https://raw.githubusercontent.com/Slava/tern-meteor/master/meteor.js > node_modules/tern/plugin/meteor.js' }
   let g:tern_map_keys=1
   let g:tern_show_argument_hints='on_hold'
 " }}}
@@ -160,7 +161,7 @@ call plug#end()
 " #Essentials {{{
 
 " Set leader
-let mapleader = " "
+let mapleader = "\\"
 
 " Set colorscheme
 set term=xterm
