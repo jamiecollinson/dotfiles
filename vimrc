@@ -12,9 +12,7 @@ if !filereadable(expand("~/.vim/autoload/plug.vim"))
     autocmd VimEnter * PlugInstall
 endif
 
-if s:is_windows
-  set rtp+=~/.vim
-endif
+set rtp+=~/.vim
 
 call plug#begin('~/.vim/plugged')
 
@@ -164,7 +162,7 @@ call plug#end()
 let mapleader = "\\"
 
 " Set colorscheme
-set term=xterm
+let $TERM = "xterm-256color"
 set t_Co=256
 if s:is_windows " trick to support 256 colors in conemu for Windows
 	let &t_AF="\e[38;5;%dm"
