@@ -1,5 +1,4 @@
-Installation instructions
-========
+# Installation instructions
 
 Install chroot with
 
@@ -14,6 +13,8 @@ sudo apt-get install git
 git clone https://github.com/jamiecollinson/dotfiles.git ~/dotfiles
 sudo sh ~/dotfiles/bootstrap.sh
 ```
+
+## To be moved into bootstrap.sh
 
 Make sure node is installed (remember to use https://github.com/creationix/nvm on Ubuntu to prevent needing sudo to install globally)
 
