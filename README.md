@@ -1,11 +1,21 @@
 Installation instructions
 ========
 
-Make sure node is installed (remember to use https://github.com/creationix/nvm on Ubuntu to prevent needing sudo to install globally)
+Install chroot with
 
 ```
-git clone https://github.com/jamiecollinson/dotfiles.git
+sudo sh ~/Downloads/crouton -t xiwi -r trusty
 ```
+
+Then enter chroot and
+
+```
+sudo apt-get install git
+git clone https://github.com/jamiecollinson/dotfiles.git ~/dotfiles
+sudo sh ~/dotfiles/bootstrap.sh
+```
+
+Make sure node is installed (remember to use https://github.com/creationix/nvm on Ubuntu to prevent needing sudo to install globally)
 
 On linux symlink by running:
 ```
