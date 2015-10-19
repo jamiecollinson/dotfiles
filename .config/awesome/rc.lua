@@ -78,12 +78,7 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({
-    	'home',
-	'work',
-	'play',
-	'\u{9679}'
-	}, s, layouts[1])
+    tags[s] = awful.tag({ 1, 2, 3, 4, 5 }, s, layouts[1])
 end
 -- }}}
 
@@ -185,9 +180,9 @@ for s = 1, screen.count() do
 
     -- Widgets that are aligned to the left
     local left_layout = wibox.layout.fixed.horizontal()
-    --left_layout:add(mylauncher)
-    left_layout:add(mylayoutbox[s])
+    left_layout:add(mylauncher)
     left_layout:add(mytaglist[s])
+    left_layout:add(mylayoutbox[s])
     left_layout:add(mypromptbox[s])
 
     -- Widgets that are aligned to the right
