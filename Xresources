@@ -1,6 +1,14 @@
 
+#ifndef SYSTEM_DPI
+  #ifdef SRVR_jamie-work
+    #define SYSTEM_DPI 96
+  #else
+    #define SYSTEM_DPI 96
+  #endif
+#endif
+
 #include ".config/colors/base16-tomorrow.dark.xresources"
-Xft.dpi: 150
+Xft.dpi: SYSTEM_DPI
 XTerm*termName:  xterm-256color
 XTerm*faceName: Droid Sans Mono
 XTerm*faceSize: 10
