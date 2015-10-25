@@ -21,9 +21,16 @@ Make sure node is installed (remember to use https://github.com/creationix/nvm o
 On linux symlink by running:
 ```
 ln -s ~/dotfiles/vimrc ~/.vimrc
+ln -s ~/dotfiles/nvimrc ~/.nvimrc
 ln -s ~/dotfiles/eshintrc ~/.eshintrc
 ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/tern-config ~/.tern-config
+ln -s ~/dotfiles/Xresources ~/.Xresources
+ln -s ~/dotfiles/xinitrc ~/.config/.xinitrc
+
+ln -s ~/dotfiles/bspwm ~/.config/bspwm
+ln -s ~/dotfiles/sxhkd ~/.config/sxhkd
+ln -s ~/dotfiles/colors ~/.config/colors
 ```
 
 On windows link with:
