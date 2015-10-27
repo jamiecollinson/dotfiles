@@ -20,6 +20,8 @@ Plug 'slava/vim-spacebars'
 Plug 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
 let g:syntastic_javascript_checkers=['eslint']
+" Fuzzy finder
+Plug 'kien/ctrlp.vim'
 call plug#end()
 
 let $TERM = "xterm-256color"
