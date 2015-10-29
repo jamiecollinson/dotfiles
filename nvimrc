@@ -59,3 +59,17 @@ set tabstop=2
 set shiftwidth=2
 set expandtab
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
+
+" Easier split navigation
+nnoremap <C-J> <C-W><C-J>
+nnoremap <C-K> <C-W><C-K>
+nnoremap <C-H> <C-W><C-H>
+nnoremap <C-L> <C-W><C-L>
+set splitright
+set splitbelow
+
+" Easier escaping
+:imap jk <Esc>
+
+" Easier saving
+nnoremap w :w<cr>
