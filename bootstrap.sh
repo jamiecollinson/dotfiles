@@ -2,7 +2,7 @@
 
 # install essentials
 apt-get install software-properties-common bash-completion curl tmux dmenu \
-  build-essential cmake
+  build-essential cmake unclutter
 
 # install external ppas
 add-apt-repository ppa:webupd8team/atom
