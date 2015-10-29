@@ -1,3 +1,11 @@
+" Install vim-plug if not installed
+if !filereadable(expand("~/.nvim/autoload/plug.vim"))
+    echo "Installing vim-plug and plugins. Restart vim after finishing the process."
+    silent call mkdir(expand("~/.nvim/autoload", 1), 'p')
+    execute "!curl -fLo ".expand("~/.nvim/autoload/plug.vim", 1)." https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    autocmd VimEnter * PlugInstall
+endif
+
 call plug#begin()
 " Sensible defaults
 Plug 'tpope/vim-sensible'
