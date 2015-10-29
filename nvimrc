@@ -53,3 +53,9 @@ set t_Co=256
 set background=dark
 syntax enable
 colorscheme gruvbox
+
+" Set tabs
+set tabstop=2
+set shiftwidth=2
+set expandtab
+autocmd Filetype python setlocal ts=4 sw=4 expandtab
