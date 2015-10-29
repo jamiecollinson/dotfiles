@@ -22,6 +22,7 @@ Plug 'bling/vim-airline'
 Plug 'marijnh/tern_for_vim', { 'do': 'npm install && wget https://raw.githubusercontent.com/Slava/tern-meteor/master/meteor.js -O node_modules/tern/plugin/meteor.js' }
 let g:tern_map_keys=1
 let g:tern_show_argument_hints="on_hold"
+Plug 'pangloss/vim-javascript'
 Plug 'slava/vim-spacebars'
 " Syntax checking
 Plug 'scrooloose/syntastic'
