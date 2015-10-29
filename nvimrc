@@ -1,8 +1,8 @@
 " Install vim-plug if not installed
-if !filereadable(expand("~/.nvim/autoload/plug.vim"))
+if !filereadable(expand("~/.config/nvim/autoload/plug.vim"))
     echo "Installing vim-plug and plugins. Restart vim after finishing the process."
-    silent call mkdir(expand("~/.nvim/autoload", 1), 'p')
-    execute "!curl -fLo ".expand("~/.nvim/autoload/plug.vim", 1)." https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
+    silent call mkdir(expand("~/.config/nvim/autoload", 1), 'p')
+    execute "!curl -fLo ".expand("~/.config/nvim/autoload/plug.vim", 1)." https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim"
     autocmd VimEnter * PlugInstall
 endif
 
