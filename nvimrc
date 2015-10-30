@@ -46,6 +46,8 @@ let g:ycm_autoclose_preview_window_after_completion=1
 Plug 'mhinz/vim-startify'
 " Buffer explorer
 Plug 'fholgado/minibufexpl.vim'
+" Easymotion
+Plug 'easymotion/vim-easymotion'
 call plug#end()
 
 let $TERM = "xterm-256color"
@@ -60,6 +62,8 @@ set shiftwidth=2
 set expandtab
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
 
+let mapleader = "\<Space>"
+
 " Easier split navigation
 nnoremap <C-J> <C-W><C-J>
 nnoremap <C-K> <C-W><C-K>
@@ -70,6 +74,3 @@ set splitbelow
 
 " Easier escaping
 :imap jk <Esc>
-
-" Easier saving
-nnoremap w :w<cr>
