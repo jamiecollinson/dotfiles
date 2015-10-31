@@ -85,3 +85,13 @@ set splitbelow
 
 " Easier escaping
 :imap jk <Esc>
+
+" Disable arrow keys
+nnoremap <Left>   :echoerr "Use h"<CR>
+nnoremap <Right>  :echoerr "Use l"<CR>
+nnoremap <Up>     :echoerr "Use k"<CR>
+nnoremap <Down>   :echoerr "Use j"<CR>
+inoremap <Left>   <nop>
+inoremap <Right>  <nop>
+inoremap <Up>     <nop>
+inoremap <Down>   <nop>
