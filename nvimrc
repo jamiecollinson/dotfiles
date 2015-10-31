@@ -62,7 +62,18 @@ set shiftwidth=2
 set expandtab
 autocmd Filetype python setlocal ts=4 sw=4 expandtab
 
-let mapleader = "\<Space>"
+let mapleader="\<Space>"
+
+set nobackup
+set noswapfile
+set nowritebackup
+ 
+set history=1000
+set undolevels=1000
+set wildignore=*.swp,*.bak,*.pyc
+set title
+set visualbell
+set noerrorbells
 
 " Easier split navigation
 nnoremap <C-J> <C-W><C-J>
