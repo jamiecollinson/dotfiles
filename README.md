@@ -21,7 +21,8 @@ Make sure node is installed (remember to use https://github.com/creationix/nvm o
 On linux symlink by running:
 ```
 ln -s ~/dotfiles/vimrc ~/.vimrc
-ln -s ~/dotfiles/nvimrc ~/.nvimrc
+mkdir -p ~/.config/nvim
+ln -s ~/dotfiles/nvimrc ~/.config/nvim/init.vim
 ln -s ~/dotfiles/eshintrc ~/.eshintrc
 ln -s ~/dotfiles/tmux.conf ~/.tmux.conf
 ln -s ~/dotfiles/tern-config ~/.tern-config
