@@ -1,15 +1,15 @@
 #!/bin/bash
 
 # install essentials
-apt-get install software-properties-common bash-completion curl tmux dmenu \
+apt-get install -y software-properties-common bash-completion curl tmux dmenu \
   build-essential cmake unclutter
 
 # install external ppas
-add-apt-repository ppa:webupd8team/atom
-add-apt-repository ppa:neovim-ppa/unstable
+add-apt-repository -y ppa:webupd8team/atom
+add-apt-repository -y ppa:neovim-ppa/unstable
 apt-get update
-apt-get install atom neovim
+apt-get install -y atom neovim
 
 # install python support for neovim
-apt-get install python-dev python-pip
+apt-get install -y python-dev python-pip
 pip install neovim
