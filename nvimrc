@@ -24,6 +24,9 @@ let g:tern_map_keys=1
 let g:tern_show_argument_hints="on_hold"
 Plug 'pangloss/vim-javascript'
 Plug 'slava/vim-spacebars'
+" Python
+Plug 'klen/python-mode'
+let g:pymode_rope_completion=0
 " Syntax checking
 Plug 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
@@ -74,6 +77,7 @@ set wildignore=*.swp,*.bak,*.pyc
 set title
 set visualbell
 set noerrorbells
+set foldlevelstart=20
 
 " Easier split navigation
 nnoremap <C-J> <C-W><C-J>
