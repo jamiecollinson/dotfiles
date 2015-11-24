@@ -36,6 +36,7 @@ Plug 'kien/ctrlp.vim'
 " Tree explorer
 Plug 'scrooloose/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
+let NERDTreeIgnore = ['\.pyc$']
 " Close NERDTree if only window remaining
 autocmd bufenter *  if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 " Git wrapper
