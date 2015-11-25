@@ -12,3 +12,4 @@ Xft.dpi: SYSTEM_DPI
 XTerm*termName:  xterm-256color
 XTerm*faceName: Droid Sans Mono
 XTerm*faceSize: 10
+XTerm*selectToClipboard: true
