@@ -1,4 +1,4 @@
-" Install vim-plug if not installed
+" Install vim-plug if not installedg "
 if !filereadable(expand("~/.config/nvim/autoload/plug.vim"))
     echo "Installing vim-plug and plugins. Restart vim after finishing the process."
     silent call mkdir(expand("~/.config/nvim/autoload", 1), 'p')
@@ -33,6 +33,9 @@ let g:syntastic_check_on_open=1
 let g:syntastic_javascript_checkers=['eslint']
 " Fuzzy finder
 Plug 'kien/ctrlp.vim'
+let g:ctrlp_match_window='bottom,order:ttb'
+let g:ctrlp_switch_buffer=0
+let g:crtlp_working_path_mode=0
 " Tree explorer
 Plug 'scrooloose/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
@@ -52,6 +55,7 @@ Plug 'mhinz/vim-startify'
 Plug 'easymotion/vim-easymotion'
 " Silver searcher
 Plug 'rking/ag.vim'
+let g:ag_working_path_mode="r"
 call plug#end()
 
 let $TERM = "xterm-256color"
@@ -87,6 +91,9 @@ nnoremap <C-H> <C-W><C-H>
 nnoremap <C-L> <C-W><C-L>
 set splitright
 set splitbelow
+
+" Launch silver searcher
+nnoremap <leader>a :Ag 
 
 " Easier escaping
 :imap jk <Esc>
