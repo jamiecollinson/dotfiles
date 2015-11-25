@@ -48,8 +48,6 @@ Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
 let g:ycm_autoclose_preview_window_after_completion=1
 " Start page
 Plug 'mhinz/vim-startify'
-" Buffer explorer
-Plug 'fholgado/minibufexpl.vim'
 " Easymotion
 Plug 'easymotion/vim-easymotion'
 call plug#end()
