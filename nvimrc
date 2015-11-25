@@ -50,6 +50,8 @@ let g:ycm_autoclose_preview_window_after_completion=1
 Plug 'mhinz/vim-startify'
 " Easymotion
 Plug 'easymotion/vim-easymotion'
+" Silver searcher
+Plug 'rking/ag.vim'
 call plug#end()
 
 let $TERM = "xterm-256color"

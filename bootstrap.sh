@@ -2,7 +2,7 @@
 
 # install essentials
 apt-get install -y software-properties-common bash-completion curl tmux dmenu \
-  build-essential cmake unclutter
+  build-essential cmake unclutter silversearcher-ag
 
 # install external ppas
 add-apt-repository -y ppa:webupd8team/atom
