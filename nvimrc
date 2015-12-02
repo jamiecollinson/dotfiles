@@ -31,6 +31,8 @@ let g:pymode_rope_completion=0
 Plug 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
 let g:syntastic_javascript_checkers=['eslint']
+" Easy commenting
+Plug 'scrooloose/nerdcommenter'
 " Fuzzy finder
 Plug 'kien/ctrlp.vim'
 let g:ctrlp_match_window='bottom,order:ttb'
