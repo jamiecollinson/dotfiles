@@ -85,6 +85,7 @@ set title
 set visualbell
 set noerrorbells
 set foldlevelstart=20
+set number
 
 " Easier split navigation
 nnoremap <C-J> <C-W><C-J>
