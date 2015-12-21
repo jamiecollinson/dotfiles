@@ -27,6 +27,10 @@ Plug 'slava/vim-spacebars'
 " Python
 Plug 'klen/python-mode'
 let g:pymode_rope_completion=0
+" Clojure
+Plug 'guns/vim-clojure-static'
+Plug 'kien/rainbow_parentheses.vim'
+Plug 'tpope/vim-fireplace'
 " Syntax checking
 Plug 'scrooloose/syntastic'
 let g:syntastic_check_on_open=1
