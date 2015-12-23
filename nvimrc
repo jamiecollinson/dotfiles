@@ -62,6 +62,8 @@ Plug 'easymotion/vim-easymotion'
 " Silver searcher
 Plug 'rking/ag.vim'
 let g:ag_working_path_mode="r"
+" Make tmux and vim play nice
+Plug 'christoomey/vim-tmux-navigator'
 call plug#end()
 
 let $TERM = "xterm-256color"
