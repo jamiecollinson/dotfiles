@@ -16,9 +16,6 @@ Plug 'tomasr/molokai'
 " Status bar
 Plug 'bling/vim-airline'
 " Javascript
-Plug 'marijnh/tern_for_vim', { 'do': 'npm install && wget https://raw.githubusercontent.com/Slava/tern-meteor/master/meteor.js -O node_modules/tern/plugin/meteor.js' }
-let g:tern_map_keys=1
-let g:tern_show_argument_hints="on_hold"
 Plug 'pangloss/vim-javascript'
 Plug 'slava/vim-spacebars'
 " Python
@@ -28,10 +25,6 @@ let g:pymode_rope_completion=0
 Plug 'guns/vim-clojure-static'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'tpope/vim-fireplace'
-" Syntax checking
-"Plug 'scrooloose/syntastic'
-"let g:syntastic_check_on_open=1
-"let g:syntastic_javascript_checkers=['eslint']
 " Async Syntax checking
 Plug 'benekastah/neomake'
 autocmd! BufWritePost,BufEnter * Neomake
@@ -46,15 +39,13 @@ let g:crtlp_working_path_mode=0
 Plug 'scrooloose/nerdtree'
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeIgnore = ['\.pyc$']
-" Close NERDTree if only window remaining
-autocmd bufenter *  if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | endif
 " Git wrapper
 Plug 'tpope/vim-fugitive'
 " Quoting / parens made easy
 Plug 'tpope/vim-surround'
 " Code completion engine
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py' }
-let g:ycm_autoclose_preview_window_after_completion=1
+Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer && wget https://raw.githubusercontent.com/Slava/tern-meteor/master/meteor.js -O third_party/ycmd/third_party/tern_runtime/node_modules/tern/plugin/meteor.js' }
+let g:ycm_autoclose_preview_window_after_completion = 1
 " Start page
 Plug 'mhinz/vim-startify'
 " Easymotion
@@ -88,7 +79,7 @@ set nowritebackup
  
 set history=1000
 set undolevels=1000
-set wildignore=*.swp,*.bak,*.pyc
+set wildignore=*.swp,*.bak,*.pyc,*/node_modules,*/.meteor
 set title
 set visualbell
 set noerrorbells
