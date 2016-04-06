@@ -245,6 +245,8 @@ executes.
  This function is mostly useful for variables that need to be set
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
+  (setq-default git-magit-status-fullscreen t)
+  (setq-default git-enable-magit-svn-plugin t)
   )
 
 (defun dotspacemacs/user-config ()
@@ -258,6 +260,7 @@ you should place you code here."
   (setq-default js2-basic-offset 2)
   (setq-default dotspacemacs-line-numbers 'relative)
   (global-linum-mode)
+  (global-git-commit-mode t)
   )
 
 ;; Do not write anything past this comment. This is where Emacs will
