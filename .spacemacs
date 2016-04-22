@@ -25,6 +25,7 @@ values."
      emacs-lisp
      git
      github
+     go
      html
      javascript
      python
