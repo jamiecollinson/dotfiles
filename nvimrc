@@ -10,7 +10,6 @@ call plug#begin()
 " Sensible defaults
 Plug 'tpope/vim-sensible'
 " Color schemes
-Plug 'chriskempson/vim-tomorrow-theme'
 Plug 'morhetz/gruvbox'
 Plug 'tomasr/molokai'
 " Status bar
@@ -44,8 +43,13 @@ Plug 'tpope/vim-fugitive'
 " Quoting / parens made easy
 Plug 'tpope/vim-surround'
 " Code completion engine
-Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer && wget https://raw.githubusercontent.com/Slava/tern-meteor/master/meteor.js -O third_party/ycmd/third_party/tern_runtime/node_modules/tern/plugin/meteor.js' }
-let g:ycm_autoclose_preview_window_after_completion = 1
+"Plug 'Valloric/YouCompleteMe', { 'do': './install.py --tern-completer && wget https://raw.githubusercontent.com/Slava/tern-meteor/master/meteor.js -O third_party/ycmd/third_party/tern_runtime/node_modules/tern/plugin/meteor.js' }
+"let g:ycm_autoclose_preview_window_after_completion = 1
+function! DoRemote(arg)
+  UpdateRemotePlugins
+endfunction
+Plug 'Shougo/deoplete.nvim', { 'do': function('DoRemote') }
+let g:deoplete#enable_at_startup = 1
 " Start page
 Plug 'mhinz/vim-startify'
 " Easymotion
