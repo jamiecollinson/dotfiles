@@ -6,7 +6,7 @@ super + alt + Escape
 	bspc quit
 
 super + w
-	bspc window -c
+	bspc node -c
 
 super + t
 	bspc desktop -l next
@@ -15,7 +15,7 @@ super + b
 	bspc desktop -B
 
 super + {s,f}
-	bspc window -t {floating,fullscreen}
+	bspc node -t {floating,fullscreen}
 
 super + {grave,Tab}
 	bspc {window,desktop} -f last
@@ -84,7 +84,7 @@ super + space
 	dmenu_run
 
 ctrl + alt + l
-  i3lock
+	~/dotfiles/scripts/lock.sh
 
 # make sxhkd reload its configuration files:
 super + Escape
