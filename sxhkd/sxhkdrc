@@ -86,6 +86,9 @@ super + space
 ctrl + alt + l
 	~/dotfiles/scripts/lock.sh
 
+XF86MonBrightness{Up,Down}
+    xbacklight {+,-}5
+
 # make sxhkd reload its configuration files:
 super + Escape
 	pkill -USR1 -x sxhkd
