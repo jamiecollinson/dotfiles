@@ -24,6 +24,9 @@ let g:pymode_rope_completion=0
 Plug 'guns/vim-clojure-static'
 Plug 'kien/rainbow_parentheses.vim'
 Plug 'tpope/vim-fireplace'
+" Golang
+Plug 'fatih/vim-go'
+Plug 'zchee/deoplete-go', { 'do': 'make' }
 " Async Syntax checking
 Plug 'benekastah/neomake'
 autocmd! BufWritePost,BufEnter * Neomake
