@@ -1,4 +1,4 @@
-#include "dotfiles/colors/base16-tomorrow.dark.xresources"
+#include "dotfiles/colors/base16/base16-monokai.dark.256.xresources"
 Xft.dpi: 96
 XTerm*termName:  xterm-256color
 XTerm*faceName: Source Code Pro

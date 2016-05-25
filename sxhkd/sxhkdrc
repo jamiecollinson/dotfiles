@@ -87,7 +87,16 @@ ctrl + alt + l
 	~/dotfiles/scripts/lock.sh
 
 XF86MonBrightness{Up,Down}
-    xbacklight {+,-}5
+    xbacklight {+,-} 10
+
+XF86AudioRaiseVolume
+	amixer set Master 5%+
+
+XF86AudioLowerVolume
+	amixer set Master 5%-
+
+XF86AudioMute
+	amixer set Master toggle
 
 # make sxhkd reload its configuration files:
 super + Escape
