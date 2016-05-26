@@ -259,6 +259,7 @@ you should place you code here."
   ;; Set JS indent to 2 spaces
   (setq-default js2-basic-offset 2)
   (setq-default dotspacemacs-line-numbers 'relative)
+  (setq projectile-enable-caching t)
   (global-linum-mode)
   )
 
