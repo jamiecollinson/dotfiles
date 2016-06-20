@@ -249,6 +249,8 @@ executes.
 before packages are loaded. If you are unsure, you should try in setting them in
 `dotspacemacs/user-config' first."
   (setq-default git-magit-status-fullscreen t)
+  (setenv "GOPATH" "/home/jamie/work/go")
+  (setenv "PATH" "$PATH:$GOPATH/bin")
   )
 
 (defun dotspacemacs/user-config ()
