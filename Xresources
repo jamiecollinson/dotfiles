@@ -4,3 +4,4 @@ XTerm*termName: xterm-256color
 XTerm*faceName: Source Code Pro
 XTerm*faceSize: 10
 XTerm*selectToClipboard: true
+XTerm*locale: true

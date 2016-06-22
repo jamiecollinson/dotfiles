@@ -1,4 +1,3 @@
-export TERM=xterm
 export ALSA_CARD=PCH
 setxkbmap gb
 xrdb ~/.Xresources

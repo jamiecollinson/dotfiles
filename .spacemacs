@@ -33,6 +33,7 @@ values."
      python
      shell
      syntax-checking
+     sql
      themes-megapack
      (version-control :variables
                       version-control-diff-tool 'git-gutter)
