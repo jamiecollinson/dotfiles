@@ -3,7 +3,7 @@
 #
 
 super + Return
-	$TERM
+  xterm
 
 super + space
 	dmenu_run
