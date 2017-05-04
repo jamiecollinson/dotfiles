@@ -92,6 +92,22 @@
 (use-package rjsx-mode
   :ensure t)
 
+(use-package prettier-js
+  :load-path "private"
+  :config
+  (setq prettier-target-mode "js2-mode")
+  (setq prettier-args '(
+			"--trailing-comma" "es5"
+			"--single-quote" "true"
+			"--print-width" "150"
+			))
+  (add-hook 'js2-mode-hook
+	    (lambda ()
+	      (add-hook 'before-save-hook 'prettier-before-save)))
+  (add-hook 'rjsx-mode-hook
+	    (lambda ()
+	      (add-hook 'before-save-hook 'prettier nil 'make-it-local))))
+
 (use-package smooth-scrolling
   :ensure t
   :config
