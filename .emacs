@@ -47,7 +47,7 @@
 (use-package smartparens
   :ensure t
   :config
-  (add-hook 'prog-mode-hook 'smartparens-strict-mode))
+  (add-hook 'prog-mode-hook 'smartparens-mode))
 
 (use-package flycheck
   :ensure t
@@ -63,6 +63,9 @@
   :ensure t
   :config
   (add-to-list 'company-backends 'company-go))
+
+(use-package helm-dash
+  :ensure t)
 
 (use-package rainbow-delimiters
   :ensure t
@@ -133,6 +136,20 @@
   :config
   (global-aggressive-indent-mode 1))
 
+(use-package beacon
+  :ensure t
+  :config
+  (beacon-mode 1))
+
+(use-package ace-window
+  :ensure t
+  :bind ("C-'" . ace-window)
+  :config
+  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+
+(use-package nyan-mode
+  :ensure t)
+
 (use-package zenburn-theme
   :ensure t)
 
@@ -157,10 +174,7 @@
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
  '(js-indent-level 2)
- '(package-selected-packages
-   (quote
-    (smartparens avy helm-swoop zenburn-theme which-key use-package tao-theme smooth-scrolling smooth-scroll rjsx-mode rainbow-identifiers rainbow-delimiters neotree monokai-theme markdown-mode jsx-mode helm-projectile gruvbox-theme flycheck-pos-tip exec-path-from-shell dracula-theme cyberpunk-theme company-go color-theme-sanityinc-tomorrow ample-theme all-the-icons aggressive-indent))))
-
+ 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
