@@ -49,10 +49,23 @@
   :config
   (add-hook 'prog-mode-hook 'smartparens-mode))
 
+
+(defun my/use-eslint-from-node-modules ()
+  "Set local eslint if available."
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
 (use-package flycheck
   :ensure t
   :config
-  (add-hook 'after-init-hook 'global-flycheck-mode))
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
 
 (use-package company
   :ensure t
@@ -111,6 +124,12 @@
 	    (lambda ()
 	      (add-hook 'before-save-hook 'prettier nil 'make-it-local))))
 
+(use-package haskell-mode
+  :ensure t)
+
+(use-package asana
+  :load-path "private")
+
 (use-package smooth-scrolling
   :ensure t
   :config
@@ -132,9 +151,7 @@
   (add-hook 'after-init-hook 'which-key-mode))
 
 (use-package aggressive-indent
-  :ensure t
-  :config
-  (global-aggressive-indent-mode 1))
+  :ensure t)
 
 (use-package beacon
   :ensure t
@@ -173,8 +190,15 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(js-indent-level 2))
- 
+ '(asana-selected-workspace
+   (quote
+    ((id . 20585633191816)
+     (name . "cambridge-software.com"))) t)
+ '(js-indent-level 2)
+ '(package-selected-packages
+   (quote
+    (intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
