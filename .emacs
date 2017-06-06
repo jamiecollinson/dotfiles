@@ -53,6 +53,8 @@
   :config
   (add-hook 'prog-mode-hook 'smartparens-mode))
 
+(use-package evil
+  :ensure t)
 
 (defun my/use-eslint-from-node-modules ()
   "Set local eslint if available."
@@ -193,7 +195,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
