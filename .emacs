@@ -113,20 +113,15 @@
   :ensure t)
 
 (use-package prettier-js
-  :load-path "private"
+  :ensure t
   :config
-  (setq prettier-target-mode "js2-mode")
   (setq prettier-args '(
 			"--trailing-comma" "es5"
 			"--single-quote" "true"
 			"--print-width" "150"
 			))
-  (add-hook 'js2-mode-hook
-	    (lambda ()
-	      (add-hook 'before-save-hook 'prettier-before-save)))
-  (add-hook 'rjsx-mode-hook
-	    (lambda ()
-	      (add-hook 'before-save-hook 'prettier nil 'make-it-local))))
+  (add-hook 'js2-mode-hook 'prettier-js-mode)
+  (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 
 (use-package haskell-mode
   :ensure t)
