@@ -3,7 +3,7 @@
 (require 'package)
 (setq package-enable-at-startup nil) ;; prevents second package init
 (add-to-list 'package-archives
-             '("melpa" . "https://melpa.org/packages/"))
+             '("melpa" . "http://melpa.org/packages/"))
 (package-initialize)
 
 ;; Bootstrap `use-package'
@@ -39,6 +39,9 @@
   :ensure t
   :config
   (helm-projectile-on))
+
+(use-package magit
+  :ensure t)
 
 (use-package avy
   :ensure t
@@ -127,9 +130,6 @@
 (use-package haskell-mode
   :ensure t)
 
-(use-package asana
-  :load-path "private")
-
 (use-package smooth-scrolling
   :ensure t
   :config
@@ -197,7 +197,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
