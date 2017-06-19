@@ -54,8 +54,17 @@
   (add-hook 'prog-mode-hook 'smartparens-mode))
 
 (use-package evil
-  :ensure t)
+  :ensure t
+  :config
+  (evil-mode t)
 
+  (use-package evil-leader
+    :ensure t
+    :config
+    (global-evil-leader-mode)
+    (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-key "SPC" 'avy-goto-word-1)))
+ 
 (defun my/use-eslint-from-node-modules ()
   "Set local eslint if available."
   (let* ((root (locate-dominating-file
@@ -181,6 +190,14 @@
 (scroll-bar-mode -1)
 (setq ring-bell-function 'ignore) ;; Disable bell
 
+(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+  backup-by-copying t    ; Don't delink hardlinks
+  version-control t      ; Use version numbers on backups
+  delete-old-versions t  ; Automatically delete excess backups
+  kept-new-versions 20   ; how many of the newest versions to keep
+  kept-old-versions 5    ; and how many of the old
+  )
+
 ;; Emacs sets the below - leave it alone!
 
 (custom-set-variables
@@ -192,10 +209,13 @@
    (quote
     ((id . 20585633191816)
      (name . "cambridge-software.com"))) t)
+ '(custom-safe-themes
+   (quote
+    ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
