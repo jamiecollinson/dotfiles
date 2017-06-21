@@ -14,6 +14,11 @@
 
 ;; Config 3rd party packages
 
+(use-package use-package-chords
+  :ensure t
+  :config
+  (key-chord-mode 1))
+
 (use-package exec-path-from-shell
   :ensure t
   :config
@@ -28,17 +33,20 @@
   :ensure t
   :bind (("M-x" . helm-M-x)
 	 ("C-x b" . helm-buffers-list)
-	 ("C-x C-f" . helm-find-files)))
-
-(use-package helm-swoop
-  :ensure t
-  :bind (("M-i" . helm-swoop)
-	 ("M-I" . helm-swoop-back-to-last-point)))
-
-(use-package helm-projectile
-  :ensure t
+	 ("C-x C-f" . helm-find-files))
   :config
-  (helm-projectile-on))
+  (use-package helm-ag
+    :ensure t)
+
+  (use-package helm-swoop
+    :ensure t
+    :bind (("M-i" . helm-swoop)
+	   ("M-I" . helm-swoop-back-to-last-point)))
+
+  (use-package helm-projectile
+    :ensure t
+    :config
+    (helm-projectile-on)))
 
 (use-package magit
   :ensure t
@@ -46,6 +54,8 @@
 
 (use-package avy
   :ensure t
+  :chords (("jj" . avy-goto-word-1)
+	   ("jl" . avy-goto-line))
   :bind ("C-;" . avy-goto-word-1))
 
 (use-package smartparens
@@ -56,13 +66,13 @@
 (use-package evil
   :ensure t
   :config
-  (evil-mode t)
-
   (use-package evil-leader
     :ensure t
     :config
     (global-evil-leader-mode)
     (evil-leader/set-leader "<SPC>")
+    (evil-leader/set-key "s" 'save-buffer)
+    (evil-leader/set-key "b" 'helm-buffers-list)
     (evil-leader/set-key "SPC" 'avy-goto-word-1)))
  
 (defun my/use-eslint-from-node-modules ()
@@ -180,6 +190,11 @@
 (use-package dracula-theme
   :ensure t)
 
+(use-package dashboard
+  :ensure t
+  :config
+  (dashboard-setup-startup-hook))
+
 ;; Non-package config
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -215,7 +230,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
