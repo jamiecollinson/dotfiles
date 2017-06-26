@@ -63,17 +63,17 @@
   :config
   (add-hook 'prog-mode-hook 'smartparens-mode))
 
-(use-package evil
-  :ensure t
-  :config
-  (use-package evil-leader
-    :ensure t
-    :config
-    (global-evil-leader-mode)
-    (evil-leader/set-leader "<SPC>")
-    (evil-leader/set-key "s" 'save-buffer)
-    (evil-leader/set-key "b" 'helm-buffers-list)
-    (evil-leader/set-key "SPC" 'avy-goto-word-1)))
+;; (use-package evil
+;;   :ensure t
+;;   :config
+;;   (use-package evil-leader
+;;     :ensure t
+;;     :config
+;;     (global-evil-leader-mode)
+;;     (evil-leader/set-leader "<SPC>")
+;;     (evil-leader/set-key "s" 'save-buffer)
+;;     (evil-leader/set-key "b" 'helm-buffers-list)
+;;     (evil-leader/set-key "SPC" 'avy-goto-word-1)))
  
 (defun my/use-eslint-from-node-modules ()
   "Set local eslint if available."
@@ -95,12 +95,27 @@
 (use-package company
   :ensure t
   :config
-  (add-hook 'after-init-hook 'global-company-mode))
+  (add-hook 'after-init-hook 'global-company-mode)
 
-(use-package company-go
+  (use-package company-go
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-go))
+
+  (use-package company-anaconda
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-anaconda)))
+
+(use-package yasnippet
   :ensure t
   :config
-  (add-to-list 'company-backends 'company-go))
+  ;; https://github.com/AndreaCrotti/yasnippet-snippets
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
+  ;; custom
+  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+  (yas-global-mode)
+  (global-set-key (kbd "M-/") 'company-yasnippet))
 
 (use-package helm-dash
   :ensure t)
@@ -136,16 +151,24 @@
 (use-package prettier-js
   :ensure t
   :config
-  (setq prettier-args '(
+  (setq prettier-js-args '(
 			"--trailing-comma" "es5"
 			"--single-quote" "true"
-			"--print-width" "150"
+			"--print-width" "100"
 			))
   (add-hook 'js2-mode-hook 'prettier-js-mode)
   (add-hook 'rjsx-mode-hook 'prettier-js-mode))
 
 (use-package haskell-mode
   :ensure t)
+
+;; Python
+
+(use-package anaconda-mode
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 (use-package smooth-scrolling
   :ensure t
@@ -193,6 +216,10 @@
 (use-package dashboard
   :ensure t
   :config
+  (setq dashboard-items '((recents . 5)
+			  (bookmarks . 5)
+			  (projects . 5)
+			  (agenda . 5)))
   (dashboard-setup-startup-hook))
 
 ;; Non-package config
@@ -230,7 +257,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
