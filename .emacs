@@ -136,10 +136,25 @@
 	 ("\\.markdown\\'" . markdown-mode))
   :init (setq markdown-command "multimarkdown"))
 
+(defun go-guru-set-current-package-as-main ()
+  "GoGuru requires the scope to be set to a go package which
+   contains a main, this function will make the current package the
+   active go guru scope, assuming it contains a main"
+  (interactive)
+  (let* ((filename (buffer-file-name))
+         (gopath-src-path (concat (file-name-as-directory (go-guess-gopath)) "src"))
+         (relative-package-path (directory-file-name (file-name-directory (file-relative-name filename gopath-src-path)))))
+    (setq go-guru-scope relative-package-path)))
+
 (use-package go-mode
   :ensure t
   :config
   (add-hook 'before-save-hook 'gofmt-before-save)
+
+  (use-package go-eldoc
+    :ensure t
+    :config
+    (add-hook 'go-mode-hook 'go-eldoc-setup))
   
   (use-package godoctor
     :ensure t)
@@ -271,7 +286,7 @@ Repeated invocations toggle between the two most recently open buffers."
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
