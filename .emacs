@@ -139,7 +139,13 @@
 (use-package go-mode
   :ensure t
   :config
-  (add-hook 'before-save-hook 'gofmt-before-save))
+  (add-hook 'before-save-hook 'gofmt-before-save)
+  
+  (use-package godoctor
+    :ensure t)
+
+  (use-package go-guru
+    :ensure t))
 
 (use-package js2-mode
   :ensure t
@@ -240,6 +246,14 @@
   kept-old-versions 5    ; and how many of the old
   )
 
+(defun switch-to-previous-buffer ()
+  "Switch to previously open buffer.
+Repeated invocations toggle between the two most recently open buffers."
+  (interactive)
+  (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+(key-chord-define-global "JJ" 'switch-to-previous-buffer)
+
 ;; Emacs sets the below - leave it alone!
 
 (custom-set-variables
@@ -257,7 +271,7 @@
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
