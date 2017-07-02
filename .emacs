@@ -86,11 +86,24 @@
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
+;; pip install proselint to install CLI
+(flycheck-define-checker proselint
+    "A linter for prose."
+    :command ("proselint" source-inplace)
+    :error-patterns
+    ((warning line-start (file-name) ":" line ":" column ": "
+              (id (one-or-more (not (any " "))))
+              (message (one-or-more not-newline)
+                       (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+              line-end))
+    :modes (text-mode markdown-mode gfm-mode org-mode))
+
 (use-package flycheck
   :ensure t
   :config
   (add-hook 'after-init-hook 'global-flycheck-mode)
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules))
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+  (add-to-list 'flycheck-checkers 'proselint))
 
 (use-package company
   :ensure t
@@ -127,6 +140,10 @@
 
 (use-package rainbow-identifiers
   :ensure t)
+
+(use-package expand-region
+  :ensure t
+  :bind ("C-=" . er/expand-region))
 
 (use-package markdown-mode
   :ensure t
@@ -243,6 +260,12 @@
 			  (agenda . 5)))
   (dashboard-setup-startup-hook))
 
+(use-package writegood-mode
+  :ensure t
+  :bind ("C-c g" . writegood-mode)
+  :config
+  (add-to-list 'writegood-weasel-words "actionable"))
+
 ;; Non-package config
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -269,6 +292,8 @@ Repeated invocations toggle between the two most recently open buffers."
 
 (key-chord-define-global "JJ" 'switch-to-previous-buffer)
 
+(setq org-log-done 't)
+
 ;; Emacs sets the below - leave it alone!
 
 (custom-set-variables
@@ -283,10 +308,11 @@ Repeated invocations toggle between the two most recently open buffers."
  '(custom-safe-themes
    (quote
     ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
+ '(global-visual-line-mode t)
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
