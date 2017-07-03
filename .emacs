@@ -29,6 +29,9 @@
   :config
   (projectile-mode))
 
+(use-package notmuch
+  :ensure t)
+
 (use-package helm
   :ensure t
   :bind (("M-x" . helm-M-x)
@@ -46,7 +49,10 @@
   (use-package helm-projectile
     :ensure t
     :config
-    (helm-projectile-on)))
+    (helm-projectile-on))
+
+  (use-package helm-notmuch
+    :ensure t))
 
 (use-package magit
   :ensure t
@@ -86,8 +92,14 @@
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
 
-;; pip install proselint to install CLI
-(flycheck-define-checker proselint
+(use-package flycheck
+  :ensure t
+  :config
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+
+  ;; pip install proselint to install CLI
+  (flycheck-define-checker proselint
     "A linter for prose."
     :command ("proselint" source-inplace)
     :error-patterns
@@ -97,12 +109,7 @@
                        (zero-or-more "\n" (any " ") (one-or-more not-newline)))
               line-end))
     :modes (text-mode markdown-mode gfm-mode org-mode))
-
-(use-package flycheck
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-flycheck-mode)
-  (add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
+  
   (add-to-list 'flycheck-checkers 'proselint))
 
 (use-package company
@@ -251,6 +258,9 @@
 (use-package dracula-theme
   :ensure t)
 
+(use-package solarized-theme
+  :ensure t)
+
 (use-package dashboard
   :ensure t
   :config
@@ -307,12 +317,12 @@ Repeated invocations toggle between the two most recently open buffers."
      (name . "cambridge-software.com"))) t)
  '(custom-safe-themes
    (quote
-    ("ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
+    ("d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "ff7625ad8aa2615eae96d6b4469fcc7d3d20b2e1ebc63b761a349bebbb9d23cb" "67e998c3c23fe24ed0fb92b9de75011b92f35d3e89344157ae0d544d50a63a72" default)))
  '(global-visual-line-mode t)
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (solarized-theme helm-notmuch notmuch expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
