@@ -66,6 +66,7 @@
 
 (use-package smartparens
   :ensure t
+  :diminish smartparens-mode
   :config
   (add-hook 'prog-mode-hook 'smartparens-mode))
 
@@ -114,6 +115,7 @@
 
 (use-package company
   :ensure t
+  :diminish
   :config
   (add-hook 'after-init-hook 'global-company-mode)
 
@@ -129,6 +131,7 @@
 
 (use-package yasnippet
   :ensure t
+  :diminish yas-minor-mode
   :config
   ;; https://github.com/AndreaCrotti/yasnippet-snippets
   (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
@@ -216,9 +219,7 @@
   (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 
 (use-package smooth-scrolling
-  :ensure t
-  :config
-  (smooth-scrolling-mode 1))
+  :ensure t)
 
 (use-package all-the-icons
   :ensure t)
@@ -232,6 +233,7 @@
 
 (use-package which-key
   :ensure t
+  :diminish which-key-mode
   :config
   (add-hook 'after-init-hook 'which-key-mode))
 
@@ -240,6 +242,7 @@
 
 (use-package beacon
   :ensure t
+  :diminish beacon-mode
   :config
   (beacon-mode 1))
 
@@ -260,6 +263,11 @@
 
 (use-package solarized-theme
   :ensure t)
+
+(use-package powerline
+  :ensure t
+  :config
+  (powerline-default-theme))
 
 (use-package dashboard
   :ensure t
@@ -304,6 +312,16 @@ Repeated invocations toggle between the two most recently open buffers."
 
 (setq org-log-done 't)
 
+;; Set font
+(set-frame-font "FuraCode Nerd Font 12" nil t)
+
+;; Prettify-symbols
+(global-prettify-symbols-mode)
+(setq prettify-symbols-unprettify-at-point 'right-edge)
+
+;; Use ligatures if possible
+(mac-auto-operator-composition-mode)
+
 ;; Emacs sets the below - leave it alone!
 
 (custom-set-variables
@@ -322,7 +340,7 @@ Repeated invocations toggle between the two most recently open buffers."
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (solarized-theme helm-notmuch notmuch expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (airline-themes powerline solarized-theme helm-notmuch notmuch expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
