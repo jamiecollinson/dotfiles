@@ -24,6 +24,9 @@
   :config
   (exec-path-from-shell-initialize))
 
+(use-package undo-tree
+  :ensure t)
+
 (use-package projectile
   :ensure t
   :config
@@ -284,6 +287,9 @@
   :config
   (add-to-list 'writegood-weasel-words "actionable"))
 
+(use-package hackernews
+  :ensure t)
+
 ;; Non-package config
 
 (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
@@ -340,11 +346,11 @@ Repeated invocations toggle between the two most recently open buffers."
  '(js-indent-level 2)
  '(package-selected-packages
    (quote
-    (airline-themes powerline solarized-theme helm-notmuch notmuch expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
+    (hackernews airline-themes powerline solarized-theme helm-notmuch notmuch expand-region writegood-mode go-eldoc go-guru godoctor pyenv-mode elpy company-anaconda anaconda-mode use-package-chords dashboard helm-ag helm-grep evil-mode-line evil magit intero haskell-mode zenburn-theme which-key use-package telephone-line spaceline smooth-scrolling smartparens smart-mode-line rjsx-mode rainbow-identifiers rainbow-delimiters nyan-mode neotree markdown-mode helm-swoop helm-projectile helm-dash flycheck exec-path-from-shell dracula-theme company-quickhelp company-go beacon all-the-icons aggressive-indent ace-window))))
 
 (custom-set-faces
  ;; custom-set-faces was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- )
+ '(default ((((type nil)) (:background "#000000" :foreground "#f8f8f2")) (((class color) (min-colors 89)) (:background "#282a36" :foreground "#f8f8f2")))))
