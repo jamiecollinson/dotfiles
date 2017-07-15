@@ -31,6 +31,42 @@ If =use-package= is not installed, install it.
 #+END_SRC
 
 * Coding
+** Project management
+
+Projectile handles folders which are in version control. It integrates with Ivy.
+
+#+BEGIN_SRC emacs-lisp
+(use-package projectile
+  :ensure t
+  :config
+  (projectile-mode)
+  (setq projectile-completion-system 'ivy))
+#+END_SRC
+
+** Environment management
+
+By default Emacs doesn't read from the same environment variables set in your terminal. This package fixes that.
+
+#+BEGIN_SRC emacs-lisp
+(use-package exec-path-from-shell
+  :ensure t
+  :config
+  (exec-path-from-shell-initialize))
+#+END_SRC
+
+** Jump to source
+
+Individual language packages often support IDE features like jump to source, but =dumb-jump= attempts to support many languages by simple searching. It's quite effective even with dynamic libraries like JS.
+
+#+BEGIN_SRC emacs-lisp
+(use-package dumb-jump
+  :ensure t
+  :diminish dumb-jump-mode
+  :bind (("C-M-g" . dumb-jump-go)
+         ("C-M-p" . dumb-jump-back)
+         ("C-M-q" . dumb-jump-quick-look)))
+#+END_SRC
+
 ** Git
 
 Magit is an awesome interface to git. Summon it with `C-x g`.
@@ -39,6 +75,27 @@ Magit is an awesome interface to git. Summon it with `C-x g`.
 (use-package magit
   :ensure t
   :bind ("C-x g" . magit-status))
+#+END_SRC
+** Autocomplete
+
+Company mode provides good autocomplete options.
+
+#+BEGIN_SRC emacs-lisp
+(use-package company
+  :ensure t
+  :diminish
+  :config
+  (add-hook 'after-init-hook 'global-company-mode)
+
+  (use-package company-go
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-go)) 
+
+  (use-package company-anaconda
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-anaconda)))
 #+END_SRC
 
 ** Javascript
@@ -135,9 +192,74 @@ Go guru needs a scope to look at, this function sets it to the current package.
          (relative-package-path (directory-file-name (file-name-directory (file-relative-name filename gopath-src-path)))))
     (setq go-guru-scope relative-package-path)))
 #+END_SRC
+** Haskell
 
+Install haskell mode.
+
+#+BEGIN_SRC emacs-lisp
+(use-package haskell-mode
+  :ensure t)
+#+END_SRC
+
+** Python
+
+Emacs handles python quite well, but we can improve things with anaconda mode.
+
+#+BEGIN_SRC emacs-lisp
+(use-package anaconda-mode
+  :ensure t
+  :config
+  (add-hook 'python-mode-hook 'anaconda-mode)
+  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+END_SRC 
 * Appearance
 * Org
+
+General settings.
+
+#+BEGIN_SRC emacs-lisp
+(setq org-startup-indented 't)
+(setq org-directory "~/org")
+(setq org-special-ctrl-a/e 't)
+(setq org-default-notes-file (concat org-directory "/notes.org"))
+(define-key global-map "\C-cc" 'org-capture)
+(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+#+END_SRC
+
+Improve the display of bullet points.
+
+#+BEGIN_SRC emacs-lisp
+(use-package org-bullets
+  :ensure t
+  :config
+  (add-hook 'org-mode-hook 'org-bullets-mode))
+#+END_SRC
+
+Customize appearance.
+
+#+BEGIN_SRC emacs-lisp
+(let*
+    ((variable-tuple (cond
+		      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+		      ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+		      ((x-list-fonts "Verdana")         '(:font "Verdana"))
+		      ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+		      (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+     (base-font-color     (face-foreground 'default nil 'default))
+     (headline           `(:inherit default :weight normal :foreground ,base-font-color)))
+
+  (custom-theme-set-faces 'user
+                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
+                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+#+END_SRC
+
 * Rest of Config (to be refactored)
  
 #+BEGIN_SRC emacs-lisp
@@ -166,13 +288,6 @@ Go guru needs a scope to look at, this function sets it to the current package.
     :ensure t
     :bind (("M-i" . swiper))))
 
-(use-package dumb-jump
-  :ensure t
-  :diminish dumb-jump-mode
-  :bind (("C-M-g" . dumb-jump-go)
-         ("C-M-p" . dumb-jump-back)
-         ("C-M-q" . dumb-jump-quick-look)))
-
 (use-package crux
   :ensure t
   :bind (("C-a" . crux-move-beginning-of-line)))
@@ -188,32 +303,14 @@ Go guru needs a scope to look at, this function sets it to the current package.
   :config
   (key-chord-mode 1))
 
-(use-package exec-path-from-shell
-  :ensure t
-  :config
-  (exec-path-from-shell-initialize))
-
 (use-package undo-tree
-  :ensure t)
-
-(use-package projectile
   :ensure t
-  :config
-  (projectile-mode)
-  (setq projectile-completion-system 'ivy))
+  :chords (("uu" . undo-tree-visualize)))
 
 (use-package w3m
   :ensure t)
 
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook 'org-bullets-mode))
-
 (use-package notmuch
-  :ensure t)
-
-(use-package edit-server
   :ensure t)
 
 (use-package avy
@@ -265,21 +362,6 @@ Go guru needs a scope to look at, this function sets it to the current package.
   
   (add-to-list 'flycheck-checkers 'proselint))
 
-(use-package company
-  :ensure t
-  :diminish
-  :config
-  (add-hook 'after-init-hook 'global-company-mode)
-
-  (use-package company-go
-    :ensure t
-    :config
-    (add-to-list 'company-backends 'company-go)) 
-
-  (use-package company-anaconda
-    :ensure t
-    :config
-    (add-to-list 'company-backends 'company-anaconda)))
 
 (use-package yasnippet
   :ensure t
@@ -301,29 +383,12 @@ Go guru needs a scope to look at, this function sets it to the current package.
   :ensure t
   :bind ("C-=" . er/expand-region))
 
-(use-package haskell-mode
-  :ensure t)
-
-;; Python
-
-(use-package anaconda-mode
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
-
-(use-package smooth-scrolling
-  :ensure t)
-
-(use-package all-the-icons
-  :ensure t)
-
 (use-package neotree
   :ensure t
   :config
   (global-set-key (kbd "C-c t") 'neotree-toggle)
   (setq neo-smart-open t)
-  (setq neo-theme (if (display-graphic-p) 'icons 'arrow)))
+  (setq neo-theme 'arrow))
 
 (use-package which-key
   :ensure t
@@ -377,12 +442,6 @@ Go guru needs a scope to look at, this function sets it to the current package.
   :config
   (add-to-list 'writegood-weasel-words "actionable"))
 
-(use-package hackernews
-  :ensure t)
-
-(use-package centered-cursor-mode
-  :ensure t)
-
 ;; Non-package config
 
 ;;; I prefer cmd key for meta
@@ -412,35 +471,6 @@ Repeated invocations toggle between the two most recently open buffers."
   (switch-to-buffer (other-buffer (current-buffer) 1)))
 
 (key-chord-define-global "JJ" 'switch-to-previous-buffer)
-
-;; Org settings
-(setq org-startup-indented 't)
-(setq org-directory "~/org")
-(setq org-special-ctrl-a/e 't)
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(define-key global-map "\C-cc" 'org-capture)
-(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
-;; Customize appearance
-(let*
-    ((variable-tuple (cond
-		      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-		      ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-		      ((x-list-fonts "Verdana")         '(:font "Verdana"))
-		      ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-		      (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-     (base-font-color     (face-foreground 'default nil 'default))
-     (headline           `(:inherit default :weight normal :foreground ,base-font-color)))
-
-  (custom-theme-set-faces 'user
-                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 
 ;; Set font
 (set-frame-font "FuraCode Nerd Font 12" nil t)
