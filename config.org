@@ -11,15 +11,6 @@ Add repositories we'll load packages from. I prefer to live on the bleeding edge
   (setq package-enable-at-startup nil)
 #+END_SRC
 
-** Set custom settings to load in own file
-
-This stops emacs adding customised settings to =init.el=. I try to avoid using customize anyway, preferring programmatic control of variables.
-
-#+BEGIN_SRC emacs-lisp
-  ((setq )etq custom-file "~/.emacs.d/custom-settings.el")
-  (load custom-file t)
-#+END_SRC
-
 ** Bootstrap use-package
 
 If =use-package= is not installed, install it.
@@ -28,6 +19,57 @@ If =use-package= is not installed, install it.
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
     (package-install 'use-package))
+#+END_SRC
+
+** Set custom settings to load in own file
+
+This stops emacs adding customised settings to =init.el=. I try to avoid using customize anyway, preferring programmatic control of variables.
+
+#+BEGIN_SRC emacs-lisp
+  (setq custom-file "~/.emacs.d/custom-settings.el")
+  (load custom-file t)
+#+END_SRC
+* Preferences
+
+I prefer lines to wrap.
+
+#+BEGIN_SRC emacs-lisp
+  (global-visual-line-mode 1)
+#+END_SRC
+
+Let's turn off unwanted window decoration.
+
+#+BEGIN_SRC emacs-lisp
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+#+END_SRC
+
+I don't want the error bell.
+
+#+BEGIN_SRC emacs-lisp
+  (setq ring-bell-function 'ignore)
+#+END_SRC
+
+* Appearance
+
+I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight.
+
+Load it by default.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package dracula-theme
+    :ensure t)
+
+  (load-theme 'dracula t)
+#+END_SRC
+
+Powerline is a port from vim, and improves the modeline.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-default-theme))
 #+END_SRC
 
 * Coding
@@ -223,7 +265,6 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
     (add-hook 'python-mode-hook 'anaconda-mode)
     (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 #+END_SRC 
-* Appearance
 * Org
 ** General settings.
 
@@ -432,16 +473,7 @@ Customize appearance.
   (use-package nyan-mode
     :ensure t)
 
-  (use-package dracula-theme
-    :ensure t)
 
-  (use-package doom-themes
-    :ensure t)
-
-  (use-package powerline
-    :ensure t
-    :config
-    (powerline-default-theme))
 
   (use-package dashboard
     :ensure t
@@ -466,11 +498,6 @@ Customize appearance.
 
   ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   ;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
-
-  (load-theme 'dracula t)
-  (tool-bar-mode -1)
-  (scroll-bar-mode -1)
-  (setq ring-bell-function 'ignore) ;; Disable bell
 
   (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
     backup-by-copying t    ; Don't delink hardlinks
