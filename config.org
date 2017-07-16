@@ -31,7 +31,7 @@ This stops emacs adding customised settings to =init.el=. I try to avoid using c
 #+END_SRC
 * Preferences
 
-On a Mac I use =command= as =meta= and prefer =option= to do nothing so I can still insert characters like # easily.
+On a Mac I use ⌘ as =meta= and prefer ⌥ to do nothing so I can still insert special characters like easily.
 
 #+BEGIN_SRC emacs-lisp
   (setq mac-command-modifier 'meta
