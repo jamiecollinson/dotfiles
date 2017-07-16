@@ -69,8 +69,6 @@ Make the =yes or no= prompts shorter.
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
-** Backup / temp files
-
 A common frustration with new Emacs users is the =filename#= files created. This centralises the backup files created as you edit.
 
 #+BEGIN_SRC emacs-lisp
@@ -81,6 +79,17 @@ A common frustration with new Emacs users is the =filename#= files created. This
     kept-new-versions 20   ; how many of the newest versions to keep
     kept-old-versions 5    ; and how many of the old
     )
+#+END_SRC
+
+* Interface
+** Basics
+
+=crux= has useful functions extracted from Emacs Prelude. Set =C-a= to move to the first non-whitespace character on a line, and then to toggle between that and the beginning of the line.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package crux
+    :ensure t
+    :bind (("C-a" . crux-move-beginning-of-line)))
 #+END_SRC
 
 ** Key chords
@@ -105,6 +114,96 @@ We bind individual mode chords via =use-package= but some globals are useful lik
 
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
 #+END_SRC
+
+** Command completion
+
+=smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smex
+    :ensure t)
+#+END_SRC
+
+=ivy= is a generic completion framework which uses the minibuffer. Turning on =ivy-mode= enables replacement of lots of built in =ido= functionality.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy
+      :ensure t
+      :config
+      (ivy-mode t))
+#+END_SRC
+
+By default =ivy= starts filters with =^=. I don't normally want that and can easily type it manually when I do. 
+
+#+BEGIN_SRC emacs-lisp
+  (setq ivy-initial-inputs-alist nil))
+#+END_SRC
+
+=counsel= is a collection of =ivy= enhanced versions of common Emacs commands. I haven't bound much as =ivy-mode= takes care of most things.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel
+    :ensure t
+    :bind (("M-x" . counsel-M-x))
+    :chords (("yy" . counsel-yank-pop)))
+#+END_SRC
+
+=swiper= is an =ivy= enhanced version of isearch.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package swiper
+    :ensure t
+    :bind (("C-s" . swiper)))
+#+END_SRC
+
+=hydra= presents menus for =ivy= commands.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ivy-hydra
+    :ensure t)
+#+END_SRC
+
+** Better undo
+
+=undo-tree= visualises undo history as a tree for easy navigation.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package undo-tree
+    :ensure t
+    :chords (("uu" . undo-tree-visualize)))
+#+END_SRC
+
+** Navigation
+
+One of the most important features of an advanced editor is quick text navigation. =avy= let's us jump to any character or line quickly.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package avy
+    :ensure t
+    :chords (("jj" . avy-goto-word-1)
+             ("jl" . avy-goto-line)))
+#+END_SRC
+
+=ace-window= lets us navigate between windows in the same way as =avy=. Once activated it has useful sub-modes like =x= to switch into window deletion mode.
+
+#+BEGIN_SRC emacs-lisp
+ (use-package ace-window
+    :ensure t
+    :chords ("jk" . ace-window)
+    :config
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+#+END_SRC
+
+** Easier selection
+
+=expand-region= expands the region around the cursor semantically depending on mode. Hard to describe but a killer feature.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package expand-region
+    :ensure t 
+    :bind ("C-=" . er/expand-region))
+#+END_SRC
+
 * Appearance
 
 I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight.
@@ -190,14 +289,30 @@ N.B. doesn't feel right with my key chords setup due to =jj= being bound. I shou
 * Coding
 ** Project management
 
-Projectile handles folders which are in version control. It integrates with Ivy.
+Projectile handles folders which are in version control.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :ensure t
     :config
-    (projectile-mode)
-    (setq projectile-completion-system 'ivy))
+    (projectile-mode))
+#+END_SRC
+
+Tell projectile to integrate with =ivy= for completion.
+
+#+BEGIN_SRC emacs-lisp
+  (setq projectile-completion-system 'ivy)
+#+END_SRC
+
+Add some extra completion options via integration with =counsel=. In particular this enables =C-c p SPC= for smart buffer / file search, and =C-c p s s= for search via =ag=.
+
+There is no function for projectile-grep, but we could use =counsel-git-grep= which is similar. Should I bind that to =C-c p s g=?
+
+#+BEGIN_SRC emacs-lisp
+  (use-package counsel-projectile
+    :ensure t
+    :config
+    (counsel-projectile-on))
 #+END_SRC
 
 ** Environment management
@@ -490,56 +605,33 @@ Customize appearance.
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 #+END_SRC
 
+* Extras
+** Web browsing
+
+=w3m= is a terminal based browser. Emacs now has =eww= built in, but I prefer =w3m=. It needs to be installed separately, e.g. with =brew install w3m=.
+
+There's an emacs package to interface with it.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package w3m
+    :ensure t)
+#+END_SRC
+
+** Email
+
+=notmuch= is a very fast mail client. It needs to be installed externally, e.g. with =brew install notmuch= but can then be used within emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package notmuch
+    :ensure t)
+#+END_SRC
+
 * Rest of Config (to be refactored)
  
 #+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t)
 
-  (use-package ivy
-    :ensure t
-    :config
-    (ivy-mode t)
 
-    ;; Remove default ^ filter
-    (setq ivy-initial-inputs-alist nil)
 
-    (use-package counsel
-      :ensure t
-      :bind (("M-x" . counsel-M-x))
-      :config
-
-      (use-package counsel-projectile
-        :ensure t
-        :config
-        (counsel-projectile-on)))
-
-    (use-package ivy-hydra
-      :ensure t)
-    
-    (use-package swiper
-      :ensure t
-      :bind (("M-i" . swiper))))
-
-  (use-package crux
-    :ensure t
-    :bind (("C-a" . crux-move-beginning-of-line)))
-
-  (use-package undo-tree
-    :ensure t
-    :chords (("uu" . undo-tree-visualize)))
-
-  (use-package w3m
-    :ensure t)
-
-  (use-package notmuch
-    :ensure t)
-
-  (use-package avy
-    :ensure t
-    :chords (("jj" . avy-goto-word-1)
-             ("jl" . avy-goto-line))
-    :bind ("C-;" . avy-goto-word-1))
 
   (use-package smartparens
     :ensure t
@@ -551,10 +643,6 @@ Customize appearance.
     :ensure t
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-
-  (use-package expand-region
-    :ensure t
-    :bind ("C-=" . er/expand-region))
 
   (use-package neotree
     :ensure t
@@ -571,12 +659,6 @@ Customize appearance.
 
   (use-package aggressive-indent
     :ensure t)
-
-  (use-package ace-window
-    :ensure t
-    :bind ("C-'" . ace-window)
-    :config
-    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
   (use-package writegood-mode
     :ensure t
