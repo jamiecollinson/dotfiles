@@ -362,6 +362,12 @@ Keep things indented correctly for me.
       (add-hook 'prog-mode-hook 'aggressive-indent-mode))
 #+END_SRC
 
+Expand parentheses for me.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'prog-mode-hook 'electric-pair-mode)
+#+END_SRC
+
 ** Project management
 
 Projectile handles folders which are in version control.
@@ -387,7 +393,7 @@ There is no function for projectile-grep, but we could use =counsel-git-grep= wh
   (use-package counsel-projectile
     :ensure t
     :config
-    (counsel-projectile-on))
+    (add-hook 'after-init-hook 'counsel-projectile-on))
 #+END_SRC
 ** Environment management
 
@@ -521,6 +527,16 @@ JS2 mode improves on the built in JS mode.
     :mode "\\.js\\'")
 #+END_SRC
 
+=js2-refactor= supports some useful refactoring options and builds on top of =js2-mode=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package js2-refactor
+    :ensure t
+    :config
+    (js2r-add-keybindings-with-prefix "C-c C-m")
+    (add-hook 'js2-mode-hook #'js2-refactor-mode)) 
+#+END_SRC
+
 RJSX mode makes JSX work well.
 
 #+BEGIN_SRC emacs-lisp
@@ -607,6 +623,7 @@ Go guru needs a scope to look at, this function sets it to the current package.
            (relative-package-path (directory-file-name (file-name-directory (file-relative-name filename gopath-src-path)))))
       (setq go-guru-scope relative-package-path)))
 #+END_SRC
+
 ** Haskell
 
 Install haskell mode.
