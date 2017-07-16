@@ -225,8 +225,9 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
 #+END_SRC 
 * Appearance
 * Org
+** General settings.
 
-General settings.
+I should comment on these more...
 
 #+BEGIN_SRC emacs-lisp
   (setq org-startup-indented 't)
@@ -238,6 +239,8 @@ General settings.
   (setq org-src-fontify-natively 't)
   (setq org-src-tab-acts-natively t)
 #+END_SRC
+
+** Appearance
 
 Improve the display of bullet points.
 
