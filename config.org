@@ -125,6 +125,33 @@ Highlight the current line.
   (global-hl-line-mode 1)
 #+END_SRC
 
+* Evil
+
+I haven't yet decided on how to handle evil mode. I came to emacs from vim via spacemacs, so I'm naturaly inclined to use it, but I find I understand emacs better when I'm not.
+
+For the moment it's installed and easily activated but disabled by default.
+
+N.B. doesn't feel right with my key chords setup due to =jj= being bound. I should write a function to toggle which enables evil / disables keychord.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :ensure t
+    :config
+    (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
+    (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
+    (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
+    (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
+
+    (use-package evil-leader
+      :ensure t
+      :config
+      (global-evil-leader-mode)
+      (evil-leader/set-leader "<SPC>")
+      (evil-leader/set-key "s" 'save-buffer)
+      (evil-leader/set-key "b" 'helm-buffers-list)
+      (evil-leader/set-key "SPC" 'avy-goto-word-1)))
+#+END_SRC
+
 * Coding
 ** Project management
 
@@ -180,6 +207,39 @@ Display line changes in gutter based on git history. Enable it everywhere.
     :config
     (global-git-gutter-mode 't))
 #+END_SRC
+
+** Syntax checking
+
+=Flycheck= is a general syntax highlighting framework which other packages hook into. It's an improvment on the built in =flymake=.
+
+Setup is pretty simple - we just enable globally and turn on a custom eslint function, and also add a custom checker for proselint.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck
+    :ensure t
+    :config
+    (add-hook 'after-init-hook 'global-flycheck-mode)
+    (add-hook 'flycheck-mode-hook #'jc/use-eslint-from-node-modules)
+    (add-to-list 'flycheck-checkers 'proselint))
+#+END_SRC
+
+Proselint is a syntax checker for English language. This defines a custom checker which will run in texty modes.
+
+Proselint is an external program, install it with =pip install proselint= for this to work.
+
+#+BEGIN_SRC emacs-lisp
+  (flycheck-define-checker proselint
+    "A linter for prose."
+    :command ("proselint" source-inplace)
+    :error-patterns
+    ((warning line-start (file-name) ":" line ":" column ": "
+              (id (one-or-more (not (any " "))))
+              (message (one-or-more not-newline)
+                       (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+              line-end))
+    :modes (text-mode markdown-mode gfm-mode org-mode))
+#+END_SRC
+
 ** Autocomplete
 
 Company mode provides good autocomplete options.
@@ -200,6 +260,24 @@ Company mode provides good autocomplete options.
       :ensure t
       :config
       (add-to-list 'company-backends 'company-anaconda)))
+#+END_SRC
+** Snippets
+
+Unlike autocomplete which suggests words / symbols, snippets are pre-prepared templates which you fill in.
+
+I'm using a community library (=[[https://github.com/AndreaCrotti/yasnippet-snippets]]=) with *lots* of ready made options, and have my own directory of custom snippets I've added. Not sure if I should unify these by forking =yasnippet-snippets=.
+
+Type the shortcut and press =TAB= to complete, or =M-/= to autosuggest a snippet.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet
+      :ensure t
+      :diminish yas-minor-mode
+      :config
+      (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
+      (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+      (yas-global-mode)
+      (global-set-key (kbd "M-/") 'company-yasnippet))
 #+END_SRC
 
 ** Javascript
@@ -438,55 +516,6 @@ Customize appearance.
     :diminish smartparens-mode
     :config
     (add-hook 'prog-mode-hook 'smartparens-mode))
-
-  (use-package evil
-    :ensure t
-    :config
-    (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-    (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-    (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-    (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-
-    (use-package evil-leader
-      :ensure t
-      :config
-      (global-evil-leader-mode)
-      (evil-leader/set-leader "<SPC>")
-      (evil-leader/set-key "s" 'save-buffer)
-      (evil-leader/set-key "b" 'helm-buffers-list)
-      (evil-leader/set-key "SPC" 'avy-goto-word-1)))
-
-  (use-package flycheck
-    :ensure t
-    :config
-    (add-hook 'after-init-hook 'global-flycheck-mode)
-    (add-hook 'flycheck-mode-hook #'jc/use-eslint-from-node-modules)
-
-    ;; pip install proselint to install CLI
-    (flycheck-define-checker proselint
-      "A linter for prose."
-      :command ("proselint" source-inplace)
-      :error-patterns
-      ((warning line-start (file-name) ":" line ":" column ": "
-                (id (one-or-more (not (any " "))))
-                (message (one-or-more not-newline)
-                         (zero-or-more "\n" (any " ") (one-or-more not-newline)))
-                line-end))
-      :modes (text-mode markdown-mode gfm-mode org-mode))
-    
-    (add-to-list 'flycheck-checkers 'proselint))
-
-
-  (use-package yasnippet
-    :ensure t
-    :diminish yas-minor-mode
-    :config
-    ;; https://github.com/AndreaCrotti/yasnippet-snippets
-    (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
-    ;; custom
-    (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-    (yas-global-mode)
-    (global-set-key (kbd "M-/") 'company-yasnippet))
 
   (use-package rainbow-delimiters
     :ensure t
