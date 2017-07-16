@@ -29,6 +29,7 @@ This stops emacs adding customised settings to =init.el=. I try to avoid using c
   (setq custom-file "~/.emacs.d/custom-settings.el")
   (load custom-file t)
 #+END_SRC
+
 * Preferences
 
 Don't display the help screen on startup.
@@ -129,6 +130,7 @@ We bind individual mode chords via =use-package= but some globals are useful lik
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
       :ensure t
+      :diminish ivy-mode
       :config
       (ivy-mode t))
 #+END_SRC
@@ -136,7 +138,7 @@ We bind individual mode chords via =use-package= but some globals are useful lik
 By default =ivy= starts filters with =^=. I don't normally want that and can easily type it manually when I do. 
 
 #+BEGIN_SRC emacs-lisp
-  (setq ivy-initial-inputs-alist nil))
+  (setq ivy-initial-inputs-alist nil)
 #+END_SRC
 
 =counsel= is a collection of =ivy= enhanced versions of common Emacs commands. I haven't bound much as =ivy-mode= takes care of most things.
@@ -153,7 +155,7 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :ensure t
-    :bind (("C-s" . swiper)))
+    :bind (("M-s" . swiper)))
 #+END_SRC
 
 =hydra= presents menus for =ivy= commands.
@@ -163,6 +165,18 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
     :ensure t)
 #+END_SRC
 
+** Next key suggestion
+
+Suggest next keys to me based on currently entered key combination.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package which-key
+    :ensure t
+    :diminish which-key-mode
+    :config
+    (add-hook 'after-init-hook 'which-key-mode))
+#+END_SRC
+
 ** Better undo
 
 =undo-tree= visualises undo history as a tree for easy navigation.
@@ -170,7 +184,8 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
-    :chords (("uu" . undo-tree-visualize)))
+    :chords (("uu" . undo-tree-visualize))
+    :diminish undo-tree-mode)
 #+END_SRC
 
 ** Navigation
@@ -204,6 +219,29 @@ One of the most important features of an advanced editor is quick text navigatio
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
+** File tree
+
+I don't use this a whole lot, preferring to navigate via searches such as =counsel-find-file=, but it's occasionally useful to have a file tree.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package neotree
+    :ensure t
+    :config
+    (global-set-key (kbd "C-c t") 'neotree-toggle))
+#+END_SRC
+
+When I open the tree try to jump to current file.
+
+#+BEGIN_SRC emacs-lisp
+  (setq neo-smart-open t)
+#+END_SRC
+
+Use a simple theme for the file tree.
+
+#+BEGIN_SRC emacs-lisp
+  (setq neo-theme 'arrow)
+#+END_SRC
+
 * Appearance
 
 I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight.
@@ -221,6 +259,13 @@ Set a nice font.
 
 #+BEGIN_SRC emacs-lisp
   (set-frame-font "FuraCode Nerd Font 12" nil t)
+#+END_SRC
+
+Display pretty symbols for things like lambda.
+
+#+BEGIN_SRC emacs-lisp
+  (global-prettify-symbols-mode)
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
 #+END_SRC
 
 Powerline is a port from vim, and improves the modeline.
@@ -287,6 +332,36 @@ N.B. doesn't feel right with my key chords setup due to =jj= being bound. I shou
 #+END_SRC
 
 * Coding
+** Programming specific interface improvements
+
+When programming I like my editor to try to help me with keeping parentheses balanced.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smartparens
+    :ensure t
+    :diminish smartparens-mode
+    :config
+    (add-hook 'prog-mode-hook 'smartparens-mode))
+#+END_SRC
+
+I also like to see delimiters coloured according to nesting level to help me distinguish them.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+
+Keep things indented correctly for me.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package aggressive-indent
+      :ensure t
+      :config
+      (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+#+END_SRC
+
 ** Project management
 
 Projectile handles folders which are in version control.
@@ -314,7 +389,6 @@ There is no function for projectile-grep, but we could use =counsel-git-grep= wh
     :config
     (counsel-projectile-on))
 #+END_SRC
-
 ** Environment management
 
 By default Emacs doesn't read from the same environment variables set in your terminal. This package fixes that.
@@ -354,8 +428,9 @@ Display line changes in gutter based on git history. Enable it everywhere.
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
     :ensure t
-    :config
-    (global-git-gutter-mode 't))
+    :config 
+    (global-git-gutter-mode 't)
+    :diminish git-gutter-mode)
 #+END_SRC
 
 ** Syntax checking
@@ -606,6 +681,18 @@ Customize appearance.
 #+END_SRC
 
 * Extras
+** Writing
+
+=writegood-mode= highlights bad word choices and has functions for calculating readability.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package writegood-mode
+    :ensure t
+    :bind ("C-c g" . writegood-mode)
+    :config
+    (add-to-list 'writegood-weasel-words "actionable"))
+#+END_SRC
+
 ** Web browsing
 
 =w3m= is a terminal based browser. Emacs now has =eww= built in, but I prefer =w3m=. It needs to be installed separately, e.g. with =brew install w3m=.
@@ -626,47 +713,3 @@ There's an emacs package to interface with it.
     :ensure t)
 #+END_SRC
 
-* Rest of Config (to be refactored)
- 
-#+BEGIN_SRC emacs-lisp
-
-
-
-
-  (use-package smartparens
-    :ensure t
-    :diminish smartparens-mode
-    :config
-    (add-hook 'prog-mode-hook 'smartparens-mode))
-
-  (use-package rainbow-delimiters
-    :ensure t
-    :config
-    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
-
-  (use-package neotree
-    :ensure t
-    :config
-    (global-set-key (kbd "C-c t") 'neotree-toggle)
-    (setq neo-smart-open t)
-    (setq neo-theme 'arrow))
-
-  (use-package which-key
-    :ensure t
-    :diminish which-key-mode
-    :config
-    (add-hook 'after-init-hook 'which-key-mode))
-
-  (use-package aggressive-indent
-    :ensure t)
-
-  (use-package writegood-mode
-    :ensure t
-    :bind ("C-c g" . writegood-mode)
-    :config
-    (add-to-list 'writegood-weasel-words "actionable"))
-
-  ;; Prettify-symbols
-  (global-prettify-symbols-mode)
-  (setq prettify-symbols-unprettify-at-point 'right-edge)
-#+END_SRC
