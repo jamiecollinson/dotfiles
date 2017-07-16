@@ -7,8 +7,8 @@
 Add repositories we'll load packages from. I prefer to live on the bleeding edge so have only enabled melpa. Setting `package-enable-at-startup` to `nil` prevents a second package load and slightly improves startup time.
 
 #+BEGIN_SRC emacs-lisp
-(add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-(setq package-enable-at-startup nil)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (setq package-enable-at-startup nil)
 #+END_SRC
 
 ** Set custom settings to load in own file
@@ -16,18 +16,18 @@ Add repositories we'll load packages from. I prefer to live on the bleeding edge
 This stops emacs adding customised settings to =init.el=. I try to avoid using customize anyway, preferring programmatic control of variables.
 
 #+BEGIN_SRC emacs-lisp
-(setq custom-file "~/.emacs.d/custom-settings.el")
-(load custom-file t)
+  ((setq )etq custom-file "~/.emacs.d/custom-settings.el")
+  (load custom-file t)
 #+END_SRC
 
 ** Bootstrap use-package
 
 If =use-package= is not installed, install it.
 
-#+BEGIN_SRC 
-(unless (package-installed-p 'use-package)
-  (package-refresh-contents)
-  (package-install 'use-package))
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
 #+END_SRC
 
 * Coding
@@ -56,15 +56,15 @@ By default Emacs doesn't read from the same environment variables set in your te
 
 ** Jump to source
 
-Individual language packages often support IDE features like jump to source, but =dumb-jump= attempts to support many languages by simple searching. It's quite effective even with dynamic libraries like JS.
+Individual language packages often support IDE features like jump to source, but =dumb-jump= attempts to support many languages by simple searching. It's quite effective even with dynamic libraries like JS and Python.
 
 #+BEGIN_SRC emacs-lisp
-(use-package dumb-jump
-  :ensure t
-  :diminish dumb-jump-mode
-  :bind (("C-M-g" . dumb-jump-go)
-         ("C-M-p" . dumb-jump-back)
-         ("C-M-q" . dumb-jump-quick-look)))
+  (use-package dumb-jump
+    :ensure t
+    :diminish dumb-jump-mode
+    :bind (("C-M-g" . dumb-jump-go)
+           ("C-M-p" . dumb-jump-back)
+           ("C-M-q" . dumb-jump-quick-look)))
 #+END_SRC
 
 ** Git
@@ -72,30 +72,39 @@ Individual language packages often support IDE features like jump to source, but
 Magit is an awesome interface to git. Summon it with `C-x g`.
 
 #+BEGIN_SRC emacs-lisp
-(use-package magit
-  :ensure t
-  :bind ("C-x g" . magit-status))
+  (use-package magit
+    :ensure t
+    :bind ("C-x g" . magit-status))
+#+END_SRC
+
+Display line changes in gutter based on git history. Enable it everywhere.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package git-gutter
+    :ensure t
+    :config
+    (global-git-gutter-mode 't))
 #+END_SRC
 ** Autocomplete
 
 Company mode provides good autocomplete options.
 
 #+BEGIN_SRC emacs-lisp
-(use-package company
-  :ensure t
-  :diminish
-  :config
-  (add-hook 'after-init-hook 'global-company-mode)
-
-  (use-package company-go
+  (use-package company
     :ensure t
+    :diminish
     :config
-    (add-to-list 'company-backends 'company-go)) 
+    (add-hook 'after-init-hook 'global-company-mode)
 
-  (use-package company-anaconda
-    :ensure t
-    :config
-    (add-to-list 'company-backends 'company-anaconda)))
+    (use-package company-go
+      :ensure t
+      :config
+      (add-to-list 'company-backends 'company-go)) 
+
+    (use-package company-anaconda
+      :ensure t
+      :config
+      (add-to-list 'company-backends 'company-anaconda)))
 #+END_SRC
 
 ** Javascript
@@ -148,13 +157,13 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
 ** Markdown
 
 #+BEGIN_SRC emacs-lisp
-(use-package markdown-mode
-  :ensure t
-  :commands (markdown-mode gfm-mode)
-  :mode (("README\\.md\\'" . gfm-mode)
-	 ("\\.md\\'" . markdown-mode)
-	 ("\\.markdown\\'" . markdown-mode))
-  :init (setq markdown-command "multimarkdown"))
+  (use-package markdown-mode
+    :ensure t
+    :commands (markdown-mode gfm-mode)
+    :mode (("README\\.md\\'" . gfm-mode)
+           ("\\.md\\'" . markdown-mode)
+           ("\\.markdown\\'" . markdown-mode))
+    :init (setq markdown-command "multimarkdown"))
 #+END_SRC
 
 ** Golang
@@ -162,43 +171,43 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
 Go-mode provides basic language support, we call =gofmt= on each save to keep code tidy, use eldoc to display documentation and add guru / doctor for IDE functionality.
 
 #+BEGIN_SRC emacs-lisp
-(use-package go-mode
-  :ensure t
-  :config
-  (add-hook 'before-save-hook 'gofmt-before-save)
-
-  (use-package go-eldoc
+  (use-package go-mode
     :ensure t
     :config
-    (add-hook 'go-mode-hook 'go-eldoc-setup))
-  
-  (use-package godoctor
-    :ensure t)
+    (add-hook 'before-save-hook 'gofmt-before-save)
 
-  (use-package go-guru
-    :ensure t))
+    (use-package go-eldoc
+      :ensure t
+      :config
+      (add-hook 'go-mode-hook 'go-eldoc-setup))
+    
+    (use-package godoctor
+      :ensure t)
+
+    (use-package go-guru
+      :ensure t))
 #+END_SRC
 
 Go guru needs a scope to look at, this function sets it to the current package.
 
 #+BEGIN_SRC emacs-lisp
-(defun jc/go-guru-set-current-package-as-main ()
-  "GoGuru requires the scope to be set to a go package which
-   contains a main, this function will make the current package the
-   active go guru scope, assuming it contains a main"
-  (interactive)
-  (let* ((filename (buffer-file-name))
-         (gopath-src-path (concat (file-name-as-directory (go-guess-gopath)) "src"))
-         (relative-package-path (directory-file-name (file-name-directory (file-relative-name filename gopath-src-path)))))
-    (setq go-guru-scope relative-package-path)))
+  (defun jc/go-guru-set-current-package-as-main ()
+    "GoGuru requires the scope to be set to a go package which
+     contains a main, this function will make the current package the
+     active go guru scope, assuming it contains a main"
+    (interactive)
+    (let* ((filename (buffer-file-name))
+           (gopath-src-path (concat (file-name-as-directory (go-guess-gopath)) "src"))
+           (relative-package-path (directory-file-name (file-name-directory (file-relative-name filename gopath-src-path)))))
+      (setq go-guru-scope relative-package-path)))
 #+END_SRC
 ** Haskell
 
 Install haskell mode.
 
 #+BEGIN_SRC emacs-lisp
-(use-package haskell-mode
-  :ensure t)
+  (use-package haskell-mode
+    :ensure t)
 #+END_SRC
 
 ** Python
@@ -206,11 +215,11 @@ Install haskell mode.
 Emacs handles python quite well, but we can improve things with anaconda mode.
 
 #+BEGIN_SRC emacs-lisp
-(use-package anaconda-mode
-  :ensure t
-  :config
-  (add-hook 'python-mode-hook 'anaconda-mode)
-  (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+  (use-package anaconda-mode
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'anaconda-mode)
+    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
 #+END_SRC 
 * Appearance
 * Org
@@ -218,264 +227,266 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
 General settings.
 
 #+BEGIN_SRC emacs-lisp
-(setq org-startup-indented 't)
-(setq org-directory "~/org")
-(setq org-special-ctrl-a/e 't)
-(setq org-default-notes-file (concat org-directory "/notes.org"))
-(define-key global-map "\C-cc" 'org-capture)
-(setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-startup-indented 't)
+  (setq org-directory "~/org")
+  (setq org-special-ctrl-a/e 't)
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
+  (define-key global-map "\C-cc" 'org-capture)
+  (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
+  (setq org-src-fontify-natively 't)
+  (setq org-src-tab-acts-natively t)
 #+END_SRC
 
 Improve the display of bullet points.
 
 #+BEGIN_SRC emacs-lisp
-(use-package org-bullets
-  :ensure t
-  :config
-  (add-hook 'org-mode-hook 'org-bullets-mode))
+  (use-package org-bullets
+    :ensure t
+    :config
+    (add-hook 'org-mode-hook 'org-bullets-mode))
 #+END_SRC
 
 Customize appearance.
 
 #+BEGIN_SRC emacs-lisp
-(let*
-    ((variable-tuple (cond
-		      ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-		      ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-		      ((x-list-fonts "Verdana")         '(:font "Verdana"))
-		      ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-		      (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-     (base-font-color     (face-foreground 'default nil 'default))
-     (headline           `(:inherit default :weight normal :foreground ,base-font-color)))
+  (let*
+      ((variable-tuple (cond
+                        ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
+                        ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
+                        ((x-list-fonts "Verdana")         '(:font "Verdana"))
+                        ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
+                        (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
+       (base-font-color     (face-foreground 'default nil 'default))
+       (headline           `(:inherit default :weight normal :foreground ,base-font-color)))
 
-  (custom-theme-set-faces 'user
-                          `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                          `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                          `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-                          `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-                          `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-                          `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+    (custom-theme-set-faces 'user
+                            `(org-level-8 ((t (,@headline ,@variable-tuple))))
+                            `(org-level-7 ((t (,@headline ,@variable-tuple))))
+                            `(org-level-6 ((t (,@headline ,@variable-tuple))))
+                            `(org-level-5 ((t (,@headline ,@variable-tuple))))
+                            `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
+                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
+                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
+                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
+                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 #+END_SRC
 
 * Rest of Config (to be refactored)
  
 #+BEGIN_SRC emacs-lisp
-(use-package smex
-  :ensure t)
+  (use-package smex
+    :ensure t)
 
-(use-package ivy
-  :ensure t
-  :config
-  (ivy-mode t)
-
-  (use-package counsel
+  (use-package ivy
     :ensure t
-    :bind (("M-x" . counsel-M-x))
     :config
+    (ivy-mode t)
 
-    (use-package counsel-projectile
+    (use-package counsel
+      :ensure t
+      :bind (("M-x" . counsel-M-x))
+      :config
+
+      (use-package counsel-projectile
+        :ensure t
+        :config
+        (counsel-projectile-on)))
+
+    (use-package ivy-hydra
+      :ensure t)
+    
+    (use-package swiper
+      :ensure t
+      :bind (("M-i" . swiper))))
+
+  (use-package crux
+    :ensure t
+    :bind (("C-a" . crux-move-beginning-of-line)))
+
+  (use-package focus
+    :ensure t)
+
+  (use-package emojify
+    :ensure t)
+
+  (use-package use-package-chords
+    :ensure t
+    :config
+    (key-chord-mode 1))
+
+  (use-package undo-tree
+    :ensure t
+    :chords (("uu" . undo-tree-visualize)))
+
+  (use-package w3m
+    :ensure t)
+
+  (use-package notmuch
+    :ensure t)
+
+  (use-package avy
+    :ensure t
+    :chords (("jj" . avy-goto-word-1)
+             ("jl" . avy-goto-line))
+    :bind ("C-;" . avy-goto-word-1))
+
+  (use-package smartparens
+    :ensure t
+    :diminish smartparens-mode
+    :config
+    (add-hook 'prog-mode-hook 'smartparens-mode))
+
+  (use-package evil
+    :ensure t
+    :config
+    (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
+    (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
+    (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
+    (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
+
+    (use-package evil-leader
       :ensure t
       :config
-      (counsel-projectile-on)))
+      (global-evil-leader-mode)
+      (evil-leader/set-leader "<SPC>")
+      (evil-leader/set-key "s" 'save-buffer)
+      (evil-leader/set-key "b" 'helm-buffers-list)
+      (evil-leader/set-key "SPC" 'avy-goto-word-1)))
 
-  (use-package ivy-hydra
-    :ensure t)
-  
-  (use-package swiper
-    :ensure t
-    :bind (("M-i" . swiper))))
-
-(use-package crux
-  :ensure t
-  :bind (("C-a" . crux-move-beginning-of-line)))
-
-(use-package focus
-  :ensure t)
-
-(use-package emojify
-  :ensure t)
-
-(use-package use-package-chords
-  :ensure t
-  :config
-  (key-chord-mode 1))
-
-(use-package undo-tree
-  :ensure t
-  :chords (("uu" . undo-tree-visualize)))
-
-(use-package w3m
-  :ensure t)
-
-(use-package notmuch
-  :ensure t)
-
-(use-package avy
-  :ensure t
-  :chords (("jj" . avy-goto-word-1)
-	   ("jl" . avy-goto-line))
-  :bind ("C-;" . avy-goto-word-1))
-
-(use-package smartparens
-  :ensure t
-  :diminish smartparens-mode
-  :config
-  (add-hook 'prog-mode-hook 'smartparens-mode))
-
-(use-package evil
-  :ensure t
-  :config
-  (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-  (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-  (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-  (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-
-  (use-package evil-leader
+  (use-package flycheck
     :ensure t
     :config
-    (global-evil-leader-mode)
-    (evil-leader/set-leader "<SPC>")
-    (evil-leader/set-key "s" 'save-buffer)
-    (evil-leader/set-key "b" 'helm-buffers-list)
-    (evil-leader/set-key "SPC" 'avy-goto-word-1)))
+    (add-hook 'after-init-hook 'global-flycheck-mode)
+    (add-hook 'flycheck-mode-hook #'jc/use-eslint-from-node-modules)
 
-(use-package flycheck
-  :ensure t
-  :config
-  (add-hook 'after-init-hook 'global-flycheck-mode)
-  (add-hook 'flycheck-mode-hook #'jc/use-eslint-from-node-modules)
-
-  ;; pip install proselint to install CLI
-  (flycheck-define-checker proselint
-    "A linter for prose."
-    :command ("proselint" source-inplace)
-    :error-patterns
-    ((warning line-start (file-name) ":" line ":" column ": "
-              (id (one-or-more (not (any " "))))
-              (message (one-or-more not-newline)
-                       (zero-or-more "\n" (any " ") (one-or-more not-newline)))
-              line-end))
-    :modes (text-mode markdown-mode gfm-mode org-mode))
-  
-  (add-to-list 'flycheck-checkers 'proselint))
+    ;; pip install proselint to install CLI
+    (flycheck-define-checker proselint
+      "A linter for prose."
+      :command ("proselint" source-inplace)
+      :error-patterns
+      ((warning line-start (file-name) ":" line ":" column ": "
+                (id (one-or-more (not (any " "))))
+                (message (one-or-more not-newline)
+                         (zero-or-more "\n" (any " ") (one-or-more not-newline)))
+                line-end))
+      :modes (text-mode markdown-mode gfm-mode org-mode))
+    
+    (add-to-list 'flycheck-checkers 'proselint))
 
 
-(use-package yasnippet
-  :ensure t
-  :diminish yas-minor-mode
-  :config
-  ;; https://github.com/AndreaCrotti/yasnippet-snippets
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
-  ;; custom
-  (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-  (yas-global-mode)
-  (global-set-key (kbd "M-/") 'company-yasnippet))
+  (use-package yasnippet
+    :ensure t
+    :diminish yas-minor-mode
+    :config
+    ;; https://github.com/AndreaCrotti/yasnippet-snippets
+    (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
+    ;; custom
+    (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
+    (yas-global-mode)
+    (global-set-key (kbd "M-/") 'company-yasnippet))
 
-(use-package rainbow-delimiters
-  :ensure t
-  :config
-  (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+  (use-package rainbow-delimiters
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 
-(use-package expand-region
-  :ensure t
-  :bind ("C-=" . er/expand-region))
+  (use-package expand-region
+    :ensure t
+    :bind ("C-=" . er/expand-region))
 
-(use-package neotree
-  :ensure t
-  :config
-  (global-set-key (kbd "C-c t") 'neotree-toggle)
-  (setq neo-smart-open t)
-  (setq neo-theme 'arrow))
+  (use-package neotree
+    :ensure t
+    :config
+    (global-set-key (kbd "C-c t") 'neotree-toggle)
+    (setq neo-smart-open t)
+    (setq neo-theme 'arrow))
 
-(use-package which-key
-  :ensure t
-  :diminish which-key-mode
-  :config
-  (add-hook 'after-init-hook 'which-key-mode))
+  (use-package which-key
+    :ensure t
+    :diminish which-key-mode
+    :config
+    (add-hook 'after-init-hook 'which-key-mode))
 
-(use-package aggressive-indent
-  :ensure t)
+  (use-package aggressive-indent
+    :ensure t)
 
-(use-package beacon
-  :ensure t
-  :diminish beacon-mode
-  :config
-  (beacon-mode 1))
+  (use-package beacon
+    :ensure t
+    :diminish beacon-mode
+    :config
+    (beacon-mode 1))
 
-(global-hl-line-mode 1)
+  (global-hl-line-mode 1)
 
-(use-package ace-window
-  :ensure t
-  :bind ("C-'" . ace-window)
-  :config
-  (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
+  (use-package ace-window
+    :ensure t
+    :bind ("C-'" . ace-window)
+    :config
+    (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-(use-package nyan-mode
-  :ensure t)
+  (use-package nyan-mode
+    :ensure t)
 
-(use-package dracula-theme
-  :ensure t)
+  (use-package dracula-theme
+    :ensure t)
 
-(use-package doom-themes
-  :ensure t)
+  (use-package doom-themes
+    :ensure t)
 
-(use-package powerline
-  :ensure t
-  :config
-  (powerline-default-theme))
+  (use-package powerline
+    :ensure t
+    :config
+    (powerline-default-theme))
 
-(use-package dashboard
-  :ensure t
-  :config
-  (setq dashboard-items '((recents . 10)
-			  (bookmarks . 5)
-			  (projects . 10)
-			  (agenda . 5)))
-  (dashboard-setup-startup-hook))
+  (use-package dashboard
+    :ensure t
+    :config
+    (setq dashboard-items '((recents . 10)
+                            (bookmarks . 5)
+                            (projects . 10)
+                            (agenda . 5)))
+    (dashboard-setup-startup-hook))
 
-(use-package writegood-mode
-  :ensure t
-  :bind ("C-c g" . writegood-mode)
-  :config
-  (add-to-list 'writegood-weasel-words "actionable"))
+  (use-package writegood-mode
+    :ensure t
+    :bind ("C-c g" . writegood-mode)
+    :config
+    (add-to-list 'writegood-weasel-words "actionable"))
 
-;; Non-package config
+  ;; Non-package config
 
-;;; I prefer cmd key for meta
-(setq mac-command-modifier 'meta
-      mac-option-modifier 'none)
+  ;;; I prefer cmd key for meta
+  (setq mac-command-modifier 'meta
+        mac-option-modifier 'none)
 
-;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
-;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
+  ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
+  ;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
 
-(load-theme 'dracula t)
-(tool-bar-mode -1)
-(scroll-bar-mode -1)
-(setq ring-bell-function 'ignore) ;; Disable bell
+  (load-theme 'dracula t)
+  (tool-bar-mode -1)
+  (scroll-bar-mode -1)
+  (setq ring-bell-function 'ignore) ;; Disable bell
 
-(setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-  backup-by-copying t    ; Don't delink hardlinks
-  version-control t      ; Use version numbers on backups
-  delete-old-versions t  ; Automatically delete excess backups
-  kept-new-versions 20   ; how many of the newest versions to keep
-  kept-old-versions 5    ; and how many of the old
-  )
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+    backup-by-copying t    ; Don't delink hardlinks
+    version-control t      ; Use version numbers on backups
+    delete-old-versions t  ; Automatically delete excess backups
+    kept-new-versions 20   ; how many of the newest versions to keep
+    kept-old-versions 5    ; and how many of the old
+    )
 
-(defun switch-to-previous-buffer ()
-  "Switch to previously open buffer.
-Repeated invocations toggle between the two most recently open buffers."
-  (interactive)
-  (switch-to-buffer (other-buffer (current-buffer) 1)))
+  (defun switch-to-previous-buffer ()
+    "Switch to previously open buffer.
+  Repeated invocations toggle between the two most recently open buffers."
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
 
-(key-chord-define-global "JJ" 'switch-to-previous-buffer)
+  (key-chord-define-global "JJ" 'switch-to-previous-buffer)
 
-;; Set font
-(set-frame-font "FuraCode Nerd Font 12" nil t)
+  ;; Set font
+  (set-frame-font "FuraCode Nerd Font 12" nil t)
 
-;; Prettify-symbols
-(global-prettify-symbols-mode)
-(setq prettify-symbols-unprettify-at-point 'right-edge)
+  ;; Prettify-symbols
+  (global-prettify-symbols-mode)
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
 #+END_SRC
