@@ -31,6 +31,13 @@ This stops emacs adding customised settings to =init.el=. I try to avoid using c
 #+END_SRC
 * Preferences
 
+On a Mac I use =command= as =meta= and prefer =option= to do nothing so I can still insert characters like # easily.
+
+#+BEGIN_SRC emacs-lisp
+  (setq mac-command-modifier 'meta
+        mac-option-modifier 'none)
+#+END_SRC
+
 I prefer lines to wrap.
 
 #+BEGIN_SRC emacs-lisp
@@ -48,6 +55,12 @@ I don't want the error bell.
 
 #+BEGIN_SRC emacs-lisp
   (setq ring-bell-function 'ignore)
+#+END_SRC
+
+Make the =yes or no= prompts shorter.
+
+#+BEGIN_SRC emacs-lisp
+  (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
 * Appearance
@@ -70,6 +83,27 @@ Powerline is a port from vim, and improves the modeline.
     :ensure t
     :config
     (powerline-default-theme))
+#+END_SRC
+
+Add emoji support. This is useful when working with html.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package emojify
+    :ensure t)
+#+END_SRC
+
+Sometimes it helps to focus on the thing currently under the cursor. This turns off syntax highlighting for everything but the current thing. It's useful sometimes but a bit buggy in certain modes. I wonder if I could improve the config / find a better alternative?
+
+#+BEGIN_SRC emacs-lisp
+  (use-package focus
+    :ensure t)
+#+END_SRC
+
+Sometimes I like to use a nyan cat to indicate progress through the buffer.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package nyan-mode
+      :ensure t)
 #+END_SRC
 
 * Coding
@@ -151,7 +185,13 @@ Company mode provides good autocomplete options.
 
 ** Javascript
 
-JS2 mode is the most important.
+In JS indent to 2 spaces.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default js-indent-level 2)
+#+END_SRC
+
+JS2 mode improves on the built in JS mode.
 
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
@@ -349,12 +389,6 @@ Customize appearance.
     :ensure t
     :bind (("C-a" . crux-move-beginning-of-line)))
 
-  (use-package focus
-    :ensure t)
-
-  (use-package emojify
-    :ensure t)
-
   (use-package use-package-chords
     :ensure t
     :config
@@ -470,8 +504,7 @@ Customize appearance.
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 
-  (use-package nyan-mode
-    :ensure t)
+  
 
 
 
@@ -491,10 +524,6 @@ Customize appearance.
     (add-to-list 'writegood-weasel-words "actionable"))
 
   ;; Non-package config
-
-  ;;; I prefer cmd key for meta
-  (setq mac-command-modifier 'meta
-        mac-option-modifier 'none)
 
   ;; (setq mouse-wheel-scroll-amount '(1 ((shift) . 1))) ;; one line at a time
   ;; (setq mouse-wheel-follow-mouse 't) ;; scroll window under mouse
