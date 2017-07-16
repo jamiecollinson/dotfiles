@@ -29,7 +29,6 @@ This stops emacs adding customised settings to =init.el=. I try to avoid using c
   (setq custom-file "~/.emacs.d/custom-settings.el")
   (load custom-file t)
 #+END_SRC
-
 * Preferences
 
 Don't display the help screen on startup.
@@ -70,6 +69,42 @@ Make the =yes or no= prompts shorter.
   (defalias 'yes-or-no-p 'y-or-n-p)
 #+END_SRC
 
+** Backup / temp files
+
+A common frustration with new Emacs users is the =filename#= files created. This centralises the backup files created as you edit.
+
+#+BEGIN_SRC emacs-lisp
+  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
+    backup-by-copying t    ; Don't delink hardlinks
+    version-control t      ; Use version numbers on backups
+    delete-old-versions t  ; Automatically delete excess backups
+    kept-new-versions 20   ; how many of the newest versions to keep
+    kept-old-versions 5    ; and how many of the old
+    )
+#+END_SRC
+
+** Key chords
+
+Key chords let us bind functions to sequential key presses like =jj=. It makes evil mode being turned off much more palatable.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package use-package-chords
+    :ensure t
+    :config
+    (key-chord-mode 1))
+#+END_SRC
+
+We bind individual mode chords via =use-package= but some globals are useful like =JJ= to jump to the previous buffer.
+
+#+BEGIN_SRC emacs-lisp
+  (defun jc/switch-to-previous-buffer ()
+    "Switch to previously open buffer.
+  Repeated invocations toggle between the two most recently open buffers."
+    (interactive)
+    (switch-to-buffer (other-buffer (current-buffer) 1)))
+
+  (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
+#+END_SRC
 * Appearance
 
 I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight.
@@ -490,11 +525,6 @@ Customize appearance.
     :ensure t
     :bind (("C-a" . crux-move-beginning-of-line)))
 
-  (use-package use-package-chords
-    :ensure t
-    :config
-    (key-chord-mode 1))
-
   (use-package undo-tree
     :ensure t
     :chords (("uu" . undo-tree-visualize)))
@@ -553,24 +583,6 @@ Customize appearance.
     :bind ("C-c g" . writegood-mode)
     :config
     (add-to-list 'writegood-weasel-words "actionable"))
-
-  ;; Non-package config
-
-  (setq backup-directory-alist '(("." . "~/.emacs.d/backup"))
-    backup-by-copying t    ; Don't delink hardlinks
-    version-control t      ; Use version numbers on backups
-    delete-old-versions t  ; Automatically delete excess backups
-    kept-new-versions 20   ; how many of the newest versions to keep
-    kept-old-versions 5    ; and how many of the old
-    )
-
-  (defun switch-to-previous-buffer ()
-    "Switch to previously open buffer.
-  Repeated invocations toggle between the two most recently open buffers."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-  (key-chord-define-global "JJ" 'switch-to-previous-buffer)
 
   ;; Prettify-symbols
   (global-prettify-symbols-mode)
