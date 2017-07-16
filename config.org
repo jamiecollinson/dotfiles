@@ -4,7 +4,7 @@
 * Setup
 ** Configure package sources
 
-Add repositories we'll load packages from. I prefer to live on the bleeding edge so have only enabled melpa. Setting `package-enable-at-startup` to `nil` prevents a second package load and slightly improves startup time.
+Add repositories we'll load packages from. I prefer to live on the bleeding edge so have only enabled melpa. Setting =package-enable-at-startup= to =nil= prevents a second package load and slightly improves startup time.
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -36,7 +36,7 @@ If =use-package= is not installed, install it.
 Projectile handles folders which are in version control. It integrates with Ivy.
 
 #+BEGIN_SRC emacs-lisp
-  (use-(point)ackage projectile
+  (use-package projectile
     :ensure t
     :config
     (projectile-mode)
@@ -155,6 +155,8 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
 #+END_SRC
 
 ** Markdown
+
+Markdown support isn't built into Emacs, add it with =markdown-mode=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
