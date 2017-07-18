@@ -740,3 +740,12 @@ There's an emacs package to interface with it.
   (use-package notmuch
     :ensure t)
 #+END_SRC
+
+** Rest client
+
+Sometimes I need to explore REST services, why not use Emacs?
+
+#+BEGIN_SRC emacs-lisp
+  (use-package restclient
+    :ensure t)
+#+END_SRC
