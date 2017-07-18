@@ -1,3 +1,4 @@
+
 #+TITLE: Emacs Config
 #+AUTHOR: Jamie Collinson
 
@@ -135,7 +136,7 @@ We bind individual mode chords via =use-package= but some globals are useful lik
       (ivy-mode t))
 #+END_SRC
 
-By default =ivy= starts filters with =^=. I don't normally want that and can easily type it manually when I do. 
+By default =ivy= starts filters with =^=. I don't normally want that and can easily type it manually when I do.
 
 #+BEGIN_SRC emacs-lisp
   (setq ivy-initial-inputs-alist nil)
@@ -195,7 +196,7 @@ One of the most important features of an advanced editor is quick text navigatio
 #+BEGIN_SRC emacs-lisp
   (use-package avy
     :ensure t
-    :chords (("jj" . avy-goto-word-1)
+    :chords (("jj" . avy-goto-char-2)
              ("jl" . avy-goto-line)))
 #+END_SRC
 
@@ -215,7 +216,7 @@ One of the most important features of an advanced editor is quick text navigatio
 
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-    :ensure t 
+    :ensure t
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
@@ -434,7 +435,7 @@ Display line changes in gutter based on git history. Enable it everywhere.
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
     :ensure t
-    :config 
+    :config
     (global-git-gutter-mode 't)
     :diminish git-gutter-mode)
 #+END_SRC
@@ -485,13 +486,14 @@ Company mode provides good autocomplete options.
     (use-package company-go
       :ensure t
       :config
-      (add-to-list 'company-backends 'company-go)) 
+      (add-to-list 'company-backends 'company-go))
 
     (use-package company-anaconda
       :ensure t
       :config
       (add-to-list 'company-backends 'company-anaconda)))
 #+END_SRC
+
 ** Snippets
 
 Unlike autocomplete which suggests words / symbols, snippets are pre-prepared templates which you fill in.
@@ -534,7 +536,7 @@ JS2 mode improves on the built in JS mode.
     :ensure t
     :config
     (js2r-add-keybindings-with-prefix "C-c C-m")
-    (add-hook 'js2-mode-hook #'js2-refactor-mode)) 
+    (add-hook 'js2-mode-hook 'js2-refactor-mode))
 #+END_SRC
 
 RJSX mode makes JSX work well.
@@ -602,7 +604,7 @@ Go-mode provides basic language support, we call =gofmt= on each save to keep co
       :ensure t
       :config
       (add-hook 'go-mode-hook 'go-eldoc-setup))
-    
+
     (use-package godoctor
       :ensure t)
 
@@ -697,6 +699,15 @@ Customize appearance.
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
 #+END_SRC
 
+** Export
+
+Add bootstrap styled export.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ox-twbs
+    :ensure t)
+#+END_SRC
+
 * Extras
 ** Writing
 
@@ -729,4 +740,3 @@ There's an emacs package to interface with it.
   (use-package notmuch
     :ensure t)
 #+END_SRC
-
