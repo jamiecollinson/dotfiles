@@ -126,19 +126,6 @@ We bind individual mode chords via =use-package= but some globals are useful lik
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
 #+END_SRC
 
-** God mode
-
-God mode is a neat alternative to evil mode. You might think of it as a non-editing state in which you use emacs keys without the modifiers.
-
-Unlike vim it doesn't have the concept of /motions/, but perhaps it fits better with the rest of the emacs ecosystem. Currently trying it out.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package god-mode
-    :ensure t
-    :bind (("<escape>" . god-local-mode)
-           ("C-." . repeat)))
-#+END_SRC
-
 ** Command completion
 
 =smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
@@ -414,6 +401,13 @@ Expand parentheses for me.
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'electric-pair-mode)
+#+END_SRC
+
+Smart dash guesses _ vs - depending on context.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package smart-dash
+    :ensure t)
 #+END_SRC
 
 ** Project management
