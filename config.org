@@ -1,4 +1,3 @@
-
 #+TITLE: Emacs Config
 #+AUTHOR: Jamie Collinson
 
@@ -31,6 +30,16 @@ This stops emacs adding customised settings to =init.el=. I try to avoid using c
   (load custom-file t)
 #+END_SRC
 
+** Add custom packages to load path
+
+By default Emacs only includes files directly under =user-emacs-directory= (usually =~/.emacs.d/=), so we need to add any folders containing custom packages.
+
+I put my scripts under =~/dotfiles/lisp/= and symlink it with =ln -s ~/dotfiles/lisp ~/.emacs.d/lisp=.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'load-path "~/.emacs.d/lisp/")
+#+END_SRC
+
 * Preferences
 
 Don't display the help screen on startup.
@@ -39,7 +48,7 @@ Don't display the help screen on startup.
   (setq inhibit-startup-screen t)
 #+END_SRC
 
-On a Mac I use ⌘ as =meta= and prefer ⌥ to do nothing so I can still insert special characters like easily.
+On  I use ⌘ as =meta= and prefer ⌥ to do nothing so I can still insert special characters like easily.
 
 #+BEGIN_SRC emacs-lisp
   (setq mac-command-modifier 'meta
@@ -115,6 +124,19 @@ We bind individual mode chords via =use-package= but some globals are useful lik
     (switch-to-buffer (other-buffer (current-buffer) 1)))
 
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
+#+END_SRC
+
+** God mode
+
+God mode is a neat alternative to evil mode. You might think of it as a non-editing state in which you use emacs keys without the modifiers.
+
+Unlike vim it doesn't have the concept of /motions/, but perhaps it fits better with the rest of the emacs ecosystem. Currently trying it out.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package god-mode
+    :ensure t
+    :bind (("<escape>" . god-local-mode)
+           ("C-." . repeat)))
 #+END_SRC
 
 ** Command completion
@@ -252,7 +274,11 @@ Load it by default.
 #+BEGIN_SRC emacs-lisp
   (use-package dracula-theme
     :ensure t)
+#+END_SRC
 
+Enable chosen theme.
+
+#+BEGIN_SRC emacs-lisp
   (load-theme 'dracula t)
 #+END_SRC
 
@@ -267,6 +293,27 @@ Display pretty symbols for things like lambda.
 #+BEGIN_SRC emacs-lisp
   (global-prettify-symbols-mode)
   (setq prettify-symbols-unprettify-at-point 'right-edge)
+
+  (add-hook
+   'python-mode-hook
+   (lambda ()
+     (mapc (lambda (pair) (push pair prettify-symbols-alist))
+           '(("def" . "𝒇")
+             ("class" . "𝑪")
+             ("and" . "∧")
+             ("or" . "∨")
+             ("not" . "￢")
+             ("in" . "∈")
+             ("not in" . "∉")
+             ("return" . "⟼")
+             ("yield" . "⟻")
+             ("for" . "∀")
+             ("!=" . "≠")
+             ("==" . "＝")
+             (">=" . "≥")
+             ("<=" . "≤")
+             ("[]" . "⃞")
+             ("=" . "≝")))))
 #+END_SRC
 
 Powerline is a port from vim, and improves the modeline.
@@ -345,7 +392,7 @@ When programming I like my editor to try to help me with keeping parentheses bal
     (add-hook 'prog-mode-hook 'smartparens-mode))
 #+END_SRC
 
-I also like to see delimiters coloured according to nesting level to help me distinguish them.
+Keep things indented correctly for me.
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
@@ -451,7 +498,7 @@ Setup is pretty simple - we just enable globally and turn on a custom eslint fun
     :ensure t
     :config
     (add-hook 'after-init-hook 'global-flycheck-mode)
-    (add-hook 'flycheck-mode-hook #'jc/use-eslint-from-node-modules)
+    (add-hook 'flycheck-mode-hook 'jc/use-eslint-from-node-modules)
     (add-to-list 'flycheck-checkers 'proselint))
 #+END_SRC
 
@@ -574,6 +621,15 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
                                           root))))
       (when (and eslint (file-executable-p eslint))
         (setq-local flycheck-javascript-eslint-executable eslint))))
+#+END_SRC
+
+** Web mode
+
+Web mode handles html/css/js.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package web-mode
+    :ensure t)
 #+END_SRC
 
 ** Markdown
