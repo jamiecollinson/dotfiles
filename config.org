@@ -23,11 +23,10 @@ If =use-package= is not installed, install it.
 
 ** Set custom settings to load in own file
 
-This stops emacs adding customised settings to =init.el=. I try to avoid using customize anyway, preferring programmatic control of variables.
+This stops emacs adding customised settings to =init.el=. I try to avoid using customize anyway, preferring programmatic control of variables. Creating it as a temporary file effectively disables it (i.e. any changes are session local).
 
 #+BEGIN_SRC emacs-lisp
-  (setq custom-file "~/.emacs.d/custom-settings.el")
-  (load custom-file t)
+  (setq custom-file (make-temp-file "emacs-custom"))
 #+END_SRC
 
 ** Add custom packages to load path
@@ -124,6 +123,17 @@ We bind individual mode chords via =use-package= but some globals are useful lik
     (switch-to-buffer (other-buffer (current-buffer) 1)))
 
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
+#+END_SRC
+
+** Xah Fly Keys
+
+#+BEGIN_SRC emacs-lisp
+  (use-package xah-fly-keys
+    :disabled
+    :ensure t
+    :config
+    (xah-fly-keys-set-layout "qwerty")
+    (xah-fly-keys 1))
 #+END_SRC
 
 ** Command completion
@@ -254,19 +264,13 @@ Use a simple theme for the file tree.
 
 * Appearance
 
-I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight.
-
-Load it by default.
+I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight. Enable it by default.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dracula-theme
-    :ensure t)
-#+END_SRC
-
-Enable chosen theme.
-
-#+BEGIN_SRC emacs-lisp
-  (load-theme 'dracula t)
+    :ensure t
+    :config
+    (load-theme 'dracula t))
 #+END_SRC
 
 Set a nice font.
@@ -392,9 +396,7 @@ Keep things indented correctly for me.
 
 #+BEGIN_SRC emacs-lisp
   (use-package aggressive-indent
-      :ensure t
-      :config
-      (add-hook 'prog-mode-hook 'aggressive-indent-mode))
+      :ensure t)
 #+END_SRC
 
 Expand parentheses for me.
@@ -515,7 +517,9 @@ Proselint is an external program, install it with =pip install proselint= for th
 
 ** Autocomplete
 
-Company mode provides good autocomplete options.
+Company mode provides good autocomplete options. Perhaps I should add company-quickhelp for documentation (https://github.com/expez/company-quickhelp)?
+
+It would also be good to improve integration with yasnippet as I don't feel I'm making the best use there.
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
@@ -523,6 +527,8 @@ Company mode provides good autocomplete options.
     :diminish
     :config
     (add-hook 'after-init-hook 'global-company-mode)
+
+    (setq company-idle-delay t)
 
     (use-package company-go
       :ensure t
@@ -799,3 +805,4 @@ Sometimes I need to explore REST services, why not use Emacs?
   (use-package restclient
     :ensure t)
 #+END_SRC
+
