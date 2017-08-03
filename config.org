@@ -127,11 +127,14 @@ We bind individual mode chords via =use-package= but some globals are useful lik
 
 ** Xah Fly Keys
 
+Xah-fly-keys is  alternative modal editing mode (c.f. evil mode) which focuses on efficiency and ergonomics.
+
 #+BEGIN_SRC emacs-lisp
   (use-package xah-fly-keys
-    :disabled
+    ;;:disabled
     :ensure t
     :config
+    (define-key key-translation-map (kbd "ESC") (kbd "<home>"))
     (xah-fly-keys-set-layout "qwerty")
     (xah-fly-keys 1))
 #+END_SRC
