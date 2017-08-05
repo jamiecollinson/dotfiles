@@ -124,21 +124,6 @@ We bind individual mode chords via =use-package= but some globals are useful lik
 
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
 #+END_SRC
-
-** Xah Fly Keys
-
-Xah-fly-keys is  alternative modal editing mode (c.f. evil mode) which focuses on efficiency and ergonomics.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package xah-fly-keys
-    ;;:disabled
-    :ensure t
-    :config
-    (define-key key-translation-map (kbd "ESC") (kbd "<home>"))
-    (xah-fly-keys-set-layout "qwerty")
-    (xah-fly-keys 1))
-#+END_SRC
-
 ** Command completion
 
 =smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
@@ -188,7 +173,7 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
     :ensure t)
 #+END_SRC
 
-** Next key suggestion
+** Suggest next key
 
 Suggest next keys to me based on currently entered key combination.
 
@@ -276,16 +261,47 @@ I'm currently using the dracula theme, it's Monokai-esque and has good contrast.
     (load-theme 'dracula t))
 #+END_SRC
 
-Set a nice font.
+Set a nice font, and enable ligatures (codes are Fira specific I think).
 
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "FuraCode Nerd Font 12" nil t)
+  (when (window-system)
+    (set-frame-font "FuraCode Nerd Font 12" nil t))
+
+  (let ((alist '((33 . ".\\(?:\\(?:==\\|!!\\)\\|[!=]\\)")
+                 (35 . ".\\(?:###\\|##\\|_(\\|[#(?[_{]\\)")
+                 (36 . ".\\(?:>\\)")
+                 (37 . ".\\(?:\\(?:%%\\)\\|%\\)")
+                 (38 . ".\\(?:\\(?:&&\\)\\|&\\)")
+                 (42 . ".\\(?:\\(?:\\*\\*/\\)\\|\\(?:\\*[*/]\\)\\|[*/>]\\)")
+                 (43 . ".\\(?:\\(?:\\+\\+\\)\\|[+>]\\)")
+                 (45 . ".\\(?:\\(?:-[>-]\\|<<\\|>>\\)\\|[<>}~-]\\)")
+                 (46 . ".\\(?:\\(?:\\.[.<]\\)\\|[.=-]\\)")
+                 (47 . ".\\(?:\\(?:\\*\\*\\|//\\|==\\)\\|[*/=>]\\)")
+                 (48 . ".\\(?:x[a-zA-Z]\\)")
+                 (58 . ".\\(?:::\\|[:=]\\)")
+                 (59 . ".\\(?:;;\\|;\\)")
+                 (60 . ".\\(?:\\(?:!--\\)\\|\\(?:~~\\|->\\|\\$>\\|\\*>\\|\\+>\\|--\\|<[<=-]\\|=[<=>]\\||>\\)\\|[*$+~/<=>|-]\\)")
+                 (61 . ".\\(?:\\(?:/=\\|:=\\|<<\\|=[=>]\\|>>\\)\\|[<=>~]\\)")
+                 (62 . ".\\(?:\\(?:=>\\|>[=>-]\\)\\|[=>-]\\)")
+                 (63 . ".\\(?:\\(\\?\\?\\)\\|[:=?]\\)")
+                 (91 . ".\\(?:]\\)")
+                 (92 . ".\\(?:\\(?:\\\\\\\\\\)\\|\\\\\\)")
+                 (94 . ".\\(?:=\\)")
+                 (119 . ".\\(?:ww\\)")
+                 (123 . ".\\(?:-\\)")
+                 (124 . ".\\(?:\\(?:|[=|]\\)\\|[=>|]\\)")
+                 (126 . ".\\(?:~>\\|~~\\|[>=@~-]\\)")
+                 )
+               ))
+    (dolist (char-regexp alist)
+      (set-char-table-range composition-function-table (car char-regexp)
+                            `([,(cdr char-regexp) 0 font-shape-gstring]))))
 #+END_SRC
 
 Display pretty symbols for things like lambda.
 
 #+BEGIN_SRC emacs-lisp
-  (global-prettify-symbols-mode)
+  (global-prettify-symbols-mode 0)
   (setq prettify-symbols-unprettify-at-point 'right-edge)
 
   (add-hook
@@ -344,33 +360,6 @@ Highlight the current line.
 
 #+BEGIN_SRC emacs-lisp
   (global-hl-line-mode 1)
-#+END_SRC
-
-* Evil
-
-I haven't yet decided on how to handle evil mode. I came to emacs from vim via spacemacs, so I'm naturaly inclined to use it, but I find I understand emacs better when I'm not.
-
-For the moment it's installed and easily activated but disabled by default.
-
-N.B. doesn't feel right with my key chords setup due to =jj= being bound. I should write a function to toggle which enables evil / disables keychord.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :ensure t
-    :config
-    (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-    (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-    (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-    (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-
-    (use-package evil-leader
-      :ensure t
-      :config
-      (global-evil-leader-mode)
-      (evil-leader/set-leader "<SPC>")
-      (evil-leader/set-key "s" 'save-buffer)
-      (evil-leader/set-key "b" 'helm-buffers-list)
-      (evil-leader/set-key "SPC" 'avy-goto-word-1)))
 #+END_SRC
 
 * Coding
@@ -704,6 +693,14 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
     :config
     (add-hook 'python-mode-hook 'anaconda-mode)
     (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+END_SRC
+
+Sometimes I use kivy.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package kivy-mode
+    :ensure t
+    :mode ("\\.kv\\'" . kivy-mode))
 #+END_SRC
 
 * Org
