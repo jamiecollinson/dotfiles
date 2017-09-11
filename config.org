@@ -124,6 +124,34 @@ We bind individual mode chords via =use-package= but some globals are useful lik
 
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
 #+END_SRC
+
+** Evil
+
+I haven’t yet decided on how to handle evil mode. I came to emacs from vim via spacemacs, so I’m naturaly inclined to use it, but I find I understand emacs better when I’m not.
+
+For the moment it’s installed and easily activated but disabled by default.
+
+N.B. doesn’t feel right with my key chords setup due to jj being bound. I should write a function to toggle which enables evil / disables keychord.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package evil
+    :ensure t
+    :config
+    (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
+    (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
+    (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
+    (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
+
+    (use-package evil-leader
+      :ensure t
+      :config
+      (global-evil-leader-mode)
+      (evil-leader/set-leader "<SPC>")
+      (evil-leader/set-key "s" 'save-buffer)
+      (evil-leader/set-key "b" 'helm-buffers-list)
+      (evil-leader/set-key "SPC" 'avy-goto-word-1))) 
+#+END_SRC
+
 ** Command completion
 
 =smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
