@@ -304,8 +304,9 @@ Set a preferred unicode font.
 Display pretty symbols for things like lambda.
 
 #+BEGIN_SRC emacs-lisp
-  (setq prettify-symbols-unprettify-at-point 'right-edge)  (global-prettify-symbols-mode 1)
-    
+  (setq prettify-symbols-unprettify-at-point 'right-edge)
+  (global-prettify-symbols-mode 0)
+      
   (add-hook
    'python-mode-hook
    (lambda ()
@@ -717,7 +718,6 @@ Elixir highlighting is not built into emacs at present. Elixir-mode gives all th
     (use-package alchemist
       :ensure t))
 #+END_SRC
-
 ** Cucumber
 
 Cucumber (gherkin) is a syntax for specifying behaviour driven development tests.
@@ -725,6 +725,14 @@ Cucumber (gherkin) is a syntax for specifying behaviour driven development tests
 #+BEGIN_SRC emacs-lisp
   (use-package feature-mode
     :ensure t)
+#+END_SRC
+
+** Rebol / Red
+
+Red is an updated open source implementation of Rebol.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rebol)
 #+END_SRC
 
 * Org
