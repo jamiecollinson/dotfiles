@@ -125,33 +125,6 @@ We bind individual mode chords via =use-package= but some globals are useful lik
   (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
 #+END_SRC
 
-** Evil
-
-I haven’t yet decided on how to handle evil mode. I came to emacs from vim via spacemacs, so I’m naturaly inclined to use it, but I find I understand emacs better when I’m not.
-
-For the moment it’s installed and easily activated but disabled by default.
-
-N.B. doesn’t feel right with my key chords setup due to jj being bound. I should write a function to toggle which enables evil / disables keychord.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package evil
-    :ensure t
-    :config
-    (define-key evil-normal-state-map (kbd "C-h") 'evil-window-left)
-    (define-key evil-normal-state-map (kbd "C-j") 'evil-window-down)
-    (define-key evil-normal-state-map (kbd "C-k") 'evil-window-up)
-    (define-key evil-normal-state-map (kbd "C-l") 'evil-window-right)
-
-    (use-package evil-leader
-      :ensure t
-      :config
-      (global-evil-leader-mode)
-      (evil-leader/set-leader "<SPC>")
-      (evil-leader/set-key "s" 'save-buffer)
-      (evil-leader/set-key "b" 'helm-buffers-list)
-      (evil-leader/set-key "SPC" 'avy-goto-word-1))) 
-#+END_SRC
-
 ** Command completion
 
 =smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
@@ -280,13 +253,14 @@ Use a simple theme for the file tree.
 
 * Appearance
 
-I'm currently using the dracula theme, it's Monokai-esque and has good contrast. I like the pink primary highlight. Enable it by default.
+I'm trying out solarized. Not sure I'll be able to get used to a light theme, but worth a try.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dracula-theme
+  (use-package solarized-theme
     :ensure t
     :config
-    (load-theme 'dracula t))
+    (setq solarized-emphasize-indicators nil)
+    (load-theme 'solarized-light t))
 #+END_SRC
 
 Set a nice font.
@@ -741,7 +715,7 @@ Red is an updated open source implementation of Rebol.
 I should comment on these more...
 
 #+BEGIN_SRC emacs-lisp
-  (setq org-startup-indented 't)
+  (setq org-startup-indented 'f)
   (setq org-directory "~/org")
   (setq org-special-ctrl-a/e 't)
   (setq org-default-notes-file (concat org-directory "/notes.org"))
@@ -759,6 +733,7 @@ Improve the display of bullet points.
   (use-package org-bullets
     :ensure t
     :config
+    (setq org-bullets-bullet-list '("∙"))
     (add-hook 'org-mode-hook 'org-bullets-mode))
 #+END_SRC
 
@@ -780,11 +755,11 @@ Customize appearance.
                             `(org-level-7 ((t (,@headline ,@variable-tuple))))
                             `(org-level-6 ((t (,@headline ,@variable-tuple))))
                             `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-4 ((t (,@headline ,@variable-tuple :height 1.1))))
-                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.25))))
-                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.5))))
-                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.75))))
-                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.5 :underline nil))))))
+                            `(org-level-4 ((t (,@headline ,@variable-tuple))))
+                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.33))))
+                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.33))))
+                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.33))))
+                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.33 :underline nil))))))
 #+END_SRC
 
 ** Export
