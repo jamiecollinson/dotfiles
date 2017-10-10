@@ -259,8 +259,11 @@ I'm trying out solarized. Not sure I'll be able to get used to a light theme, bu
   (use-package solarized-theme
     :ensure t
     :config
-    (setq solarized-emphasize-indicators nil)
-    (load-theme 'solarized-light t))
+    (setq solarized-emphasize-indicators nil))
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (load-theme 'solarized-light t)
 #+END_SRC
 
 Set a nice font.
@@ -352,13 +355,22 @@ When programming I like my editor to try to help me with keeping parentheses bal
     (add-hook 'prog-mode-hook 'smartparens-mode))
 #+END_SRC
 
-Keep things indented correctly for me.
+Highlight parens etc. for improved readability.
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
     :ensure t
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
+#+END_SRC
+
+Highlight strings which represent colours.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rainbow-mode
+    :ensure t
+    :config
+    (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
 Keep things indented correctly for me.
@@ -378,7 +390,9 @@ Smart dash guesses _ vs - depending on context.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smart-dash
-    :ensure t)
+    :ensure t
+    :config
+    (add-hook 'python-mode-hook 'smart-dash-mode))
 #+END_SRC
 
 ** Project management
@@ -542,7 +556,9 @@ JS2 mode improves on the built in JS mode.
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
     :ensure t
-    :mode "\\.js\\'")
+    :mode "\\.js\\'"
+    :config
+    (setq-default js2-ignored-warnings '("msg.extra.trailing.comma")))
 #+END_SRC
 
 =js2-refactor= supports some useful refactoring options and builds on top of =js2-mode=.
