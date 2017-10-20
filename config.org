@@ -422,6 +422,16 @@ There is no function for projectile-grep, but we could use =counsel-git-grep= wh
     :config
     (add-hook 'after-init-hook 'counsel-projectile-on))
 #+END_SRC
+
+** Fuzzy search
+
+=fzf= is a fuzzy file finder which is very quick.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package fzf
+    :ensure t)
+#+END_SRC
+
 ** Environment management
 
 By default Emacs doesn't read from the same environment variables set in your terminal. This package fixes that.
@@ -464,6 +474,13 @@ Display line changes in gutter based on git history. Enable it everywhere.
     :config
     (global-git-gutter-mode 't)
     :diminish git-gutter-mode)
+#+END_SRC
+
+TimeMachine lets us step through the history of a file as recorded in git.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package git-timemachine
+    :ensure t)
 #+END_SRC
 
 ** Syntax checking
