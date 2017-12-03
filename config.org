@@ -742,6 +742,13 @@ Red is an updated open source implementation of Rebol.
   (use-package rebol)
 #+END_SRC
 
+** Idris
+
+#+BEGIN_SRC emacs-lisp
+  (use-package idris-mode
+    :ensure t)
+#+END_SRC
+
 * Org
 ** General settings.
 
