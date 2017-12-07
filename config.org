@@ -4,7 +4,7 @@
 * Setup
 ** Configure package sources
 
-Add repositories we'll load packages from. I prefer to live on the bleeding edge so have only enabled melpa. Setting =package-enable-at-startup= to =nil= prevents a second package load and slightly improves startup time.
+Add repositories from which we'll load packages. I prefer to live on the bleeding edge so have only enabled melpa. Setting =package-enable-at-startup= to =nil= prevents a second package load and slightly improves startup time.
 
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
@@ -253,23 +253,19 @@ Use a simple theme for the file tree.
 
 * Appearance
 
-I'm trying out solarized. Not sure I'll be able to get used to a light theme, but worth a try.
+I like the dracula theme - dark with neon highlights.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package solarized-theme
+  (use-package dracula-theme
     :ensure t
     :config
-    (setq solarized-emphasize-indicators nil))
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (load-theme 'solarized-light t)
+    (load-theme 'dracula t))
 #+END_SRC
 
 Set a nice font.
 
 #+BEGIN_SRC emacs-lisp
-  (set-frame-font "FuraCode Nerd Font 12" nil t)
+  (set-frame-font "Operator Mono 12" nil t)
 #+END_SRC
 
 Set a preferred unicode font.
@@ -539,6 +535,12 @@ It would also be good to improve integration with yasnippet as I don't feel I'm 
       :ensure t
       :config
       (add-to-list 'company-backends 'company-anaconda)))
+#+END_SRC
+
+I don't want suggestions from open files / buffers to be automatically lowercased as these are often camelcase function names.
+
+#+BEGIN_SRC emacs-lisp
+  (setq company-dabbrev-downcase nil)
 #+END_SRC
 
 ** Snippets
