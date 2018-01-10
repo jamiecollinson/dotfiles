@@ -102,6 +102,12 @@ A common frustration with new Emacs users is the =filename#= files created. This
     :bind (("C-a" . crux-move-beginning-of-line)))
 #+END_SRC
 
+I *never* want whitespace at the end of lines. Remove it on save.
+
+#+BEGIN_SRC emacs-lisp
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+#+END_SRC
+
 ** Key chords
 
 Key chords let us bind functions to sequential key presses like =jj=. It makes evil mode being turned off much more palatable.
@@ -279,7 +285,7 @@ Display pretty symbols for things like lambda.
 #+BEGIN_SRC emacs-lisp
   (setq prettify-symbols-unprettify-at-point 'right-edge)
   (global-prettify-symbols-mode 0)
-      
+
   (add-hook
    'python-mode-hook
    (lambda ()
@@ -743,12 +749,33 @@ Red is an updated open source implementation of Rebol.
 #+BEGIN_SRC emacs-lisp
   (use-package rebol)
 #+END_SRC
-
 ** Idris
 
 #+BEGIN_SRC emacs-lisp
   (use-package idris-mode
     :ensure t)
+#+END_SRC
+
+** Coq
+
+Proof general must be installed separately via:
+
+#+BEGIN_SRC sh
+  git clone https://github.com/ProofGeneral/PG ~/.emacs.d/lisp/PG
+  make -C ~/.emacs.d/lisp/PG
+#+END_SRC
+
+Open .v files with Proof General's Coq mode
+
+#+BEGIN_SRC emacs-lisp
+  (require 'proof-site "~/.emacs.d/lisp/PG/generic/proof-site")
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-coq
+    :ensure t
+    :config
+    (add-hook 'coq-mode-hook 'company-coq-mode))
 #+END_SRC
 
 * Org
@@ -854,4 +881,3 @@ Sometimes I need to explore REST services. Why not Emacs?
   (use-package restclient
     :ensure t)
 #+END_SRC
-
