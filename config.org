@@ -642,6 +642,17 @@ Web mode handles html/css/js.
     :ensure t)
 #+END_SRC
 
+Web beautify prettifies html / css / js using js-beautify - install with =npm install -g js-beautify=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package web-beautify
+    :ensure t
+    :bind (:map web-mode-map
+           ("C-c b" . web-beautify-html)
+           :map js2-mode-map
+           ("C-c b" . web-beautify-js)))
+#+END_SRC
+
 ** Markdown
 
 Markdown support isn't built into Emacs, add it with =markdown-mode=.
