@@ -1,0 +1,3 @@
+[submodule "lisp/PG"]
+	path = lisp/PG
+	url = https://github.com/ProofGeneral/PG
