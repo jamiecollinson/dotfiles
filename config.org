@@ -366,12 +366,13 @@ Highlight parens etc. for improved readability.
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
 
-Highlight strings which represent colours.
+Highlight strings which represent colours. I only want this in programming modes, and I don't want colour names to be highlighted (=x-colors=).
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-mode
     :ensure t
     :config
+    (setq rainbow-x-colors nil)
     (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
