@@ -633,7 +633,6 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
       (when (and eslint (file-executable-p eslint))
         (setq-local flycheck-javascript-eslint-executable eslint))))
 #+END_SRC
-
 ** Web mode
 
 Web mode handles html/css/js.
@@ -788,6 +787,18 @@ Open .v files with Proof General's Coq mode
     :ensure t
     :config
     (add-hook 'coq-mode-hook 'company-coq-mode))
+#+END_SRC
+
+** Elm
+
+Elm is a delightful language for reliable webapps. It compiles to JS. First install elm with =npm install -g elm elm-oracle elm-format=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package elm-mode
+    :ensure t
+    :config
+    (setq elm-format-on-save t)
+    (add-to-list 'company-backends 'company-elm))
 #+END_SRC
 
 * Org
