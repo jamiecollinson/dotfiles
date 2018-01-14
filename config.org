@@ -878,7 +878,7 @@ Add bootstrap styled export.
 
 ** Web browsing
 
-=w3m= is a terminal based browser. Emacs now has =eww= built in, but I prefer =w3m=. It needs to be installed separately, e.g. with =brew install w3m=.
+=w3m= is a terminal based browser. Emacs now has =eww= built in, but I prefer =w3m=. Install it separately, e.g. with =brew install w3m=.
 
 There's an emacs package to interface with it.
 
@@ -889,7 +889,7 @@ There's an emacs package to interface with it.
 
 ** Email
 
-=notmuch= is a fast mail client. It needs to be installed externally, e.g. with =brew install notmuch= but can then be used within emacs.
+=notmuch= is a fast mail client. Install it externally, e.g. with =brew install notmuch= and then use it within emacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package notmuch
