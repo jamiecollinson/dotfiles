@@ -699,7 +699,9 @@ Web mode handles html/css/js.
 
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
-    :ensure t)
+    :ensure t
+    :config
+    (setq web-mode-markup-indent-offset 2))
 #+END_SRC
 
 Web beautify prettifies html / css / js using js-beautify - install with =npm install -g js-beautify=.
