@@ -263,9 +263,19 @@ I like the dracula theme - dark with neon highlights.
 
 #+BEGIN_SRC emacs-lisp
   (use-package dracula-theme
+    :disabled
     :ensure t
     :config
     (load-theme 'dracula t))
+#+END_SRC
+
+I'm now using my own translation of Panda Theme.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package panda-theme
+    :load-path "~/personal/emacs-panda-theme/"
+    :config
+    (load-theme 'panda t))
 #+END_SRC
 
 Set a nice font.
@@ -498,8 +508,43 @@ Setup is pretty simple - we just enable globally and turn on a custom eslint fun
     :config
     (add-hook 'after-init-hook 'global-flycheck-mode)
     (add-hook 'flycheck-mode-hook 'jc/use-eslint-from-node-modules)
-    (add-to-list 'flycheck-checkers 'proselint))
-#+END_SRC
+    (add-to-list 'flycheck-checkers 'proselint)
+    (setq-default flycheck-highlighting-mode 'lines)
+    ;; Define fringe indicator / warning levels
+    (define-fringe-bitmap 'flycheck-fringe-bitmap-ball
+      (vector #b00000000
+              #b00000000
+              #b00000000
+              #b00000000
+              #b00000000
+              #b00000000
+              #b00000000
+              #b00011100
+              #b00111110
+              #b00111110
+              #b00111110
+              #b00011100
+              #b00000000
+              #b00000000
+              #b00000000
+              #b00000000
+              #b00000000))
+    (flycheck-define-error-level 'error
+      :severity 2
+      :overlay-category 'flycheck-error-overlay
+      :fringe-bitmap 'flycheck-fringe-bitmap-ball
+      :fringe-face 'flycheck-fringe-error)
+    (flycheck-define-error-level 'warning
+      :severity 1
+      :overlay-category 'flycheck-warning-overlay
+      :fringe-bitmap 'flycheck-fringe-bitmap-ball
+      :fringe-face 'flycheck-fringe-warning)
+    (flycheck-define-error-level 'info
+      :severity 0
+      :overlay-category 'flycheck-info-overlay
+      :fringe-bitmap 'flycheck-fringe-bitmap-ball
+      :fringe-face 'flycheck-fringe-info))
+    #+END_SRC
 
 Proselint is a syntax checker for English language. This defines a custom checker which will run in texty modes.
 
@@ -617,6 +662,21 @@ Prettier-js autoformats JS code - much like `gofmt` - and we hook it into JS2 an
                           ))
     (add-hook 'js2-mode-hook 'prettier-js-mode)
     (add-hook 'rjsx-mode-hook 'prettier-js-mode))
+#+END_SRC
+
+=js-doc= makes it easy to add jsdoc comments via =Ctrl+c i=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package js-doc
+    :ensure t
+    :bind (:map js2-mode-map
+           ("C-c i" . js-doc-insert-function-doc)
+           ("@" . js-doc-insert-tag))
+    :config
+    (setq js-doc-mail-address "jamiecollinson@gmail.com"
+         js-doc-author (format "Jamie Collinson <%s>" js-doc-mail-address)
+         js-doc-url "jamiecollinson.com"
+         js-doc-license "MIT License"))
 #+END_SRC
 
 Sometimes it's useful to use the local eslint provided by a project's node_modules directory. We call this function from a flycheck hook to enable it automatically.
