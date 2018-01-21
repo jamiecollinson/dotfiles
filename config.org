@@ -433,7 +433,7 @@ There is no function for projectile-grep, but we could use =counsel-git-grep= wh
   (use-package counsel-projectile
     :ensure t
     :config
-    (add-hook 'after-init-hook 'counsel-projectile-on))
+    (add-hook 'after-init-hook 'counsel-projectile-mode))
 #+END_SRC
 
 ** Fuzzy search
@@ -693,6 +693,7 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
       (when (and eslint (file-executable-p eslint))
         (setq-local flycheck-javascript-eslint-executable eslint))))
 #+END_SRC
+
 ** Web mode
 
 Web mode handles html/css/js.
@@ -863,6 +864,62 @@ Elm is a delightful language for reliable webapps. It compiles to JS. First inst
     (add-to-list 'company-backends 'company-elm))
 #+END_SRC
 
+** C
+
+Emacs has a great built in C/C++ mode, but we can improve on it with =irony-mode= for code completion via =libclang=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package irony
+    :ensure t
+    :hook (c-mode . irony-mode))
+#+END_SRC
+
+Add company mode support.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-irony
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-irony))
+#+END_SRC
+
+Add flycheck support.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package flycheck-irony
+    :ensure t
+    :hook (flycheck-mode . flycheck-irony-setup))
+#+END_SRC
+
+** C#
+
+Dotnet core runs on linux / macos. Let's get syntax highlighting.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package csharp-mode
+    :ensure t)
+#+END_SRC
+
+Omnisharp gives completion / refactoring support, and hooks into company-mode.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package omnisharp
+    :ensure t
+    :hook ((csharp-mode . omnisharp-mode)
+           (before-save . omnisharp-code-format-entire-file))
+    :config
+    (add-to-list 'company-backends 'company-omnisharp))
+#+END_SRC
+
+** F#
+
+Since we have dotnet core why not?
+
+#+BEGIN_SRC emacs-lisp
+  (use-package fsharp-mode
+    :ensure t)
+#+END_SRC
+
 * Org
 ** General settings.
 
@@ -877,6 +934,7 @@ I should comment on these more...
   (setq org-mobile-directory "~/Dropbox/Apps/MobileOrg")
   (setq org-src-fontify-natively 't)
   (setq org-src-tab-acts-natively t)
+  (setq org-src-window-setup 'current-window)
 #+END_SRC
 
 ** Appearance
