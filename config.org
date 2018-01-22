@@ -200,7 +200,9 @@ Suggest next keys to me based on currently entered key combination.
   (use-package undo-tree
     :ensure t
     :chords (("uu" . undo-tree-visualize))
-    :diminish undo-tree-mode)
+    :diminish undo-tree-mode:
+    :config
+    (global-undo-tree-mode 1))
 #+END_SRC
 
 ** Navigation
@@ -234,9 +236,11 @@ One of the most important features of an advanced editor is quick text navigatio
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
-** File tree
+** TODO File tree
 
 I don't use this a whole lot, preferring to navigate via searches such as =counsel-find-file=, but it's occasionally useful to have a file tree.
+
+I should consider https://github.com/Alexander-Miller/treemacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
@@ -701,9 +705,15 @@ Web mode handles html/css/js.
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
     :ensure t
+    :mode ("\\.html\\'")
     :config
-    (setq web-mode-markup-indent-offset 2))
+    (setq web-mode-markup-indent-offset 2)
+    (setq web-mode-engines-alist
+          '(("django" . "focus/.*\\.html\\'")
+            ("ctemplate" . "realtimecrm/.*\\.html\\'"))))
 #+END_SRC
+
+** Web Beautify
 
 Web beautify prettifies html / css / js using js-beautify - install with =npm install -g js-beautify=.
 
@@ -906,6 +916,7 @@ Omnisharp gives completion / refactoring support, and hooks into company-mode.
   (use-package omnisharp
     :ensure t
     :hook ((csharp-mode . omnisharp-mode)
+           ;; TODO: 'before-save runs globally - make this buffer local?
            (before-save . omnisharp-code-format-entire-file))
     :config
     (add-to-list 'company-backends 'company-omnisharp))
