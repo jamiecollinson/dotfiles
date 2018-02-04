@@ -273,11 +273,11 @@ I like the dracula theme - dark with neon highlights.
     (load-theme 'dracula t))
 #+END_SRC
 
-I'm now using my own translation of Panda Theme.
+I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/panda-theme][melpa]]!).
 
 #+BEGIN_SRC emacs-lisp
   (use-package panda-theme
-    :load-path "~/personal/emacs-panda-theme/"
+    :ensure t
     :config
     (load-theme 'panda t))
 #+END_SRC
