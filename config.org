@@ -2,6 +2,17 @@
 #+AUTHOR: Jamie Collinson
 
 * Setup
+** Make it easy to edit this file!
+
+#+BEGIN_SRC emacs-lisp
+  (defun find-config ()
+    "Edit the config.org in another window."
+    (interactive)
+    (find-file "~/dotfiles/config.org"))
+
+  (global-set-key (kbd "C-c I") 'find-config)
+#+END_SRC
+
 ** Configure package sources
 
 Add repositories from which we'll load packages. I prefer to live on the bleeding edge so have only enabled melpa. Setting =package-enable-at-startup= to =nil= prevents a second package load and slightly improves startup time.
@@ -38,7 +49,6 @@ I put my scripts under =~/dotfiles/lisp/= and symlink it with =ln -s ~/dotfiles/
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
 #+END_SRC
-
 * Preferences
 
 Don't display the help screen on startup.
@@ -273,6 +283,13 @@ I like the dracula theme - dark with neon highlights.
     (load-theme 'dracula t))
 #+END_SRC
 
+I'm trying out =apropospriate=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package apropospriate-theme
+    :ensure t)
+#+END_SRC
+
 I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/panda-theme][melpa]]!).
 
 #+BEGIN_SRC emacs-lisp
@@ -326,9 +343,17 @@ Powerline is a port from vim, and improves the modeline. Without specifying =pow
 
 #+BEGIN_SRC emacs-lisp
   (use-package powerline
+    :disabled
     :ensure t
     :config
     (setq powerline-default-separator 'utf-8))
+#+END_SRC
+
+=feebleline= is a minimalist mode line replacement.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package feebleline
+    :ensure t)
 #+END_SRC
 
 Add emoji support. This is useful when working with html.
@@ -785,6 +810,27 @@ Install haskell mode.
     :ensure t)
 #+END_SRC
 
+Code formatting is easier with =hindent=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package hindent
+    :ensure t)
+#+END_SRC
+
+Completion is via =ghc-mod= / =company=. Install the former separately with =cabal install ghc-mod=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package ghc
+    :ensure t
+    :config
+    (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
+
+  (use-package company-ghc
+    :ensure t
+    :config
+    (add-to-list 'company-backends 'company-ghc))
+#+END_SRC
+
 ** Python
 
 Emacs handles python quite well, but we can improve things with anaconda mode.
@@ -1007,6 +1053,25 @@ Add bootstrap styled export.
     (add-to-list 'writegood-weasel-words "actionable"))
 #+END_SRC
 
+** Stack Overflow
+
+SX is a full stack overflow client within Emacs.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package sx
+    :ensure t
+    :config
+    (bind-keys :prefix "C-c s"
+               :prefix-map my-sx-map
+               :prefix-docstring "Global keymap for SX."
+               ("q" . sx-tab-all-questions)
+               ("i" . sx-inbox)
+               ("o" . sx-open-link)
+               ("u" . sx-tab-unanswered-my-tags)
+               ("a" . sx-ask)
+               ("s" . sx-search)))
+#+END_SRC
+
 ** Web browsing
 
 =w3m= is a terminal based browser. Emacs now has =eww= built in, but I prefer =w3m=. Install it separately, e.g. with =brew install w3m=.
@@ -1033,5 +1098,24 @@ Sometimes I need to explore REST services. Why not Emacs?
 
 #+BEGIN_SRC emacs-lisp
   (use-package restclient
+    :ensure t)
+#+END_SRC
+
+** Slack
+
+I use slack for work.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package slack
+    :ensure t
+    :commands (slack-start))
+#+END_SRC
+
+** Google
+
+It's always useful to look things up.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package google-this
     :ensure t)
 #+END_SRC
