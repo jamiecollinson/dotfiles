@@ -1,12 +1,25 @@
 #+TITLE: Emacs Config
 #+AUTHOR: Jamie Collinson
+#+TOC: true
+#+DATE: Sun Mar 11 14:33:18 2018
+
+This is my emacs configuration. After many years with vim then a year with spacemacs & prelude, I came to the realisation that I needed to construct my own to really get it[fn:1].
+
+After a few aborted attempts to split the config into separate files, I settled on the single file literate approach via [[http://pages.sachachua.com/.emacs.d/Sacha.html][Sacha Chua]].
+
+Documenting this is mostly for my benefit, but I hope others might find it useful constucting their own. The live version is [[https://github.com/jamiecollinson/dotfiles/blob/master/config.org/][on GitHub]], with this version updated periodically.
+
+#+BEGIN_QUOTE
+Not that we needed all that for the trip, but once you get locked into a serious drug collection, the tendency is to push it as far as you can.
+-- Hunter S. Thompson, Fear and Loathing in Las Vegas
+#+END_QUOTE
 
 * Setup
 ** Make it easy to edit this file!
 
 #+BEGIN_SRC emacs-lisp
   (defun find-config ()
-    "Edit the config.org in another window."
+    "Edit config.org"
     (interactive)
     (find-file "~/dotfiles/config.org"))
 
@@ -1119,3 +1132,5 @@ It's always useful to look things up.
   (use-package google-this
     :ensure t)
 #+END_SRC
+
+[fn:1] I hesitate to say this is the emacs way, it's just what I felt necessary.
