@@ -11,10 +11,22 @@ Documenting this is mostly for my benefit, but I hope others might find it usefu
 
 #+BEGIN_QUOTE
 Not that we needed all that for the trip, but once you get locked into a serious drug collection, the tendency is to push it as far as you can.
--- Hunter S. Thompson, Fear and Loathing in Las Vegas
+Hunter S. Thompson, Fear and Loathing in Las Vegas
 #+END_QUOTE
 
 * Setup
+** Benchmark startup
+
+=benchmark-init= records startup time by package so we can debug. It only records things after it's initialised, so put as early in config as possible.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package benchmark-init
+    :ensure t
+    :config
+    ;; To disable collection of benchmark data after init is done.
+    (add-hook 'after-init-hook 'benchmark-init/deactivate))
+#+END_SRC
+
 ** Make it easy to edit this file!
 
 #+BEGIN_SRC emacs-lisp
@@ -62,6 +74,7 @@ I put my scripts under =~/dotfiles/lisp/= and symlink it with =ln -s ~/dotfiles/
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'load-path "~/.emacs.d/lisp/")
 #+END_SRC
+
 * Preferences
 
 Don't display the help screen on startup.
@@ -259,11 +272,9 @@ One of the most important features of an advanced editor is quick text navigatio
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
-** TODO File tree
+** File tree
 
 I don't use this a whole lot, preferring to navigate via searches such as =counsel-find-file=, but it's occasionally useful to have a file tree.
-
-I should consider https://github.com/Alexander-Miller/treemacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
@@ -284,24 +295,14 @@ Use a simple theme for the file tree.
   (setq neo-theme 'arrow)
 #+END_SRC
 
-* Appearance
-
-I like the dracula theme - dark with neon highlights.
+Trying out treemacs:
 
 #+BEGIN_SRC emacs-lisp
-  (use-package dracula-theme
-    :disabled
-    :ensure t
-    :config
-    (load-theme 'dracula t))
-#+END_SRC
-
-I'm trying out =apropospriate=.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package apropospriate-theme
+  (use-package treemacs
     :ensure t)
 #+END_SRC
+
+* Appearance
 
 I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/panda-theme][melpa]]!).
 
@@ -316,40 +317,6 @@ Set a nice font.
 
 #+BEGIN_SRC emacs-lisp
   (set-frame-font "Operator Mono 12" nil t)
-#+END_SRC
-
-Set a preferred unicode font.
-
-#+BEGIN_SRC emacs-lisp
-  (set-fontset-font t 'unicode "STIXGeneral" nil 'prepend)
-#+END_SRC
-
-Display pretty symbols for things like lambda.
-
-#+BEGIN_SRC emacs-lisp
-  (setq prettify-symbols-unprettify-at-point 'right-edge)
-  (global-prettify-symbols-mode 0)
-
-  (add-hook
-   'python-mode-hook
-   (lambda ()
-     (mapc (lambda (pair) (push pair prettify-symbols-alist))
-           '(("def" . "𝒇")
-             ("class" . "𝑪")
-             ("and" . "∧")
-             ("or" . "∨")
-             ("not" . "￢")
-             ("in" . "∈")
-             ("not in" . "∉")
-             ("return" . "⟼")
-             ("yield" . "⟻")
-             ("for" . "∀")
-             ("!=" . "≠")
-             ("==" . "＝")
-             (">=" . "≥")
-             ("<=" . "≤")
-             ("[]" . "⃞")
-             ("=" . "≝")))))
 #+END_SRC
 
 Powerline is a port from vim, and improves the modeline. Without specifying =powerline-default-separator= the separators don't show correctly for me.
@@ -381,13 +348,6 @@ Sometimes it helps to focus on the thing currently under the cursor. This turns 
 #+BEGIN_SRC emacs-lisp
   (use-package focus
     :ensure t)
-#+END_SRC
-
-Sometimes I like to use a nyan cat to indicate progress through the buffer.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package nyan-mode
-      :ensure t)
 #+END_SRC
 
 Highlight the current line.
@@ -917,8 +877,7 @@ Open .v files with Proof General's Coq mode
 #+BEGIN_SRC emacs-lisp
   (use-package company-coq
     :ensure t
-    :config
-    (add-hook 'coq-mode-hook 'company-coq-mode))
+    :hook (coq-mode . company-coq-mode))
 #+END_SRC
 
 ** Elm
@@ -1040,7 +999,7 @@ Customize appearance.
                             `(org-level-4 ((t (,@headline ,@variable-tuple))))
                             `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.33))))
                             `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.33))))
-                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.33))))
+                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.33 ))))
                             `(org-document-title ((t (,@headline ,@variable-tuple :height 1.33 :underline nil))))))
 #+END_SRC
 
