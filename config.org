@@ -25,9 +25,27 @@ Hunter S. Thompson, Fear and Loathing in Las Vegas
     :config
     ;; To disable collection of benchmark data after init is done.
     (add-hook 'after-init-hook 'benchmark-init/deactivate))
+
+  (add-hook 'after-init-hook
+            (lambda () (message "loaded in %s" (emacs-init-time))))
 #+END_SRC
 
-** Make it easy to edit this file!
+** Increase garbage collector threshold
+
+The default garbage collection threshold is 800kB, increasing this to 10MB for startup increases speed (from 11.0s -> 9.7s when I tested).
+
+#+BEGIN_SRC emacs-lisp
+  (setq gc-cons-threshold 10000000)
+
+  ;; Restore after startup
+  (add-hook 'after-init-hook
+            (lambda ()
+              (setq gc-cons-threshold 1000000)
+              (message "gc-cons-threshold restored to %S"
+                       gc-cons-threshold)))
+#+END_SRC
+
+** Make it easy to edit this file
 
 #+BEGIN_SRC emacs-lisp
   (defun find-config ()
@@ -235,8 +253,9 @@ Suggest next keys to me based on currently entered key combination.
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :ensure t
+    :defer 5
     :chords (("uu" . undo-tree-visualize))
-    :diminish undo-tree-mode:
+    :diminish global-undo-tree-mode
     :config
     (global-undo-tree-mode 1))
 #+END_SRC
