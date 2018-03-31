@@ -243,7 +243,7 @@ Suggest next keys to me based on currently entered key combination.
 
 ** Navigation
 
-One of the most important features of an advanced editor is quick text navigation. =avy= let's us jump to any character or line quickly.
+One of the most important features of an advanced editor is quick text navigation. =avy= lets us jump to any character or line quickly.
 
 #+BEGIN_SRC emacs-lisp
   (use-package avy
