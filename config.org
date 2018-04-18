@@ -145,6 +145,12 @@ A common frustration with new Emacs users is the =filename#= files created. This
     )
 #+END_SRC
 
+I usually don't want tabs, if I do I can set this buffer-local to =t=. If I just want one tab then use =C-q= (=quoted-insert=) to insert as a literal.
+
+#+BEGIN_SRC emacs-lisp
+  (setq-default indent-tabs-mode nil)
+#+END_SRC
+
 * Interface
 ** Basics
 
@@ -869,7 +875,8 @@ Cucumber (gherkin) is a syntax for specifying behaviour driven development tests
 Red is an updated open source implementation of Rebol.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package rebol)
+  (use-package rebol
+    :disabled)
 #+END_SRC
 ** Idris
 
