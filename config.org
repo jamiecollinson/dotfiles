@@ -230,7 +230,7 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
     :ensure t
-    :bind (("M-s" . swiper)))
+    :bind (("M-s" . counsel-grep-or-swiper)))
 #+END_SRC
 
 =hydra= presents menus for =ivy= commands.
@@ -875,8 +875,7 @@ Cucumber (gherkin) is a syntax for specifying behaviour driven development tests
 Red is an updated open source implementation of Rebol.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package rebol
-    :disabled)
+  (use-package rebol)
 #+END_SRC
 ** Idris
 
