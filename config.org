@@ -381,6 +381,13 @@ Highlight the current line.
   (global-hl-line-mode 1)
 #+END_SRC
 
+Improve look and feel of titlebar on Macos. Set =ns-appearance= to =dark= for white title text and =nil= for black title text.
+
+#+BEGIN_SRC emacs-lisp
+  (add-to-list 'default-frame-alist '(ns-transparent-titlebar . t))
+  (add-to-list 'default-frame-alist '(ns-appearance . dark))
+#+END_SRC
+
 * Coding
 ** Programming specific interface improvements
 
