@@ -344,21 +344,13 @@ Set a nice font.
   (set-frame-font "Operator Mono 12" nil t)
 #+END_SRC
 
-Powerline is a port from vim, and improves the modeline. Without specifying =powerline-default-separator= the separators don't show correctly for me.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package powerline
-    :disabled
-    :ensure t
-    :config
-    (setq powerline-default-separator 'utf-8))
-#+END_SRC
-
 =feebleline= is a minimalist mode line replacement.
 
 #+BEGIN_SRC emacs-lisp
   (use-package feebleline
-    :ensure t)
+    :ensure t
+    :config
+    (feebleline-mode 't))
 #+END_SRC
 
 Add emoji support. This is useful when working with html.
@@ -846,6 +838,13 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
     :config
     (add-hook 'python-mode-hook 'anaconda-mode)
     (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+#+END_SRC
+
+Black is an opinionated pyton formatter. Install with =pip install black= so the command line tool is available.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package blacken
+    :ensure t)
 #+END_SRC
 
 Sometimes I use kivy.
