@@ -15,13 +15,28 @@ Hunter S. Thompson, Fear and Loathing in Las Vegas
 #+END_QUOTE
 
 * Setup
+** Bootstrap use-package
+
+If =use-package= is not installed, install it.
+
+#+BEGIN_SRC emacs-lisp
+  (unless (package-installed-p 'use-package)
+    (package-refresh-contents)
+    (package-install 'use-package))
+#+END_SRC
+
+By default all packages should be installed from package manager as that's the usual path. This is equivalent to setting =:ensure t= on each call to =use-package=. To disable set =:ensure nil= (this is done automatically for any packages using =:load-path= so shouldn't generally be needed).
+
+#+BEGIN_SRC emacs-lisp
+  (setq use-package-always-ensure t)
+#+END_SRC
+
 ** Benchmark startup
 
 =benchmark-init= records startup time by package so we can debug. It only records things after it's initialised, so put as early in config as possible.
 
 #+BEGIN_SRC emacs-lisp
   (use-package benchmark-init
-    :ensure t
     :config
     ;; To disable collection of benchmark data after init is done.
     (add-hook 'after-init-hook 'benchmark-init/deactivate))
@@ -63,16 +78,6 @@ Add repositories from which we'll load packages. I prefer to live on the bleedin
 #+BEGIN_SRC emacs-lisp
   (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
   (setq package-enable-at-startup nil)
-#+END_SRC
-
-** Bootstrap use-package
-
-If =use-package= is not installed, install it.
-
-#+BEGIN_SRC emacs-lisp
-  (unless (package-installed-p 'use-package)
-    (package-refresh-contents)
-    (package-install 'use-package))
 #+END_SRC
 
 ** Set custom settings to load in own file
@@ -158,7 +163,6 @@ I usually don't want tabs, if I do I can set this buffer-local to =t=. If I just
 
 #+BEGIN_SRC emacs-lisp
   (use-package crux
-    :ensure t
     :bind (("C-a" . crux-move-beginning-of-line)))
 #+END_SRC
 
@@ -167,44 +171,30 @@ I *never* want whitespace at the end of lines. Remove it on save.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
+** Evil mode
 
-** Key chords
-
-Key chords let us bind functions to sequential key presses like =jj=. It makes evil mode being turned off much more palatable.
+Evil-mode emulates Vim in Emacs.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package use-package-chords
-    :ensure t
+  (use-package evil
     :config
-    (key-chord-mode 1))
+    (evil-mode 1))
 #+END_SRC
 
-We bind individual mode chords via =use-package= but some globals are useful like =JJ= to jump to the previous buffer.
-
-#+BEGIN_SRC emacs-lisp
-  (defun jc/switch-to-previous-buffer ()
-    "Switch to previously open buffer.
-  Repeated invocations toggle between the two most recently open buffers."
-    (interactive)
-    (switch-to-buffer (other-buffer (current-buffer) 1)))
-
-  (key-chord-define-global "JJ" 'jc/switch-to-previous-buffer)
-#+END_SRC
+Todo: evil leader etc?
 
 ** Command completion
 
 =smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package smex
-    :ensure t)
+  (use-package smex)
 #+END_SRC
 
 =ivy= is a generic completion framework which uses the minibuffer. Turning on =ivy-mode= enables replacement of lots of built in =ido= functionality.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-      :ensure t
       :diminish ivy-mode
       :config
       (ivy-mode t))
@@ -220,24 +210,20 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
 
 #+BEGIN_SRC emacs-lisp
   (use-package counsel
-    :ensure t
-    :bind (("M-x" . counsel-M-x))
-    :chords (("yy" . counsel-yank-pop)))
+    :bind (("M-x" . counsel-M-x)))
 #+END_SRC
 
 =swiper= is an =ivy= enhanced version of isearch.
 
 #+BEGIN_SRC emacs-lisp
   (use-package swiper
-    :ensure t
     :bind (("M-s" . counsel-grep-or-swiper)))
 #+END_SRC
 
 =hydra= presents menus for =ivy= commands.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ivy-hydra
-    :ensure t)
+  (use-package ivy-hydra)
 #+END_SRC
 
 ** Suggest next key
@@ -246,7 +232,6 @@ Suggest next keys to me based on currently entered key combination.
 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :ensure t
     :diminish which-key-mode
     :config
     (add-hook 'after-init-hook 'which-key-mode))
@@ -258,9 +243,7 @@ Suggest next keys to me based on currently entered key combination.
 
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
-    :ensure t
     :defer 5
-    :chords (("uu" . undo-tree-visualize))
     :diminish global-undo-tree-mode
     :config
     (global-undo-tree-mode 1))
@@ -271,18 +254,13 @@ Suggest next keys to me based on currently entered key combination.
 One of the most important features of an advanced editor is quick text navigation. =avy= lets us jump to any character or line quickly.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package avy
-    :ensure t
-    :chords (("jj" . avy-goto-char-2)
-             ("jl" . avy-goto-line)))
+  (use-package avy)
 #+END_SRC
 
 =ace-window= lets us navigate between windows in the same way as =avy=. Once activated it has useful sub-modes like =x= to switch into window deletion mode.
 
 #+BEGIN_SRC emacs-lisp
  (use-package ace-window
-    :ensure t
-    :chords ("jk" . ace-window)
     :config
     (setq aw-keys '(?a ?s ?d ?f ?g ?h ?j ?k ?l)))
 #+END_SRC
@@ -293,7 +271,6 @@ One of the most important features of an advanced editor is quick text navigatio
 
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
-    :ensure t
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
@@ -303,7 +280,6 @@ I don't use this a whole lot, preferring to navigate via searches such as =couns
 
 #+BEGIN_SRC emacs-lisp
   (use-package neotree
-    :ensure t
     :config
     (global-set-key (kbd "C-c t") 'neotree-toggle))
 #+END_SRC
@@ -323,8 +299,7 @@ Use a simple theme for the file tree.
 Trying out treemacs:
 
 #+BEGIN_SRC emacs-lisp
-  (use-package treemacs
-    :ensure t)
+  (use-package treemacs)
 #+END_SRC
 
 * Appearance
@@ -333,7 +308,6 @@ I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/pa
 
 #+BEGIN_SRC emacs-lisp
   (use-package panda-theme
-    :ensure t
     :config
     (load-theme 'panda t))
 #+END_SRC
@@ -348,7 +322,6 @@ Set a nice font.
 
 #+BEGIN_SRC emacs-lisp
   (use-package feebleline
-    :ensure t
     :config
     (feebleline-mode 't))
 #+END_SRC
@@ -356,15 +329,13 @@ Set a nice font.
 Add emoji support. This is useful when working with html.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package emojify
-    :ensure t)
+  (use-package emojify)
 #+END_SRC
 
 Sometimes it helps to focus on the thing currently under the cursor. This turns off syntax highlighting for everything but the current thing. It's useful sometimes but a bit buggy in certain modes. I wonder if I could improve the config / find a better alternative?
 
 #+BEGIN_SRC emacs-lisp
-  (use-package focus
-    :ensure t)
+  (use-package focus)
 #+END_SRC
 
 Highlight the current line.
@@ -387,7 +358,6 @@ When programming I like my editor to try to help me with keeping parentheses bal
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-    :ensure t
     :diminish smartparens-mode
     :config
     (add-hook 'prog-mode-hook 'smartparens-mode))
@@ -397,7 +367,6 @@ Highlight parens etc. for improved readability.
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-delimiters
-    :ensure t
     :config
     (add-hook 'prog-mode-hook 'rainbow-delimiters-mode))
 #+END_SRC
@@ -406,7 +375,6 @@ Highlight strings which represent colours. I only want this in programming modes
 
 #+BEGIN_SRC emacs-lisp
   (use-package rainbow-mode
-    :ensure t
     :config
     (setq rainbow-x-colors nil)
     (add-hook 'prog-mode-hook 'rainbow-mode))
@@ -415,8 +383,7 @@ Highlight strings which represent colours. I only want this in programming modes
 Keep things indented correctly for me.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package aggressive-indent
-      :ensure t)
+  (use-package aggressive-indent)
 #+END_SRC
 
 Expand parentheses for me.
@@ -429,7 +396,6 @@ Smart dash guesses _ vs - depending on context.
 
 #+BEGIN_SRC emacs-lisp
   (use-package smart-dash
-    :ensure t
     :config
     (add-hook 'python-mode-hook 'smart-dash-mode))
 #+END_SRC
@@ -440,7 +406,6 @@ Projectile handles folders which are in version control.
 
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
-    :ensure t
     :config
     (projectile-mode))
 #+END_SRC
@@ -457,7 +422,6 @@ There is no function for projectile-grep, but we could use =counsel-git-grep= wh
 
 #+BEGIN_SRC emacs-lisp
   (use-package counsel-projectile
-    :ensure t
     :config
     (add-hook 'after-init-hook 'counsel-projectile-mode))
 #+END_SRC
@@ -467,8 +431,7 @@ There is no function for projectile-grep, but we could use =counsel-git-grep= wh
 =fzf= is a fuzzy file finder which is very quick.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package fzf
-    :ensure t)
+  (use-package fzf)
 #+END_SRC
 
 ** Environment management
@@ -477,7 +440,6 @@ By default Emacs doesn't read from the same environment variables set in your te
 
 #+BEGIN_SRC emacs-lisp
   (use-package exec-path-from-shell
-    :ensure t
     :config
     (exec-path-from-shell-initialize))
 #+END_SRC
@@ -488,7 +450,6 @@ Individual language packages often support IDE features like jump to source, but
 
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
-    :ensure t
     :diminish dumb-jump-mode
     :bind (("C-M-g" . dumb-jump-go)
            ("C-M-p" . dumb-jump-back)
@@ -501,7 +462,6 @@ Magit is an awesome interface to git. Summon it with `C-x g`.
 
 #+BEGIN_SRC emacs-lisp
   (use-package magit
-    :ensure t
     :bind ("C-x g" . magit-status))
 #+END_SRC
 
@@ -509,7 +469,6 @@ Display line changes in gutter based on git history. Enable it everywhere.
 
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
-    :ensure t
     :config
     (global-git-gutter-mode 't)
     :diminish git-gutter-mode)
@@ -518,8 +477,7 @@ Display line changes in gutter based on git history. Enable it everywhere.
 TimeMachine lets us step through the history of a file as recorded in git.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package git-timemachine
-    :ensure t)
+  (use-package git-timemachine)
 #+END_SRC
 
 ** Syntax checking
@@ -530,7 +488,6 @@ Setup is pretty simple - we just enable globally and turn on a custom eslint fun
 
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck
-    :ensure t
     :config
     (add-hook 'after-init-hook 'global-flycheck-mode)
     (add-hook 'flycheck-mode-hook 'jc/use-eslint-from-node-modules)
@@ -597,7 +554,6 @@ It would also be good to improve integration with yasnippet as I don't feel I'm 
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :ensure t
     :diminish
     :config
     (add-hook 'after-init-hook 'global-company-mode)
@@ -605,12 +561,10 @@ It would also be good to improve integration with yasnippet as I don't feel I'm 
     (setq company-idle-delay t)
 
     (use-package company-go
-      :ensure t
       :config
       (add-to-list 'company-backends 'company-go))
 
     (use-package company-anaconda
-      :ensure t
       :config
       (add-to-list 'company-backends 'company-anaconda)))
 #+END_SRC
@@ -631,7 +585,6 @@ Type the shortcut and press =TAB= to complete, or =M-/= to autosuggest a snippet
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-      :ensure t
       :diminish yas-minor-mode
       :config
       (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
@@ -652,7 +605,6 @@ JS2 mode improves on the built in JS mode.
 
 #+BEGIN_SRC emacs-lisp
   (use-package js2-mode
-    :ensure t
     :mode "\\.js\\'"
     :config
     (setq-default js2-ignored-warnings '("msg.extra.trailing.comma")))
@@ -662,7 +614,6 @@ JS2 mode improves on the built in JS mode.
 
 #+BEGIN_SRC emacs-lisp
   (use-package js2-refactor
-    :ensure t
     :config
     (js2r-add-keybindings-with-prefix "C-c C-m")
     (add-hook 'js2-mode-hook 'js2-refactor-mode))
@@ -671,15 +622,13 @@ JS2 mode improves on the built in JS mode.
 RJSX mode makes JSX work well.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package rjsx-mode
-    :ensure t)
+  (use-package rjsx-mode)
 #+END_SRC
 
 Prettier-js autoformats JS code - much like `gofmt` - and we hook it into JS2 and RJSX modes.
 
 #+BEGIN_SRC emacs-lisp
   (use-package prettier-js
-    :ensure t
     :config
     (setq prettier-js-args '(
                           "--trailing-comma" "es5"
@@ -694,7 +643,6 @@ Prettier-js autoformats JS code - much like `gofmt` - and we hook it into JS2 an
 
 #+BEGIN_SRC emacs-lisp
   (use-package js-doc
-    :ensure t
     :bind (:map js2-mode-map
            ("C-c i" . js-doc-insert-function-doc)
            ("@" . js-doc-insert-tag))
@@ -726,7 +674,6 @@ Web mode handles html/css/js.
 
 #+BEGIN_SRC emacs-lisp
   (use-package web-mode
-    :ensure t
     :mode ("\\.html\\'")
     :config
     (setq web-mode-markup-indent-offset 2)
@@ -741,7 +688,6 @@ Web beautify prettifies html / css / js using js-beautify - install with =npm in
 
 #+BEGIN_SRC emacs-lisp
   (use-package web-beautify
-    :ensure t
     :bind (:map web-mode-map
            ("C-c b" . web-beautify-html)
            :map js2-mode-map
@@ -754,7 +700,6 @@ Markdown support isn't built into Emacs, add it with =markdown-mode=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package markdown-mode
-    :ensure t
     :commands (markdown-mode gfm-mode)
     :mode (("README\\.md\\'" . gfm-mode)
            ("\\.md\\'" . markdown-mode)
@@ -768,20 +713,16 @@ Go-mode provides basic language support, we call =gofmt= on each save to keep co
 
 #+BEGIN_SRC emacs-lisp
   (use-package go-mode
-    :ensure t
     :config
     (add-hook 'before-save-hook 'gofmt-before-save)
 
     (use-package go-eldoc
-      :ensure t
       :config
       (add-hook 'go-mode-hook 'go-eldoc-setup))
 
-    (use-package godoctor
-      :ensure t)
+    (use-package godoctor)
 
-    (use-package go-guru
-      :ensure t))
+    (use-package go-guru))
 #+END_SRC
 
 Go guru needs a scope to look at, this function sets it to the current package.
@@ -803,27 +744,23 @@ Go guru needs a scope to look at, this function sets it to the current package.
 Install haskell mode.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package haskell-mode
-    :ensure t)
+  (use-package haskell-mode)
 #+END_SRC
 
 Code formatting is easier with =hindent=.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package hindent
-    :ensure t)
+  (use-package hindent)
 #+END_SRC
 
 Completion is via =ghc-mod= / =company=. Install the former separately with =cabal install ghc-mod=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package ghc
-    :ensure t
     :config
     (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
 
   (use-package company-ghc
-    :ensure t
     :config
     (add-to-list 'company-backends 'company-ghc))
 #+END_SRC
@@ -834,7 +771,6 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
 
 #+BEGIN_SRC emacs-lisp
   (use-package anaconda-mode
-    :ensure t
     :config
     (add-hook 'python-mode-hook 'anaconda-mode)
     (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
@@ -843,15 +779,13 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
 Black is an opinionated pyton formatter. Install with =pip install black= so the command line tool is available.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package blacken
-    :ensure t)
+  (use-package blacken)
 #+END_SRC
 
 Sometimes I use kivy.
 
 #+BEGIN_SRC emacs-lisp
   (use-package kivy-mode
-    :ensure t
     :mode ("\\.kv\\'" . kivy-mode))
 #+END_SRC
 
@@ -861,19 +795,16 @@ Elixir highlighting is not built into emacs at present. Elixir-mode gives all th
 
 #+BEGIN_SRC emacs-lisp
   (use-package elixir-mode
-    :ensure t
     :config
 
-    (use-package alchemist
-      :ensure t))
+    (use-package alchemist))
 #+END_SRC
 ** Cucumber
 
 Cucumber (gherkin) is a syntax for specifying behaviour driven development tests.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package feature-mode
-    :ensure t)
+  (use-package feature-mode)
 #+END_SRC
 
 ** Rebol / Red
@@ -886,8 +817,7 @@ Red is an updated open source implementation of Rebol.
 ** Idris
 
 #+BEGIN_SRC emacs-lisp
-  (use-package idris-mode
-    :ensure t)
+  (use-package idris-mode)
 #+END_SRC
 
 ** Coq
@@ -907,7 +837,6 @@ Open .v files with Proof General's Coq mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-coq
-    :ensure t
     :hook (coq-mode . company-coq-mode))
 #+END_SRC
 
@@ -917,7 +846,6 @@ Elm is a delightful language for reliable webapps. It compiles to JS. First inst
 
 #+BEGIN_SRC emacs-lisp
   (use-package elm-mode
-    :ensure t
     :config
     (setq elm-format-on-save t)
     (add-to-list 'company-backends 'company-elm))
@@ -929,7 +857,6 @@ Emacs has a great built in C/C++ mode, but we can improve on it with =irony-mode
 
 #+BEGIN_SRC emacs-lisp
   (use-package irony
-    :ensure t
     :hook (c-mode . irony-mode))
 #+END_SRC
 
@@ -937,7 +864,6 @@ Add company mode support.
 
 #+BEGIN_SRC emacs-lisp
   (use-package company-irony
-    :ensure t
     :config
     (add-to-list 'company-backends 'company-irony))
 #+END_SRC
@@ -946,7 +872,6 @@ Add flycheck support.
 
 #+BEGIN_SRC emacs-lisp
   (use-package flycheck-irony
-    :ensure t
     :hook (flycheck-mode . flycheck-irony-setup))
 #+END_SRC
 
@@ -955,15 +880,13 @@ Add flycheck support.
 Dotnet core runs on linux / macos. Let's get syntax highlighting.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package csharp-mode
-    :ensure t)
+  (use-package csharp-mode)
 #+END_SRC
 
 Omnisharp gives completion / refactoring support, and hooks into company-mode.
 
 #+BEGIN_SRC emacs-lisp
   (use-package omnisharp
-    :ensure t
     :hook ((csharp-mode . omnisharp-mode)
            ;; TODO: 'before-save runs globally - make this buffer local?
            (before-save . omnisharp-code-format-entire-file))
@@ -976,8 +899,7 @@ Omnisharp gives completion / refactoring support, and hooks into company-mode.
 Since we have dotnet core why not?
 
 #+BEGIN_SRC emacs-lisp
-  (use-package fsharp-mode
-    :ensure t)
+  (use-package fsharp-mode)
 #+END_SRC
 
 * Org
@@ -1003,7 +925,6 @@ Improve the display of bullet points.
 
 #+BEGIN_SRC emacs-lisp
   (use-package org-bullets
-    :ensure t
     :config
     (setq org-bullets-bullet-list '("∙"))
     (add-hook 'org-mode-hook 'org-bullets-mode))
@@ -1039,8 +960,7 @@ Customize appearance.
 Add bootstrap styled export.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package ox-twbs
-    :ensure t)
+  (use-package ox-twbs)
 #+END_SRC
 
 * Extras
@@ -1050,7 +970,6 @@ Add bootstrap styled export.
 
 #+BEGIN_SRC emacs-lisp
   (use-package writegood-mode
-    :ensure t
     :bind ("C-c g" . writegood-mode)
     :config
     (add-to-list 'writegood-weasel-words "actionable"))
@@ -1062,7 +981,6 @@ SX is a full stack overflow client within Emacs.
 
 #+BEGIN_SRC emacs-lisp
   (use-package sx
-    :ensure t
     :config
     (bind-keys :prefix "C-c s"
                :prefix-map my-sx-map
@@ -1082,8 +1000,7 @@ SX is a full stack overflow client within Emacs.
 There's an emacs package to interface with it.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package w3m
-    :ensure t)
+  (use-package w3m)
 #+END_SRC
 
 ** Email
@@ -1091,8 +1008,7 @@ There's an emacs package to interface with it.
 =notmuch= is a fast mail client. Install it externally, e.g. with =brew install notmuch= and then use it within emacs.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package notmuch
-    :ensure t)
+  (use-package notmuch)
 #+END_SRC
 
 ** Rest client
@@ -1100,8 +1016,7 @@ There's an emacs package to interface with it.
 Sometimes I need to explore REST services. Why not Emacs?
 
 #+BEGIN_SRC emacs-lisp
-  (use-package restclient
-    :ensure t)
+  (use-package restclient)
 #+END_SRC
 
 ** Slack
@@ -1110,7 +1025,6 @@ I use slack for work.
 
 #+BEGIN_SRC emacs-lisp
   (use-package slack
-    :ensure t
     :commands (slack-start))
 #+END_SRC
 
@@ -1119,8 +1033,7 @@ I use slack for work.
 It's always useful to look things up.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package google-this
-    :ensure t)
+  (use-package google-this)
 #+END_SRC
 
 [fn:1] I hesitate to say this is the emacs way, it's just what I felt necessary.
