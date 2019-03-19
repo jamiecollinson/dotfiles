@@ -98,6 +98,17 @@ I put my scripts under =~/dotfiles/lisp/= and symlink it with =ln -s ~/dotfiles/
   (add-to-list 'load-path "~/.emacs.d/lisp/")
 #+END_SRC
 
+** Record key frequency
+
+This is useful to find out what I use a lot. I plan to then change bindings to improve ergonomics on commonly used functions.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package keyfreq
+    :config
+    (keyfreq-mode 1)
+    (keyfreq-autosave-mode 1))
+#+END_SRC
+
 * Preferences
 
 Don't display the help screen on startup.
@@ -178,10 +189,44 @@ Evil-mode emulates Vim in Emacs.
 #+BEGIN_SRC emacs-lisp
   (use-package evil
     :config
-    (evil-mode 1))
+    ;; (evil-mode 1)
+    (evil-set-initial-state 'NeoTree 'emacs))
 #+END_SRC
 
 Todo: evil leader etc?
+
+** God mode
+
+God-mode is a sort-of alternative to Vim - it's a modal interface to emacs existing commands, so in essence when enabled you don't need to chord Ctrl / Meta. As an example =C-x C-s= (save) becomes =xs=.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package god-mode
+    :disabled
+    :bind (("<escape>" . god-local-mode)
+           ("C-x C-1" . delete-other-windows)
+           ("C-x C-2" . split-window-below)
+           ("C-x C-3" . split-window-right)
+           ("C-x C-0" . delete-window)))
+
+  (defun my-update-cursor ()
+    (setq cursor-type (if (or god-local-mode buffer-read-only)
+                            'box
+                          'bar)))
+
+  (add-hook 'god-mode-enabled-hook 'my-update-cursor)
+  (add-hook 'god-mode-disabled-hook 'my-update-cursor)
+#+END_SRC
+
+Todo: update =window-divider= on god-mode status?
+
+** Goto last change
+
+Sometimes it's useful to step to the last changes in a buffer.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package goto-last-change
+    :bind (("C-;" . goto-last-change)))
+#+END_SRC
 
 ** Command completion
 
@@ -195,7 +240,6 @@ Todo: evil leader etc?
 
 #+BEGIN_SRC emacs-lisp
   (use-package ivy
-      :diminish ivy-mode
       :config
       (ivy-mode t))
 #+END_SRC
@@ -232,7 +276,6 @@ Suggest next keys to me based on currently entered key combination.
 
 #+BEGIN_SRC emacs-lisp
   (use-package which-key
-    :diminish which-key-mode
     :config
     (add-hook 'after-init-hook 'which-key-mode))
 #+END_SRC
@@ -244,7 +287,6 @@ Suggest next keys to me based on currently entered key combination.
 #+BEGIN_SRC emacs-lisp
   (use-package undo-tree
     :defer 5
-    :diminish global-undo-tree-mode
     :config
     (global-undo-tree-mode 1))
 #+END_SRC
@@ -358,7 +400,6 @@ When programming I like my editor to try to help me with keeping parentheses bal
 
 #+BEGIN_SRC emacs-lisp
   (use-package smartparens
-    :diminish smartparens-mode
     :config
     (add-hook 'prog-mode-hook 'smartparens-mode))
 #+END_SRC
@@ -407,6 +448,7 @@ Projectile handles folders which are in version control.
 #+BEGIN_SRC emacs-lisp
   (use-package projectile
     :config
+    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
     (projectile-mode))
 #+END_SRC
 
@@ -450,7 +492,6 @@ Individual language packages often support IDE features like jump to source, but
 
 #+BEGIN_SRC emacs-lisp
   (use-package dumb-jump
-    :diminish dumb-jump-mode
     :bind (("C-M-g" . dumb-jump-go)
            ("C-M-p" . dumb-jump-back)
            ("C-M-q" . dumb-jump-quick-look)))
@@ -470,8 +511,7 @@ Display line changes in gutter based on git history. Enable it everywhere.
 #+BEGIN_SRC emacs-lisp
   (use-package git-gutter
     :config
-    (global-git-gutter-mode 't)
-    :diminish git-gutter-mode)
+    (global-git-gutter-mode 't))
 #+END_SRC
 
 TimeMachine lets us step through the history of a file as recorded in git.
@@ -554,7 +594,6 @@ It would also be good to improve integration with yasnippet as I don't feel I'm 
 
 #+BEGIN_SRC emacs-lisp
   (use-package company
-    :diminish
     :config
     (add-hook 'after-init-hook 'global-company-mode)
 
@@ -575,6 +614,18 @@ I don't want suggestions from open files / buffers to be automatically lowercase
   (setq company-dabbrev-downcase nil)
 #+END_SRC
 
+=Eglot= is a client to Language Server Protocol servers.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package eglot)
+#+END_SRC
+
+=TabNine= is a machine learning based autocompletion system that works for any programming language.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package company-tabnine)
+#+END_SRC
+
 ** Snippets
 
 Unlike autocomplete which suggests words / symbols, snippets are pre-prepared templates which you fill in.
@@ -585,7 +636,6 @@ Type the shortcut and press =TAB= to complete, or =M-/= to autosuggest a snippet
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
-      :diminish yas-minor-mode
       :config
       (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
       (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
@@ -666,6 +716,12 @@ Sometimes it's useful to use the local eslint provided by a project's node_modul
                                           root))))
       (when (and eslint (file-executable-p eslint))
         (setq-local flycheck-javascript-eslint-executable eslint))))
+#+END_SRC
+
+We often want to use local packages instead of global ones.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package add-node-modules-path)
 #+END_SRC
 
 ** Web mode
@@ -779,7 +835,9 @@ Emacs handles python quite well, but we can improve things with anaconda mode.
 Black is an opinionated pyton formatter. Install with =pip install black= so the command line tool is available.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package blacken)
+  (use-package blacken
+    :config
+    (add-hook 'python-mode-hook 'blacken-mode))
 #+END_SRC
 
 Sometimes I use kivy.
@@ -814,6 +872,7 @@ Red is an updated open source implementation of Rebol.
 #+BEGIN_SRC emacs-lisp
   (use-package rebol)
 #+END_SRC
+
 ** Idris
 
 #+BEGIN_SRC emacs-lisp
@@ -902,6 +961,18 @@ Since we have dotnet core why not?
   (use-package fsharp-mode)
 #+END_SRC
 
+** Rust
+
+Rust is a zero-cost abstraction systems language.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package rust-mode)
+#+END_SRC
+
+#+BEGIN_SRC emacs-lisp
+  (use-package racer)
+#+END_SRC
+
 * Org
 ** General settings.
 
@@ -973,6 +1044,18 @@ Add bootstrap styled export.
     :bind ("C-c g" . writegood-mode)
     :config
     (add-to-list 'writegood-weasel-words "actionable"))
+#+END_SRC
+** Blogging
+
+I use Hugo for my website, =easy-hugo= makes running locally easier.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package easy-hugo
+    :init
+    (setq easy-hugo-basedir "~/personal/jamiecollinson.com")
+    (setq easy-hugo-url "https://jamiecollinson.com")
+    (setq easy-hugo-previewtime "300")
+    :bind ("C-c C-e" . easy-hugo))
 #+END_SRC
 
 ** Stack Overflow
