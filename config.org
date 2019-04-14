@@ -15,6 +15,16 @@ Hunter S. Thompson, Fear and Loathing in Las Vegas
 #+END_QUOTE
 
 * Setup
+
+** Configure package sources
+
+Add repositories from which we'll load packages. I prefer to live on the bleeding edge so have only enabled melpa. Setting =package-enable-at-startup= to =nil= prevents a second package load and slightly improves startup time.
+
+#+BEGIN_SRC emacs-lisp
+  (setq package-enable-at-startup nil)
+  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+#+END_SRC
+
 ** Bootstrap use-package
 
 If =use-package= is not installed, install it.
@@ -22,7 +32,8 @@ If =use-package= is not installed, install it.
 #+BEGIN_SRC emacs-lisp
   (unless (package-installed-p 'use-package)
     (package-refresh-contents)
-    (package-install 'use-package))
+    (package-install 'use-package)
+    (eval-when-compile (require 'use-package)))
 #+END_SRC
 
 By default all packages should be installed from package manager as that's the usual path. This is equivalent to setting =:ensure t= on each call to =use-package=. To disable set =:ensure nil= (this is done automatically for any packages using =:load-path= so shouldn't generally be needed).
@@ -69,15 +80,6 @@ The default garbage collection threshold is 800kB, increasing this to 10MB for s
     (find-file "~/dotfiles/config.org"))
 
   (global-set-key (kbd "C-c I") 'find-config)
-#+END_SRC
-
-** Configure package sources
-
-Add repositories from which we'll load packages. I prefer to live on the bleeding edge so have only enabled melpa. Setting =package-enable-at-startup= to =nil= prevents a second package load and slightly improves startup time.
-
-#+BEGIN_SRC emacs-lisp
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
-  (setq package-enable-at-startup nil)
 #+END_SRC
 
 ** Set custom settings to load in own file
@@ -863,14 +865,6 @@ Cucumber (gherkin) is a syntax for specifying behaviour driven development tests
 
 #+BEGIN_SRC emacs-lisp
   (use-package feature-mode)
-#+END_SRC
-
-** Rebol / Red
-
-Red is an updated open source implementation of Rebol.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package rebol)
 #+END_SRC
 
 ** Idris
