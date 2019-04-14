@@ -117,7 +117,7 @@ Don't display the help screen on startup.
   (setq inhibit-startup-screen t)
 #+END_SRC
 
-On  I use ⌘ as =meta= and prefer ⌥ to do nothing so I can still insert special characters like easily.
+On  I use ⌘ as =meta= and prefer ⌥ to do nothing so I can still insert special characters easily.
 
 #+BEGIN_SRC emacs-lisp
   (setq mac-command-modifier 'meta
