@@ -875,22 +875,13 @@ Cucumber (gherkin) is a syntax for specifying behaviour driven development tests
 
 ** Coq
 
-Proof general must be installed separately via:
-
-#+BEGIN_SRC sh
-  git clone https://github.com/ProofGeneral/PG ~/.emacs.d/lisp/PG
-  make -C ~/.emacs.d/lisp/PG
-#+END_SRC
-
 Open .v files with Proof General's Coq mode
 
 #+BEGIN_SRC emacs-lisp
-  (require 'proof-site "~/.emacs.d/lisp/PG/generic/proof-site")
-#+END_SRC
-
-#+BEGIN_SRC emacs-lisp
-  (use-package company-coq
-    :hook (coq-mode . company-coq-mode))
+  (use-package proof-general
+    :config
+    (use-package company-coq
+      :hook (coq-mode . company-coq-mode)))
 #+END_SRC
 
 ** Elm
