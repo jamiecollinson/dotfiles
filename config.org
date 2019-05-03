@@ -886,13 +886,12 @@ Open .v files with Proof General's Coq mode
 
 ** Elm
 
-Elm is a delightful language for reliable webapps. It compiles to JS. First install elm with =npm install -g elm elm-oracle elm-format=.
+Elm is a delightful language for reliable webapps. It compiles to JS. First install elm with =npm install -g elm elm-format=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package elm-mode
     :config
-    (setq elm-format-on-save t)
-    (add-to-list 'company-backends 'company-elm))
+    (setq elm-format-on-save t))
 #+END_SRC
 
 ** C
