@@ -22,7 +22,9 @@ Add repositories from which we'll load packages. I prefer to live on the bleedin
 
 #+BEGIN_SRC emacs-lisp
   (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives '("melpa" . "http://melpa.org/packages/"))
+  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+  (add-to-list 'package-archives
+               '("melpa" . "https://melpa.org/packages/") t)
 #+END_SRC
 
 ** Bootstrap use-package
@@ -352,8 +354,17 @@ I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/pa
 
 #+BEGIN_SRC emacs-lisp
   (use-package panda-theme
+    :disabled
     :config
     (load-theme 'panda t))
+#+END_SRC
+
+I also like Solarized.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package solarized-theme
+    :config
+    (load-theme 'solarized-light t))
 #+END_SRC
 
 Set a nice font.
@@ -380,12 +391,6 @@ Sometimes it helps to focus on the thing currently under the cursor. This turns 
 
 #+BEGIN_SRC emacs-lisp
   (use-package focus)
-#+END_SRC
-
-Highlight the current line.
-
-#+BEGIN_SRC emacs-lisp
-  (global-hl-line-mode 1)
 #+END_SRC
 
 Improve look and feel of titlebar on Macos. Set =ns-appearance= to =dark= for white title text and =nil= for black title text.
@@ -433,14 +438,6 @@ Expand parentheses for me.
 
 #+BEGIN_SRC emacs-lisp
   (add-hook 'prog-mode-hook 'electric-pair-mode)
-#+END_SRC
-
-Smart dash guesses _ vs - depending on context.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package smart-dash
-    :config
-    (add-hook 'python-mode-hook 'smart-dash-mode))
 #+END_SRC
 
 ** Project management
@@ -516,12 +513,6 @@ Display line changes in gutter based on git history. Enable it everywhere.
     (global-git-gutter-mode 't))
 #+END_SRC
 
-TimeMachine lets us step through the history of a file as recorded in git.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package git-timemachine)
-#+END_SRC
-
 ** Syntax checking
 
 =Flycheck= is a general syntax highlighting framework which other packages hook into. It's an improvment on the built in =flymake=.
@@ -590,42 +581,20 @@ Proselint is an external program, install it with =pip install proselint= for th
 
 ** Autocomplete
 
-Company mode provides good autocomplete options. Perhaps I should add company-quickhelp for documentation (https://github.com/expez/company-quickhelp)?
-
-It would also be good to improve integration with yasnippet as I don't feel I'm making the best use there.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package company
-    :config
-    (add-hook 'after-init-hook 'global-company-mode)
-
-    (setq company-idle-delay t)
-
-    (use-package company-go
-      :config
-      (add-to-list 'company-backends 'company-go))
-
-    (use-package company-anaconda
-      :config
-      (add-to-list 'company-backends 'company-anaconda)))
-#+END_SRC
-
-I don't want suggestions from open files / buffers to be automatically lowercased as these are often camelcase function names.
-
-#+BEGIN_SRC emacs-lisp
-  (setq company-dabbrev-downcase nil)
-#+END_SRC
-
 =Eglot= is a client to Language Server Protocol servers.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package eglot)
+  (use-package eglot
+    :commands eglot
+    :config
+    (add-to-list 'eglot-server-programs '(elm-mode . ("elm-language-server" "--stdio"))))
 #+END_SRC
 
-=TabNine= is a machine learning based autocompletion system that works for any programming language.
+=LSP-mode= is another client to Language Server Protocol servers. I haven't decided which I like best yet, so am currently starting them manually.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package company-tabnine)
+  (use-package lsp-mode
+    :commands (lsp lsp-deferred))
 #+END_SRC
 
 ** Snippets
@@ -825,13 +794,10 @@ Completion is via =ghc-mod= / =company=. Install the former separately with =cab
 
 ** Python
 
-Emacs handles python quite well, but we can improve things with anaconda mode.
+Pyvenv handles virtual environment support.
 
 #+BEGIN_SRC emacs-lisp
-  (use-package anaconda-mode
-    :config
-    (add-hook 'python-mode-hook 'anaconda-mode)
-    (add-hook 'python-mode-hook 'anaconda-eldoc-mode))
+  (use-package pyvenv)
 #+END_SRC
 
 Black is an opinionated pyton formatter. Install with =pip install black= so the command line tool is available.
@@ -840,13 +806,6 @@ Black is an opinionated pyton formatter. Install with =pip install black= so the
   (use-package blacken
     :config
     (add-hook 'python-mode-hook 'blacken-mode))
-#+END_SRC
-
-Sometimes I use kivy.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package kivy-mode
-    :mode ("\\.kv\\'" . kivy-mode))
 #+END_SRC
 
 ** Elixir
