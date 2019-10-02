@@ -319,34 +319,6 @@ One of the most important features of an advanced editor is quick text navigatio
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
-** File tree
-
-I don't use this a whole lot, preferring to navigate via searches such as =counsel-find-file=, but it's occasionally useful to have a file tree.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package neotree
-    :config
-    (global-set-key (kbd "C-c t") 'neotree-toggle))
-#+END_SRC
-
-When I open the tree try to jump to current file.
-
-#+BEGIN_SRC emacs-lisp
-  (setq neo-smart-open t)
-#+END_SRC
-
-Use a simple theme for the file tree.
-
-#+BEGIN_SRC emacs-lisp
-  (setq neo-theme 'arrow)
-#+END_SRC
-
-Trying out treemacs:
-
-#+BEGIN_SRC emacs-lisp
-  (use-package treemacs)
-#+END_SRC
-
 * Appearance
 
 I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/panda-theme][melpa]]!).
