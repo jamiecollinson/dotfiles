@@ -439,39 +439,18 @@ Expand parentheses for me.
   (add-hook 'prog-mode-hook 'electric-pair-mode)
 #+END_SRC
 
-** Project management
-
-Projectile handles folders which are in version control.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package projectile
-    :config
-    (define-key projectile-mode-map (kbd "C-c p") 'projectile-command-map)
-    (projectile-mode))
-#+END_SRC
-
-Tell projectile to integrate with =ivy= for completion.
-
-#+BEGIN_SRC emacs-lisp
-  (setq projectile-completion-system 'ivy)
-#+END_SRC
-
-Add some extra completion options via integration with =counsel=. In particular this enables =C-c p SPC= for smart buffer / file search, and =C-c p s s= for search via =ag=.
-
-There is no function for projectile-grep, but we could use =counsel-git-grep= which is similar. Should I bind that to =C-c p s g=?
-
-#+BEGIN_SRC emacs-lisp
-  (use-package counsel-projectile
-    :config
-    (add-hook 'after-init-hook 'counsel-projectile-mode))
-#+END_SRC
-
 ** Fuzzy search
 
 =fzf= is a fuzzy file finder which is very quick.
 
 #+BEGIN_SRC emacs-lisp
   (use-package fzf)
+#+END_SRC
+
+=deadgrep= uses =rg= to search for strings, =project.el= means it will automatically use the project root if (e.g.) it's a git repository, which is my usual use case.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package deadgrep)
 #+END_SRC
 
 ** Environment management
@@ -587,13 +566,6 @@ Proselint is an external program, install it with =pip install proselint= for th
     :commands eglot
     :config
     (add-to-list 'eglot-server-programs '(elm-mode . ("elm-language-server" "--stdio"))))
-#+END_SRC
-
-=LSP-mode= is another client to Language Server Protocol servers. I haven't decided which I like best yet, so am currently starting them manually.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package lsp-mode
-    :commands (lsp lsp-deferred))
 #+END_SRC
 
 ** Snippets
@@ -934,15 +906,6 @@ I should comment on these more...
 
 ** Appearance
 
-Improve the display of bullet points.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package org-bullets
-    :config
-    (setq org-bullets-bullet-list '("∙"))
-    (add-hook 'org-mode-hook 'org-bullets-mode))
-#+END_SRC
-
 Customize appearance.
 
 #+BEGIN_SRC emacs-lisp
@@ -1000,34 +963,6 @@ I use Hugo for my website, =easy-hugo= makes running locally easier.
     :bind ("C-c C-e" . easy-hugo))
 #+END_SRC
 
-** Stack Overflow
-
-SX is a full stack overflow client within Emacs.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package sx
-    :config
-    (bind-keys :prefix "C-c s"
-               :prefix-map my-sx-map
-               :prefix-docstring "Global keymap for SX."
-               ("q" . sx-tab-all-questions)
-               ("i" . sx-inbox)
-               ("o" . sx-open-link)
-               ("u" . sx-tab-unanswered-my-tags)
-               ("a" . sx-ask)
-               ("s" . sx-search)))
-#+END_SRC
-
-** Web browsing
-
-=w3m= is a terminal based browser. Emacs now has =eww= built in, but I prefer =w3m=. Install it separately, e.g. with =brew install w3m=.
-
-There's an emacs package to interface with it.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package w3m)
-#+END_SRC
-
 ** Email
 
 =notmuch= is a fast mail client. Install it externally, e.g. with =brew install notmuch= and then use it within emacs.
@@ -1042,15 +977,6 @@ Sometimes I need to explore REST services. Why not Emacs?
 
 #+BEGIN_SRC emacs-lisp
   (use-package restclient)
-#+END_SRC
-
-** Slack
-
-I use slack for work.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package slack
-    :commands (slack-start))
 #+END_SRC
 
 ** Google
