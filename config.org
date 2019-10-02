@@ -427,12 +427,6 @@ Highlight strings which represent colours. I only want this in programming modes
     (add-hook 'prog-mode-hook 'rainbow-mode))
 #+END_SRC
 
-Keep things indented correctly for me.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package aggressive-indent)
-#+END_SRC
-
 Expand parentheses for me.
 
 #+BEGIN_SRC emacs-lisp
