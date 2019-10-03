@@ -185,6 +185,7 @@ I *never* want whitespace at the end of lines. Remove it on save.
 #+BEGIN_SRC emacs-lisp
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
 #+END_SRC
+
 ** Evil mode
 
 Evil-mode emulates Vim in Emacs.
@@ -232,12 +233,6 @@ Sometimes it's useful to step to the last changes in a buffer.
 #+END_SRC
 
 ** Command completion
-
-=smart M-x= suggests =M-x= commands based on recency and frequency. I don't tend to use it directly but =counsel= uses it to order suggestions.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package smex)
-#+END_SRC
 
 =ivy= is a generic completion framework which uses the minibuffer. Turning on =ivy-mode= enables replacement of lots of built in =ido= functionality.
 
@@ -317,34 +312,6 @@ One of the most important features of an advanced editor is quick text navigatio
 #+BEGIN_SRC emacs-lisp
   (use-package expand-region
     :bind ("C-=" . er/expand-region))
-#+END_SRC
-
-** File tree
-
-I don't use this a whole lot, preferring to navigate via searches such as =counsel-find-file=, but it's occasionally useful to have a file tree.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package neotree
-    :config
-    (global-set-key (kbd "C-c t") 'neotree-toggle))
-#+END_SRC
-
-When I open the tree try to jump to current file.
-
-#+BEGIN_SRC emacs-lisp
-  (setq neo-smart-open t)
-#+END_SRC
-
-Use a simple theme for the file tree.
-
-#+BEGIN_SRC emacs-lisp
-  (setq neo-theme 'arrow)
-#+END_SRC
-
-Trying out treemacs:
-
-#+BEGIN_SRC emacs-lisp
-  (use-package treemacs)
 #+END_SRC
 
 * Appearance
@@ -575,8 +542,7 @@ Type the shortcut and press =TAB= to complete, or =M-/= to autosuggest a snippet
       :config
       (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
       (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-      (yas-global-mode)
-      (global-set-key (kbd "M-/") 'company-yasnippet))
+      (yas-global-mode))
 #+END_SRC
 
 ** Javascript
@@ -701,34 +667,12 @@ Markdown support isn't built into Emacs, add it with =markdown-mode=.
 
 ** Golang
 
-Go-mode provides basic language support, we call =gofmt= on each save to keep code tidy, use eldoc to display documentation and add guru / doctor for IDE functionality.
+Go-mode provides basic language support, we call =gofmt= on each save to keep code tidy.
 
 #+BEGIN_SRC emacs-lisp
   (use-package go-mode
     :config
-    (add-hook 'before-save-hook 'gofmt-before-save)
-
-    (use-package go-eldoc
-      :config
-      (add-hook 'go-mode-hook 'go-eldoc-setup))
-
-    (use-package godoctor)
-
-    (use-package go-guru))
-#+END_SRC
-
-Go guru needs a scope to look at, this function sets it to the current package.
-
-#+BEGIN_SRC emacs-lisp
-  (defun jc/go-guru-set-current-package-as-main ()
-    "GoGuru requires the scope to be set to a go package which
-     contains a main, this function will make the current package the
-     active go guru scope, assuming it contains a main"
-    (interactive)
-    (let* ((filename (buffer-file-name))
-           (gopath-src-path (concat (file-name-as-directory (go-guess-gopath)) "src"))
-           (relative-package-path (directory-file-name (file-name-directory (file-relative-name filename gopath-src-path)))))
-      (setq go-guru-scope relative-package-path)))
+    (add-hook 'before-save-hook 'gofmt-before-save))
 #+END_SRC
 
 ** Haskell
@@ -743,18 +687,6 @@ Code formatting is easier with =hindent=.
 
 #+BEGIN_SRC emacs-lisp
   (use-package hindent)
-#+END_SRC
-
-Completion is via =ghc-mod= / =company=. Install the former separately with =cabal install ghc-mod=.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ghc
-    :config
-    (add-hook 'haskell-mode-hook (lambda () (ghc-init))))
-
-  (use-package company-ghc
-    :config
-    (add-to-list 'company-backends 'company-ghc))
 #+END_SRC
 
 ** Python
@@ -780,21 +712,7 @@ Elixir highlighting is not built into emacs at present. Elixir-mode gives all th
 #+BEGIN_SRC emacs-lisp
   (use-package elixir-mode
     :config
-
     (use-package alchemist))
-#+END_SRC
-** Cucumber
-
-Cucumber (gherkin) is a syntax for specifying behaviour driven development tests.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package feature-mode)
-#+END_SRC
-
-** Idris
-
-#+BEGIN_SRC emacs-lisp
-  (use-package idris-mode)
 #+END_SRC
 
 ** Coq
@@ -802,10 +720,7 @@ Cucumber (gherkin) is a syntax for specifying behaviour driven development tests
 Open .v files with Proof General's Coq mode
 
 #+BEGIN_SRC emacs-lisp
-  (use-package proof-general
-    :config
-    (use-package company-coq
-      :hook (coq-mode . company-coq-mode)))
+  (use-package proof-general)
 #+END_SRC
 
 ** Elm
@@ -818,55 +733,12 @@ Elm is a delightful language for reliable webapps. It compiles to JS. First inst
     (setq elm-format-on-save t))
 #+END_SRC
 
-** C
-
-Emacs has a great built in C/C++ mode, but we can improve on it with =irony-mode= for code completion via =libclang=.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package irony
-    :hook (c-mode . irony-mode))
-#+END_SRC
-
-Add company mode support.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package company-irony
-    :config
-    (add-to-list 'company-backends 'company-irony))
-#+END_SRC
-
-Add flycheck support.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package flycheck-irony
-    :hook (flycheck-mode . flycheck-irony-setup))
-#+END_SRC
-
 ** C#
 
 Dotnet core runs on linux / macos. Let's get syntax highlighting.
 
 #+BEGIN_SRC emacs-lisp
   (use-package csharp-mode)
-#+END_SRC
-
-Omnisharp gives completion / refactoring support, and hooks into company-mode.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package omnisharp
-    :hook ((csharp-mode . omnisharp-mode)
-           ;; TODO: 'before-save runs globally - make this buffer local?
-           (before-save . omnisharp-code-format-entire-file))
-    :config
-    (add-to-list 'company-backends 'company-omnisharp))
-#+END_SRC
-
-** F#
-
-Since we have dotnet core why not?
-
-#+BEGIN_SRC emacs-lisp
-  (use-package fsharp-mode)
 #+END_SRC
 
 ** Rust
@@ -877,11 +749,8 @@ Rust is a zero-cost abstraction systems language.
   (use-package rust-mode)
 #+END_SRC
 
-#+BEGIN_SRC emacs-lisp
-  (use-package racer)
-#+END_SRC
-
 * Org
+
 ** General settings.
 
 I should comment on these more...
@@ -898,41 +767,6 @@ I should comment on these more...
   (setq org-src-window-setup 'current-window)
 #+END_SRC
 
-** Appearance
-
-Customize appearance.
-
-#+BEGIN_SRC emacs-lisp
-  (let*
-      ((variable-tuple (cond
-                        ((x-list-fonts "Source Sans Pro") '(:font "Source Sans Pro"))
-                        ((x-list-fonts "Lucida Grande")   '(:font "Lucida Grande"))
-                        ((x-list-fonts "Verdana")         '(:font "Verdana"))
-                        ((x-family-fonts "Sans Serif")    '(:family "Sans Serif"))
-                        (nil (warn "Cannot find a Sans Serif Font.  Install Source Sans Pro."))))
-       (base-font-color     (face-foreground 'default nil 'default))
-       (headline           `(:inherit default :weight normal :foreground ,base-font-color)))
-
-    (custom-theme-set-faces 'user
-                            `(org-level-8 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-7 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-6 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-5 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-4 ((t (,@headline ,@variable-tuple))))
-                            `(org-level-3 ((t (,@headline ,@variable-tuple :height 1.33))))
-                            `(org-level-2 ((t (,@headline ,@variable-tuple :height 1.33))))
-                            `(org-level-1 ((t (,@headline ,@variable-tuple :height 1.33 ))))
-                            `(org-document-title ((t (,@headline ,@variable-tuple :height 1.33 :underline nil))))))
-#+END_SRC
-
-** Export
-
-Add bootstrap styled export.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package ox-twbs)
-#+END_SRC
-
 * Extras
 ** Writing
 
@@ -944,18 +778,6 @@ Add bootstrap styled export.
     :config
     (add-to-list 'writegood-weasel-words "actionable"))
 #+END_SRC
-** Blogging
-
-I use Hugo for my website, =easy-hugo= makes running locally easier.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package easy-hugo
-    :init
-    (setq easy-hugo-basedir "~/personal/jamiecollinson.com")
-    (setq easy-hugo-url "https://jamiecollinson.com")
-    (setq easy-hugo-previewtime "300")
-    :bind ("C-c C-e" . easy-hugo))
-#+END_SRC
 
 ** Email
 
@@ -963,22 +785,6 @@ I use Hugo for my website, =easy-hugo= makes running locally easier.
 
 #+BEGIN_SRC emacs-lisp
   (use-package notmuch)
-#+END_SRC
-
-** Rest client
-
-Sometimes I need to explore REST services. Why not Emacs?
-
-#+BEGIN_SRC emacs-lisp
-  (use-package restclient)
-#+END_SRC
-
-** Google
-
-It's always useful to look things up.
-
-#+BEGIN_SRC emacs-lisp
-  (use-package google-this)
 #+END_SRC
 
 [fn:1] I hesitate to say this is the emacs way, it's just what I felt necessary.
