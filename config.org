@@ -171,6 +171,7 @@ I usually don't want tabs, if I do I can set this buffer-local to =t=. If I just
 #+END_SRC
 
 * Interface
+
 ** Basics
 
 =crux= has useful functions extracted from Emacs Prelude. Set =C-a= to move to the first non-whitespace character on a line, and then to toggle between that and the beginning of the line.
