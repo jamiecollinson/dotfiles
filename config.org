@@ -534,16 +534,19 @@ Proselint is an external program, install it with =pip install proselint= for th
 
 Unlike autocomplete which suggests words / symbols, snippets are pre-prepared templates which you fill in.
 
-I'm using a community library (=[[https://github.com/AndreaCrotti/yasnippet-snippets]]=) with *lots* of ready made options, and have my own directory of custom snippets I've added. Not sure if I should unify these by forking =yasnippet-snippets=.
-
 Type the shortcut and press =TAB= to complete, or =M-/= to autosuggest a snippet.
 
 #+BEGIN_SRC emacs-lisp
   (use-package yasnippet
       :config
-      (add-to-list 'yas-snippet-dirs "~/.emacs.d/yasnippet-snippets")
       (add-to-list 'yas-snippet-dirs "~/.emacs.d/snippets")
-      (yas-global-mode))
+      (yas-global-mode 1))
+#+END_SRC
+
+Install some premade snippets (in addition to personal ones stored above)
+
+#+BEGIN_SRC emacs-lisp
+  (use-package yasnippet-snippets)
 #+END_SRC
 
 ** Javascript
