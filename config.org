@@ -752,8 +752,6 @@ Rust is a zero-cost abstraction systems language.
 
 * Org
 
-** General settings.
-
 I should comment on these more...
 
 #+BEGIN_SRC emacs-lisp
@@ -766,6 +764,25 @@ I should comment on these more...
   (setq org-src-fontify-natively 't)
   (setq org-src-tab-acts-natively t)
   (setq org-src-window-setup 'current-window)
+#+END_SRC
+
+Customize appearance.
+
+#+BEGIN_SRC emacs-lisp
+  (let*
+      ((base-font-color     (face-foreground 'default nil 'default))
+       (headline           `(:foreground ,base-font-color)))
+
+    (custom-theme-set-faces 'user
+                            `(org-level-8 ((t (,@headline))))
+                            `(org-level-7 ((t (,@headline))))
+                            `(org-level-6 ((t (,@headline))))
+                            `(org-level-5 ((t (,@headline))))
+                            `(org-level-4 ((t (,@headline))))
+                            `(org-level-3 ((t (,@headline :height 1.3))))
+                            `(org-level-2 ((t (,@headline :height 1.3))))
+                            `(org-level-1 ((t (,@headline :height 1.3 ))))
+                            `(org-document-title ((t (,@headline :height 1))))))
 #+END_SRC
 
 * Extras
