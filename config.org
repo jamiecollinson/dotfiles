@@ -22,8 +22,9 @@ Add repositories from which we'll load packages. I prefer to live on the bleedin
 
 #+BEGIN_SRC emacs-lisp
   (setq package-enable-at-startup nil)
-  (add-to-list 'package-archives
-               '("melpa" . "https://melpa.org/packages/") t)
+  (setq package-archives '(("gnu" . "http://mirrors.163.com/elpa/gnu/")
+                           ("melpa" . "https://melpa.org/packages/")
+                           ("org" . "http://orgmode.org/elpa/")))
 #+END_SRC
 
 ** Bootstrap use-package
