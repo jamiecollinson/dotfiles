@@ -355,12 +355,6 @@ Add emoji support. This is useful when working with html.
   (use-package emojify)
 #+END_SRC
 
-Sometimes it helps to focus on the thing currently under the cursor. This turns off syntax highlighting for everything but the current thing. It's useful sometimes but a bit buggy in certain modes. I wonder if I could improve the config / find a better alternative?
-
-#+BEGIN_SRC emacs-lisp
-  (use-package focus)
-#+END_SRC
-
 Improve look and feel of titlebar on Macos. Set =ns-appearance= to =dark= for white title text and =nil= for black title text.
 
 #+BEGIN_SRC emacs-lisp
