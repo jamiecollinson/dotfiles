@@ -316,6 +316,21 @@ One of the most important features of an advanced editor is quick text navigatio
     :bind ("C-=" . er/expand-region))
 #+END_SRC
 
+** Fullscreen
+
+This function toggles the =frame-parameter= =fullscreen= so that I can maximise Emacs from within rather than relying on the external MacOS controls.
+
+#+BEGIN_SRC emacs-lisp
+  (defun mac-toggle-max-window ()
+    (interactive)
+    (set-frame-parameter
+     nil
+     'fullscreen
+     (if (frame-parameter nil 'fullscreen)
+         nil
+       'fullboth)))
+#+END_SRC
+
 * Appearance
 
 I'm now using my own translation of Panda Theme (now on [[https://melpa.org/#/panda-theme][melpa]]!).
