@@ -257,6 +257,15 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
     :bind (("M-x" . counsel-M-x)))
 #+END_SRC
 
+=prescient= sorts and filters candidate lists for avy/counsel.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package prescient)
+  (use-package ivy-prescient
+    :config
+    (ivy-prescient-mode t))
+#+END_SRC
+
 =swiper= is an =ivy= enhanced version of isearch.
 
 #+BEGIN_SRC emacs-lisp
