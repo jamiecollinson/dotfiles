@@ -279,6 +279,19 @@ By default =ivy= starts filters with =^=. I don't normally want that and can eas
   (use-package ivy-hydra)
 #+END_SRC
 
+=major-mode-hydra= binds a single key to open a context sensitive hydra based on current major mode. Hydras can be defined in =use-package= definitions via the =:mode-hydra= integration.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package major-mode-hydra
+    :bind
+    ("C-M-SPC" . major-mode-hydra)
+    :config
+    (major-mode-hydra-define org-mode
+      ()
+      ("Tools"
+       (("l" org-lint "lint")))))
+#+END_SRC
+
 ** Suggest next key
 
 Suggest next keys to me based on currently entered key combination.
@@ -363,6 +376,8 @@ Set a nice font.
 
 #+BEGIN_SRC emacs-lisp
   (set-frame-font "Operator Mono 12" nil t)
+  ;; (set-frame-font "Inconsolata 13" nil t)
+  ;; (set-frame-font "SF Mono 12" nil t)
 #+END_SRC
 
 =feebleline= is a minimalist mode line replacement.
