@@ -664,6 +664,12 @@ We often want to use local packages instead of global ones.
   (use-package add-node-modules-path)
 #+END_SRC
 
+Add handling for =.svelte= files.
+
+#+BEGIN_SRC emacs-lisp
+  (use-package svelte-mode)
+#+END_SRC
+
 ** Web mode
 
 Web mode handles html/css/js.
