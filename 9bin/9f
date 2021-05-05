@@ -1,0 +1,4 @@
+#!/bin/bash
+#9f
+projectDir=$(git rev-parse --show-toplevel)
+ag $1 $projectDir

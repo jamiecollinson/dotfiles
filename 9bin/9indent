@@ -1,0 +1,4 @@
+#!/bin/bash
+#9indent
+echo -n "1,$" | 9p write acme/$winid/addr
+9p read acme/$winid/body | indent -st | 9p write acme/$winid/data
